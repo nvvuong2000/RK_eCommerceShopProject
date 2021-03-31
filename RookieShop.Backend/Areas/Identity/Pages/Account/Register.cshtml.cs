@@ -5,14 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+//using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using RookieShop.Backend.Data;
 using RookieShop.Backend.Models;
 
 namespace RookieShop.Backend.Areas.Identity.Pages.Account
@@ -23,8 +26,10 @@ namespace RookieShop.Backend.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
+        private readonly RoleManager<User> _roleManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext _db;
 
         public RegisterModel(
             UserManager<User> userManager,
@@ -82,11 +87,17 @@ namespace RookieShop.Backend.Areas.Identity.Pages.Account
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
-            {
+            { 
                 var user = new User { UserName = Input.UserName, Email = Input.Email, customerName = Input.FullName };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
+                    //if (!_roleManager.RoleExistsAsync("admin").Result)
+                    //{
+                    //    _logger.LogInformation("Role admin exits in db.");
+                    //    // await _roleManager.CreateAsync(new IdentityRole("admin"));
+                    //}
+                    await _userManager.AddToRoleAsync(user,"User");
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -106,6 +117,8 @@ namespace RookieShop.Backend.Areas.Identity.Pages.Account
                     }
                     else
                     {
+                       
+                        await _userManager.AddToRoleAsync(user, "user");
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         return LocalRedirect(returnUrl);
                     }

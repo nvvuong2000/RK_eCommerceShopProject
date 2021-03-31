@@ -7,10 +7,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using RookieShop.Backend.Data;
 using RookieShop.Backend.IdentityServer;
 using RookieShop.Backend.Models;
+using RookieShop.Backend.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,9 +35,11 @@ namespace RookieShop.Backend
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+         
             services.AddDatabaseDeveloperPageExceptionFilter();
+            
 
-            services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
+            services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -68,8 +72,9 @@ namespace RookieShop.Backend
                     policy.RequireAuthenticatedUser();
                 });
             });
-
+         
             services.AddControllersWithViews();
+          //  services.AddSingleton<IUserServices, UserServices>();
 
             services.AddSwaggerGen(c =>
             {
@@ -101,8 +106,9 @@ namespace RookieShop.Backend
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory, ApplicationDbContext context, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
+           
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

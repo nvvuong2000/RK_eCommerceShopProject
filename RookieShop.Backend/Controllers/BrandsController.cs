@@ -27,6 +27,7 @@ namespace RookieShop.Backend.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<categoryVm>>> GetCategories()
         {
+            //var home = new HomeController();
             return await _context.Categories
                 .Select(x => new categoryVm { Id = x.categoryID, Name = x.categoryName })
                 .ToListAsync();

@@ -57,7 +57,7 @@ namespace RookieShop.Backend.IdentityServer
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString(CultureInfo.InvariantCulture)),
                     new Claim(JwtClaimTypes.Name, user.Email),
                     new Claim(JwtClaimTypes.Email, user.Email),
-                    new Claim("Id",user.Id),
+                    //new Claim("Id",user.Id),
                     
                 };
 
