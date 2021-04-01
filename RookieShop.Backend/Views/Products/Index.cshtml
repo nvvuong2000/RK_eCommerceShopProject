@@ -1,0 +1,95 @@
+﻿@model IEnumerable<RookieShop.Backend.Models.Product>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.providerID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.producerID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.productName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.stock)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.unitPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.url)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.viewCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.buyCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.isNew)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.providerID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.producerID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.productName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.stock)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.unitPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.url)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.viewCount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.buyCount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.isNew)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.categoryID)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.productID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.productID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.productID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
