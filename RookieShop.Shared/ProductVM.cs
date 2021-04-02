@@ -15,7 +15,8 @@ namespace RookieShop.Shared
         public decimal unitPrice { get; set; }
         public string description { get; set; }
         public bool isNew { get; set; }
+        
 
-       
+
     }
 }

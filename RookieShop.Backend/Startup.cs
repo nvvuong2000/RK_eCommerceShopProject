@@ -17,6 +17,7 @@ using RookieShop.Backend.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace RookieShop.Backend
@@ -73,8 +74,16 @@ namespace RookieShop.Backend
                     policy.RequireAuthenticatedUser();
                 });
             });
-         
-            services.AddControllersWithViews();
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+
+                options.IdleTimeout = new TimeSpan(0, 60, 0);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+            services.AddControllersWithViews().AddJsonOptions(o => o.JsonSerializerOptions
+                        .ReferenceHandler = ReferenceHandler.Preserve);
             services.AddCors(options =>
             {
                 options.AddPolicy("Policy1", builder =>
@@ -141,7 +150,7 @@ namespace RookieShop.Backend
 
             app.UseIdentityServer();
             app.UseAuthorization();
-
+            app.UseSession();
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {

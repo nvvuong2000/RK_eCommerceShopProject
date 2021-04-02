@@ -52,7 +52,6 @@ namespace RookieShop.Backend.Controllers
         {
             return int.Parse(this.User.Claims.First(i => i.Type == "UserId").Value);
         }
-        // private async Task<ApplicationUser> GetCurrentUserAsync() => await _userManager.GetUserAsync(HttpContext.User);
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

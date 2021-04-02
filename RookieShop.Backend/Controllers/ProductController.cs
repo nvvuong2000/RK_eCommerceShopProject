@@ -43,7 +43,7 @@ namespace RookieShop.Backend.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> Get(int id)
         {
-            return _context.Products.Where(x => x.productID == id).FirstOrDefault();
+            return _context.Products.Where(x => x.productID == id).Include(p=>p.ProductImages).FirstOrDefault();
         }
         
 
@@ -74,7 +74,7 @@ namespace RookieShop.Backend.Controllers
                     int random = getrandom.Next(1, 99);
 
 
-                    string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", formFile.FileName, random.ToString());
+                    string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", random.ToString()+ formFile.FileName );
                     if (formFile.Length > 0)
                     {
                         using (var stream = new FileStream(path, FileMode.Create))
