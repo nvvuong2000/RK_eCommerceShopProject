@@ -72,21 +72,20 @@ namespace RookieShop.Backend.Controllers
                 {
                     Random getrandom = new Random();
                     int random = getrandom.Next(1, 99);
-
-
-                    string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", random.ToString()+ formFile.FileName );
+                    string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", random.ToString()+ formFile.FileName );
                     if (formFile.Length > 0)
                     {
                         using (var stream = new FileStream(path, FileMode.Create))
                         {
                             formFile.CopyToAsync(stream);
+                            
                         }
                     }
                     var ProductImage = new ProductImages
                     {
                         ProductID = productID,
 
-                        pathName = path,
+                        pathName = Path.Combine("/images/"+ random.ToString() + formFile.FileName),
 
                         isDefault = false,
                         captionImage = "Hình ảnh minh họa cho sản phẩm " + file.productName,
@@ -108,7 +107,7 @@ namespace RookieShop.Backend.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromForm] FileModel product)
         {
-            var productEdit = await _context.Products.FindAsync(id);
+            var productEdit = await _context.Products.Include(img=>img.ProductImages).Where(p=>p.productID ==id).FirstOrDefaultAsync();
             if(productEdit == null)
             {
                 return NotFound();
@@ -122,11 +121,82 @@ namespace RookieShop.Backend.Controllers
                 productEdit.stock = product.stock;
                 productEdit.providerID = product.providerID;
                 productEdit.producerID = product.producerID;
+
+                var productImagesEdit  = await _context.ProductImages.Where(p => p.ProductID == id).ToListAsync();
+                if(productImagesEdit != null)
+                {
+                    for (int i = 0; i < productImagesEdit.Count;i++)
+                    {
+                        if (DeleteFile(productImagesEdit[i].pathName) == true)
+                        {
+                            var img = await _context.ProductImages.FindAsync(productImagesEdit[i].ID);
+                            if (img == null)
+                            {
+                                return NotFound();
+                            }
+
+                            _context.ProductImages.Remove(img);
+                            await _context.SaveChangesAsync();
+                        }
+                    }
+                   
+                }
+
                 await _context.SaveChangesAsync();
+                try
+                {
+
+                    foreach (var formFile in product.FormFiles)
+                    {
+                        Random getrandom = new Random();
+                        int random = getrandom.Next(1, 99);
+                        string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", random.ToString() + formFile.FileName);
+                        if (formFile.Length > 0)
+                        {
+                            using (var stream = new FileStream(path, FileMode.Create))
+                            {
+                                formFile.CopyToAsync(stream);
+
+                            }
+                        }
+                        var ProductImage = new ProductImages
+                        {
+                            ProductID = id,
+
+                            pathName = Path.Combine("/images/" + random.ToString() + formFile.FileName),
+
+                            isDefault = false,
+                            captionImage = "Hình ảnh minh họa cho sản phẩm " + product.productName,
+
+                        };
+                        _context.ProductImages.Add(ProductImage);
+                        await _context.SaveChangesAsync();
+                    }
+                    return StatusCode(StatusCodes.Status201Created);
+                }
+                catch (Exception)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+                }
 
                 return NoContent();
 
             }
+        }
+        [HttpGet("deleteFile")]
+        public bool DeleteFile(string file)
+        {
+
+           string webRootPath = _hostingEnv.WebRootPath;
+            var fullPath = Path.Combine(webRootPath, file);
+           
+
+            if (System.IO.File.Exists(fullPath))
+            {
+                System.IO.File.Delete(fullPath);
+                
+            }
+            return true;
         }
         // DELETE api/<Product>/5
         [HttpDelete("{id}")]
