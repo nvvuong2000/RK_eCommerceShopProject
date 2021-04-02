@@ -106,7 +106,7 @@ namespace RookieShop.Backend.Controllers
         }
         // PUT api/<Product>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] Product product)
+        public async Task<IActionResult> Put(int id, [FromForm] FileModel product)
         {
             var productEdit = await _context.Products.FindAsync(id);
             if(productEdit == null)
