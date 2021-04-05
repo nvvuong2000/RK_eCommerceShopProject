@@ -17,6 +17,7 @@ namespace RookieShop.Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize("Bearer")]
     public class CartController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -26,75 +27,57 @@ namespace RookieShop.Backend.Controllers
             _context = context;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Cart>>> Index()
+        [Authorize(Roles = "user")]
+        public async Task<IActionResult> Index()
         {
-            if (HttpContext.Session.GetString(CARTKEY) == null)
-            {
-                return null;
-            }
-            else
-            {
-                var value = HttpContext.Session.GetString(CARTKEY);
-                var jsonvalue = value;
-                var value2 = JsonConvert.DeserializeObject<List<Cart>>(jsonvalue);
-                return value2;
-            }
 
-        }
-        
-        [HttpGet("{id}")]
-        //[Authorize(Roles = "user")]
-        public IActionResult Buy(int id)
-        {
-            // Get User ID
+           
             var identity = (ClaimsIdentity)User.Identity;
             IEnumerable<Claim> claims = identity.Claims;
             var Userid = claims.FirstOrDefault(s => s.Type == "sub")?.Value;
-            ProductVM product = new ProductVM();
-            // Kiểm tra xem tồn tại Session cart chưa?
-            // Nếu chưa khởi tạo session cart với sản phẩm đầu tiên
-            if (HttpContext.Session.GetString(CARTKEY) == null)
+            if (Userid != null)
             {
-                List<Cart> cart = new List<Cart>();
-                var result = _context.Products.FirstOrDefault(x => x.productID == id);
+                var listItem = await _context.Carts.Where(x => x.userID == Userid).ToListAsync();
 
-                cart.Add(new Cart { productID = id, quantity = 1, unitPrice = result.unitPrice });
-
-                HttpContext.Session.SetString(CARTKEY, JsonConvert.SerializeObject(cart));
-
+                return Ok(listItem);
+            }
+            return null;
+        }      
+        [HttpGet("{id}")]
+     
+        public async Task<IActionResult> Buy(int id)
+        {
+            var identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
+            var Userid = claims.FirstOrDefault(s => s.Type == "sub")?.Value;
+            var listItem = await _context.Carts.Where(x => x.userID == Userid).ToListAsync();
+            var index = await FindID(id);
+            if (index != -1)
+            {
+                listItem[index].quantity = listItem[index].quantity + 1;
             }
             else
             {
-                var value = HttpContext.Session.GetString(CARTKEY);
-                var jsonvalue = value;
-                var value2 = JsonConvert.DeserializeObject<List<Cart>>(jsonvalue);
-                var index = FindID(id);
-                if (index == -1)
+                var result = _context.Products.FirstOrDefault(x => x.productID == id);
+                if (result == null)
                 {
-                    List<Cart> cart = new List<Cart>();
-                    var result = _context.Products.FirstOrDefault(x => x.productID == id);
-                    value2.Add(new Cart { productID = id, quantity = 1, unitPrice = result.unitPrice });
+                    return NotFound();
                 }
-                else
-                {
-                    value2[index].quantity = value2[index].quantity + 1;
-
-                }
-                HttpContext.Session.SetString(CARTKEY, JsonConvert.SerializeObject(value2));
+                var newItem = new Cart { productID = id, quantity = 1, unitPrice = result.unitPrice, userID = Userid };
+                _context.Carts.Add(newItem);
             }
+            await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
         [HttpGet("find/{id}")]
-        public int FindID(int id)
+        public async  Task<int> FindID(int id)
         {
-            var value = HttpContext.Session.GetString(CARTKEY);
-            var jsonvalue = value;
-            var value2 = JsonConvert.DeserializeObject<List<Cart>>(jsonvalue);
+            var listItem =  await _context.Carts.Where(x => x.productID == id).ToListAsync();
 
-            for (int i = 0; i < value2.Count; i++)
+            for (int i = 0; i < listItem.Count; i++)
             {
 
-                if (value2[i].productID == id)
+                if (listItem[i].productID == id)
                 {
                     return i;
                 }
@@ -118,7 +101,7 @@ namespace RookieShop.Backend.Controllers
         }
 
         [HttpGet("/remove/{id}")]
-        public IActionResult Remove(int id)
+        public async Task<IActionResult> Remove(int id)
         {
             var value = HttpContext.Session.GetString(CARTKEY);
             var jsonvalue = value;
@@ -127,7 +110,7 @@ namespace RookieShop.Backend.Controllers
                 return NotFound();
             }
             var value2 = JsonConvert.DeserializeObject<List<Cart>>(jsonvalue);
-            int index = FindID(id);
+            int  index = await FindID(id);
             if (index == -1)
             {
                 return NotFound();
@@ -144,14 +127,8 @@ namespace RookieShop.Backend.Controllers
             var identity = (ClaimsIdentity)User.Identity;
             IEnumerable<Claim> claims = identity.Claims;
             var Userid = claims.FirstOrDefault(s => s.Type == "sub")?.Value;
-            var value = HttpContext.Session.GetString(CARTKEY);
-            var jsonvalue = value;
-            if (jsonvalue == null)
-            {
-                return NotFound();
-            }
-            var value2 = JsonConvert.DeserializeObject<List<Cart>>(jsonvalue);
-            
+            var listItem = await _context.Carts.Where(x => x.userID == Userid).ToListAsync();
+
             var order = new Order()
             {
                 userID = Userid,
@@ -160,27 +137,31 @@ namespace RookieShop.Backend.Controllers
             };
             _context.Order.Add(order);
             await _context.SaveChangesAsync();
-            for (int i = 0; i < value2.Count; i++)
+          
+            for (int i = 0; i < listItem.Count; i++)
             {
-                var result = _context.Products.FirstOrDefault(x => x.productID == value2[i].productID);
+                var result = _context.Products.FirstOrDefault(x => x.productID == listItem[i].productID);
 
                 Random random = new Random();
                 int randomNumber = random.Next(0, 1000);
                 var orderItem = new OrderDetails()
                 {
-                    
+
                     orderdetailsID = randomNumber,
                     orderID = order.orderID,
-                    productID = value2[i].productID,
-                    quantity = value2[i].quantity,
-                    unitPrice = value2[i].unitPrice,
+                    productID = listItem[i].productID,
+                    quantity = listItem[i].quantity,
+                    unitPrice = listItem[i].unitPrice,
                     productName = result.productName,
                 };
                 _context.OrderDetails.Add(orderItem);
+                _context.Carts.Remove(listItem[i]);
                 await _context.SaveChangesAsync();
             }
-          
-            return Redirect("Index");
+
+ 
+
+            return Ok();
 
 
 

@@ -35,15 +35,15 @@ namespace RookieShop.Backend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetAsync()
         {
-            return await _context.Products.ToListAsync();
+            return await _context.Products.Include(p => p.ProductImages).ToListAsync();
                
         }
 
         // GET api/<Product>/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> Get(int id)
-        {
-            return _context.Products.Where(x => x.productID == id).Include(p=>p.ProductImages).FirstOrDefault();
+        {      
+            return _context.Products.Where(x => x.productID == id).Include(p=>p.ProductImages).Include(p=>p.Category).FirstOrDefault();
         }
         
 
@@ -199,9 +199,5 @@ namespace RookieShop.Backend.Controllers
             return true;
         }
         // DELETE api/<Product>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

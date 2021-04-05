@@ -45,6 +45,7 @@ namespace Rookie.CustomerSite
                     options.Scope.Add("openid");
                     options.Scope.Add("profile");
                     options.Scope.Add("rookieshop.api");
+                   // options.Scope.Add("offline_access");
 
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
@@ -52,6 +53,10 @@ namespace Rookie.CustomerSite
                         RoleClaimType = "role"
                     };
                 });
+            //services.ConfigureApplicationCookie(options =>
+            //{
+            //    options.LoginPath = "Identity/Account/Login";
+            //});
 
             services.AddControllersWithViews();
         }

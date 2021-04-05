@@ -74,6 +74,7 @@ namespace RookieShop.Backend
                     policy.RequireAuthenticatedUser();
                 });
             });
+
             services.AddDistributedMemoryCache();
             services.AddSession(options =>
             {
@@ -141,8 +142,9 @@ namespace RookieShop.Backend
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            app.UseCors("Policy1");
 
+            app.UseCors("Policy1");
+           
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

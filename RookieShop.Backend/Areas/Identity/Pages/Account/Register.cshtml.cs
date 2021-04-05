@@ -97,7 +97,7 @@ namespace RookieShop.Backend.Areas.Identity.Pages.Account
                     //    _logger.LogInformation("Role admin exits in db.");
                     //    // await _roleManager.CreateAsync(new IdentityRole("admin"));
                     //}
-                    await _userManager.AddToRoleAsync(user,"User");
+                    await _userManager.AddToRoleAsync(user,"user");
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
