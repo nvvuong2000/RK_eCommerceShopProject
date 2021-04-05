@@ -45,13 +45,15 @@ namespace Rookie.CustomerSite.Controllers
                 string endpoit = "/api/Cart";
                 HttpResponseMessage Res = await client.GetAsync(endpoit);
                 Res.EnsureSuccessStatusCode();
-               //Res.Content.re
+                //Res.Content.re
+                decimal total = await Total();
 
                 //Checking the response is successful or not which is sent using HttpClient  
                 if (Res.IsSuccessStatusCode)
                 {
 
                    var cartResponse = await  Res.Content.ReadAsAsync<IEnumerable<Cart>>();
+                    ViewBag.Total = total;
                     return View(cartResponse);
 
                     //Deserializing the response recieved from web api and storing into the product with id
@@ -74,28 +76,20 @@ namespace Rookie.CustomerSite.Controllers
 
             using (var client = new HttpClient())
             {
-                //Passing service base url  
+               
                 client.BaseAddress = new Uri(Baseurl);
 
                 client.DefaultRequestHeaders.Clear();
-                //Define request data format  
+           
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                //Sending request to find web api REST service resource GetAllEmployees using HttpClient  
+                
                 var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
                 client.SetBearerToken(accessToken);
                 string endpoit = "/api/Cart/" + id.ToString();
                 HttpResponseMessage Res = await client.GetAsync(endpoit);
-               
-                //Checking the response is successful or not which is sent using HttpClient  
-                if (Res.IsSuccessStatusCode)
-                {
-
-
-
-                }
                 //returning the employee list to view  
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Cart");
             }
         }
         [HttpGet("/cart/remove/{id}")]
@@ -105,28 +99,53 @@ namespace Rookie.CustomerSite.Controllers
 
             using (var client = new HttpClient())
             {
-                //Passing service base url  
+             
                 client.BaseAddress = new Uri(Baseurl);
 
                 client.DefaultRequestHeaders.Clear();
-                //Define request data format  
+               
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                //Sending request to find web api REST service resource GetAllEmployees using HttpClient  
+    
                 var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
                 client.SetBearerToken(accessToken);
                 string endpoit = "/remove/" + id.ToString();
-                HttpResponseMessage Res = await client.GetAsync(endpoit);
-
-                //Checking the response is successful or not which is sent using HttpClient  
+                HttpResponseMessage Res = await client.GetAsync(endpoit);  
                 if (Res.IsSuccessStatusCode)
                 {
 
 
 
                 }
-                //returning the employee list to view  
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Cart");
+            }
+        }
+
+        public async Task<Decimal> Total ()
+        {
+
+            decimal total = 0;
+            using (var client = new HttpClient())
+            {
+
+                client.BaseAddress = new Uri(Baseurl);
+
+                client.DefaultRequestHeaders.Clear();
+
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+
+                var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
+                client.SetBearerToken(accessToken);
+                string endpoit = "/api/Cart/total/";
+                HttpResponseMessage Res = await client.GetAsync(endpoit);
+                if (Res.IsSuccessStatusCode)
+                {
+
+                    total = await Res.Content.ReadAsAsync<decimal>();
+
+                }
+                return total;
             }
         }
     }
