@@ -15,7 +15,7 @@ namespace RookieShop.Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize("Bearer")]
+
     public class OrderController : ControllerBase
     {
         private readonly ApplicationDbContext _context;

@@ -37,7 +37,8 @@ namespace RookieShop.Backend.Controllers
             var Userid = claims.FirstOrDefault(s => s.Type == "sub")?.Value;
             if (Userid != null)
             {
-                var listItem = await _context.Carts.Where(x => x.userID == Userid).ToListAsync();
+                
+                var listItem = await _context.Carts.Include(c=>c.Product).Include(p=>p.Product.ProductImages).Where(x => x.userID == Userid).ToListAsync();
 
                 return Ok(listItem);
             }
@@ -51,6 +52,8 @@ namespace RookieShop.Backend.Controllers
             IEnumerable<Claim> claims = identity.Claims;
             var Userid = claims.FirstOrDefault(s => s.Type == "sub")?.Value;
             var listItem = await _context.Carts.Where(x => x.userID == Userid).ToListAsync();
+           
+            
             var index = await FindID(id);
             if (index != -1)
             {
@@ -72,7 +75,10 @@ namespace RookieShop.Backend.Controllers
         [HttpGet("find/{id}")]
         public async  Task<int> FindID(int id)
         {
-            var listItem =  await _context.Carts.Where(x => x.productID == id).ToListAsync();
+            var identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
+            var Userid = claims.FirstOrDefault(s => s.Type == "sub")?.Value;
+            var listItem =  await _context.Carts.Where(x => x.userID == Userid).ToListAsync();
 
             for (int i = 0; i < listItem.Count; i++)
             {
@@ -85,17 +91,18 @@ namespace RookieShop.Backend.Controllers
             return -1;
         }
         [HttpGet("total")]
-        public decimal TotalBill()
+        public async Task<decimal> TotalBill()
         {
-            var value = HttpContext.Session.GetString(CARTKEY);
-            var jsonvalue = value;
-            var value2 = JsonConvert.DeserializeObject<List<Cart>>(jsonvalue);
             decimal total = 0;
+            var identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
+            var Userid = claims.FirstOrDefault(s => s.Type == "sub")?.Value;
+            var listItem = await _context.Carts.Where(x => x.userID == Userid).ToListAsync();
 
-            for (int i = 0; i < value2.Count; i++)
+            for (int i = 0; i < listItem.Count; i++)
             {
 
-                total += value2[i].unitPrice * value2[i].unitPrice;
+                total += listItem[i].unitPrice * listItem[i].quantity;
             }
             return total;
         }
@@ -103,22 +110,20 @@ namespace RookieShop.Backend.Controllers
         [HttpGet("/remove/{id}")]
         public async Task<IActionResult> Remove(int id)
         {
-            var value = HttpContext.Session.GetString(CARTKEY);
-            var jsonvalue = value;
-            if (jsonvalue == null)
-            {
-                return NotFound();
-            }
-            var value2 = JsonConvert.DeserializeObject<List<Cart>>(jsonvalue);
+            var identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
+            var Userid = claims.FirstOrDefault(s => s.Type == "sub")?.Value;
+            var listItem = await _context.Carts.Where(x => x.userID == Userid).ToListAsync();
+
             int  index = await FindID(id);
             if (index == -1)
             {
                 return NotFound();
 
             }
-            value2.RemoveAt(index);
-            HttpContext.Session.SetString(CARTKEY, JsonConvert.SerializeObject(value2));
-            return Redirect("Index");
+            _context.Carts.Remove(listItem[index]);
+            await _context.SaveChangesAsync();
+            return Ok();
 
         }
         [HttpGet("checkout")]
