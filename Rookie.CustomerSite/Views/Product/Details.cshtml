@@ -51,7 +51,7 @@
                 <div class="product-details-content-area product-details--golden" data-aos="fade-up" data-aos-delay="200">
                     <!-- Start  Product Details Text Area-->
                     <div class="product-details-text">
-                        <h4 class="title"> @Model.productName </h4>
+                        <h4 class="title"> <a href="@Url.Action("Details","Cart",new { id = Model.productID })"> </a> @Model.productName </h4>
                         <div class="d-flex align-items-center">
                             <ul class="review-star">
                                 <li class="fill"><i class="ion-android-star"></i></li>
@@ -86,7 +86,7 @@
                             </div>
 
                             <div class="product-add-to-cart-btn">
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalAddcart">+ Add To Cart</a>
+                                <a href="@Url.Action("AddProduct","Cart",new {id=Model.productID})" data-bs-toggle="modal" data-bs-target="#modalAddcart">+ Add To Cart</a>
                             </div>
                         </div>                    
                     </div>

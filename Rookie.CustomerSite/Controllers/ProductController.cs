@@ -18,8 +18,9 @@ namespace Rookie.CustomerSite.Controllers
        
         string Baseurl = "https://localhost:44341/";
         // GET: ProductController/Details/5
-        [HttpGet("/product/{name}-{id:int}")]
-        public async Task<ActionResult> Details(string name, int id)
+        //[HttpGet("/product/{name}-{id:int}")]
+       [HttpGet("/product/{id:int}")]
+        public async Task<ActionResult> Details(int id)
         {
             Product EmpInfo = new Product();
 
