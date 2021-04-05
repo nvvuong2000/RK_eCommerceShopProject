@@ -15,36 +15,34 @@ namespace RookieShop.Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-
+    [Authorize("Bearer")]
     public class OrderController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
         private IHostingEnvironment _hostingEnv;
+
         public OrderController(ApplicationDbContext context, IHostingEnvironment hostingEnv)
         {
             _context = context;
             _hostingEnv = hostingEnv;
         }
-        // GET: api/<Product>
         [HttpGet]
-        
-        public async Task<ActionResult<IEnumerable<Order>>>GetListOrder()
+        [Authorize(Roles = "user")]
+        public async Task<ActionResult<IEnumerable<Order>>> GetListOrder()
         {
             var identity = (ClaimsIdentity)User.Identity;
             IEnumerable<Claim> claims = identity.Claims;
             var Userid = claims.FirstOrDefault(s => s.Type == "sub")?.Value;
-            return await _context.Order.Where(x=>x.userID==Userid).ToListAsync();
+
+            var listOrder = await _context.Order.Include(o=>o.OrderDetails).Include(o=>o.OrderDetails.p).Where(x => x.userID == Userid).ToListAsync();
+            return listOrder;
 
         }
         [HttpGet("{id}")]
-        
+
         public async Task<ActionResult<IEnumerable<OrderDetails>>> GetOrderbyID(int id)
         {
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var Userid = claims.FirstOrDefault(s => s.Type == "sub")?.Value;
-           
-            var result =  await _context.OrderDetails.Where(od=>od.orderID==id ).ToListAsync();
+            var result = await _context.OrderDetails.Where(od => od.orderID == id).ToListAsync();
             if (result == null)
             {
                 return NotFound();

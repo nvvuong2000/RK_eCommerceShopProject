@@ -17,7 +17,7 @@ namespace Rookie.CustomerSite.Controllers
         // GET: ProductController
        
         string Baseurl = "https://localhost:44341/";
-        // GET: ProductController/Details/5
+
         //[HttpGet("/product/{name}-{id:int}")]
        [HttpGet("/product/{id:int}")]
         public async Task<ActionResult> Details(int id)
@@ -30,26 +30,18 @@ namespace Rookie.CustomerSite.Controllers
                 client.BaseAddress = new Uri(Baseurl);
 
                 client.DefaultRequestHeaders.Clear();
-                //Define request data format  
+   
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                
             
                 string endpoit = "/api/Product/" + id.ToString();
                 HttpResponseMessage Res = await client.GetAsync(endpoit);
-
-                //Checking the response is successful or not which is sent using HttpClient  
-                
                 if (Res.IsSuccessStatusCode)
                 {
                    
                     var EmpResponse = Res.Content.ReadAsStringAsync().Result;
-
-                    //Deserializing the response recieved from web api and storing into the product with id
                     EmpInfo = JsonConvert.DeserializeObject<Product>(EmpResponse);
                     return View(EmpInfo);
                 }
-                //returning the product to view  
                 return View();
                 
             }

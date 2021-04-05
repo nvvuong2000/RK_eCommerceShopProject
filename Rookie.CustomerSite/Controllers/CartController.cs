@@ -24,104 +24,79 @@ namespace Rookie.CustomerSite.Controllers
         [Authorize]
         public async Task<ActionResult> Index()
         {
-
-            
             using (var client = new HttpClient())
             {
-
-                //Passing service base url  
 
                 client.BaseAddress = new Uri(Baseurl);
 
                 client.DefaultRequestHeaders.Clear();
-                //Define request data format  
+             
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                 var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
                 client.SetBearerToken(accessToken);
-
-                //Sending request to find web api REST service resource GetAllEmployees using HttpClient  
 
                 string endpoit = "/api/Cart";
                 HttpResponseMessage Res = await client.GetAsync(endpoit);
                 Res.EnsureSuccessStatusCode();
-                //Res.Content.re
+             
                 decimal total = await Total();
 
-                //Checking the response is successful or not which is sent using HttpClient  
                 if (Res.IsSuccessStatusCode)
                 {
 
-                   var cartResponse = await  Res.Content.ReadAsAsync<IEnumerable<Cart>>();
+                    var cartResponse = await Res.Content.ReadAsAsync<IEnumerable<Cart>>();
                     ViewBag.Total = total;
                     return View(cartResponse);
-
-                    //Deserializing the response recieved from web api and storing into the product with id
-                    //  cartItem = JsonConvert.DeserializeObject<Product>(cartResponse);
                 }
                 return null;
-                
+
             }
 
-            //returning the employee list to view  
-
-
         }
-
-        // GET: ProductController/Details/5
         [HttpGet("/cart/add/{id}")]
         public async Task<ActionResult> AddProduct(int id)
         {
-
-
             using (var client = new HttpClient())
             {
-               
+
                 client.BaseAddress = new Uri(Baseurl);
 
                 client.DefaultRequestHeaders.Clear();
-           
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
                 client.SetBearerToken(accessToken);
                 string endpoit = "/api/Cart/" + id.ToString();
                 HttpResponseMessage Res = await client.GetAsync(endpoit);
-                //returning the employee list to view  
+         
                 return RedirectToAction("Index", "Cart");
             }
         }
         [HttpGet("/cart/remove/{id}")]
         public async Task<ActionResult> RemoveItem(int id)
         {
-
-
             using (var client = new HttpClient())
             {
-             
+
                 client.BaseAddress = new Uri(Baseurl);
 
                 client.DefaultRequestHeaders.Clear();
-               
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-    
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
                 client.SetBearerToken(accessToken);
                 string endpoit = "/remove/" + id.ToString();
-                HttpResponseMessage Res = await client.GetAsync(endpoit);  
+                HttpResponseMessage Res = await client.GetAsync(endpoit);
                 if (Res.IsSuccessStatusCode)
                 {
-
-
 
                 }
                 return RedirectToAction("Index", "Cart");
             }
         }
 
-        public async Task<Decimal> Total ()
+        public async Task<Decimal> Total()
         {
 
             decimal total = 0;
@@ -133,8 +108,6 @@ namespace Rookie.CustomerSite.Controllers
                 client.DefaultRequestHeaders.Clear();
 
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-
                 var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
                 client.SetBearerToken(accessToken);
                 string endpoit = "/api/Cart/total/";

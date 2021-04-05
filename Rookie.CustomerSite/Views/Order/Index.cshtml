@@ -1,40 +1,56 @@
-﻿@*
+﻿@model IEnumerable<RookieShop.Backend.Models.Order>
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
 }
+
 <div class="col-sm-12 col-md-9 col-lg-9">
     <!-- Tab panes -->
-  
-            <h4>Orders</h4>
-            <div class="table_page table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Order</th>
-                            <th>Date</th>
-                            <th>Status</th>
-                            <th>Total</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>May 10, 2018</td>
-                            <td><span class="success">Completed</span></td>
-                            <td>$25.00 for 1 item </td>
-                            <td><a href="cart.html" class="view">view</a></td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>May 10, 2018</td>
-                            <td>Processing</td>
-                            <td>$17.00 for 1 item </td>
-                            <td><a href="cart.html" class="view">view</a></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-   
+
+    <h4>Orders</h4>
+    <div class="table_page table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>Order</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Total</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var i in Model)
+                {
+
+
+                    <tr>
+                        <td>#</td>
+                        <td>@i.dateOrdered</td>
+                        <td>
+                            @if (i.status == 0)
+                            {
+                                <span class="success">Processing</span>
+                            }
+                            else
+                            {
+                                <span class="success">Completed</span>
+                            }
+
+                        </td>
+                        @for(int j=0; j< i.OrderDetails.Count; j++)
+                        {
+                            //<td>@j.</td>
+                        }
+
+
+                        <td><a href="cart.html" class="view">view</a></td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+

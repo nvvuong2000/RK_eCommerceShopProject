@@ -16,40 +16,35 @@ namespace Rookie.CustomerSite.Controllers
     public class OrderController : Controller
     {
         string Baseurl = "https://localhost:44341/";
-     
-          public async Task<ActionResult> Index()
+
+        public async Task<ActionResult> Index()
+        {
+
+           
+            using (var client = new HttpClient())
             {
+                client.BaseAddress = new Uri(Baseurl);
 
-                Order listOrder = new Order();
-                using (var client = new HttpClient())
+                client.DefaultRequestHeaders.Clear();
+
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
+                client.SetBearerToken(accessToken);
+
+
+                string endpoit = "/api/Order";
+
+                HttpResponseMessage Res = await client.GetAsync(endpoit);
+                Res.EnsureSuccessStatusCode();
+
+                if (Res.IsSuccessStatusCode)
                 {
-                    var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
-                    client.SetBearerToken(accessToken);
-                    //Passing service base url  
-
-                    client.BaseAddress = new Uri(Baseurl);
-
-                    client.DefaultRequestHeaders.Clear();
-                    //Define request data format  
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                    //Sending request to find web api REST service resource GetAllEmployees using HttpClient  
-
-                    string endpoit = "/api/Order";
-                    HttpResponseMessage Res = await client.GetAsync(endpoit);
-                    Res.EnsureSuccessStatusCode();
-
-                    //Checking the response is successful or not which is sent using HttpClient  
-                    if (Res.IsSuccessStatusCode)
-                    {
-
-                        var orderResponse = Res.Content.ReadAsStringAsync().Result;
-
-                        //Deserializing the response recieved from web api and storing into the product with id
-                        listOrder= JsonConvert.DeserializeObject<Order>(orderResponse);
-                    }
+                    var listOrder = await Res.Content.ReadAsAsync<IEnumerable<Order>>();
                     return View(listOrder);
+
                 }
+                return null;
             }
+        }
     }
 }
