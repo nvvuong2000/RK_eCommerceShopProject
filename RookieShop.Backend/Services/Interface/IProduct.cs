@@ -17,9 +17,12 @@ namespace RookieShop.Backend.Services.Interface
         public Task<bool> updateProduct(int id, [FromForm] ProductCreateRequest product);
         public Task<List<Product>> getListProductAsync();
         public Task<Product> getProductAsync(int? id);
-        public Task<List<ProductListVM>> getListProductbyCategoryID(int? id);
-        public Task<List<ProductListVM>> SortDescOrderByPrice();
-        public Task<List<ProductListVM>> SortDescAsyncByPrice();
+        public Task<List<Product>> getListProductbyCategoryID(int? id);
+        public Task<List<Product>> SortDescOrderByPrice();
+        public Task<List<Product>> SortDescAscByPrice();
+        public Task<List<Product>> SortDescOrderByName();
+        public Task<List<Product>> SortAscByName();
+        public Task<Product> searchbyName(string? keyword);
 
 
     }

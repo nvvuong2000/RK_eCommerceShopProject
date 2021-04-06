@@ -79,8 +79,8 @@ namespace RookieShop.Backend.Controllers
 
         
       
-        [HttpPost("getFile")]
-        public async Task<IActionResult> UploadFile([FromForm] ProductCreateRequest  file)
+        [HttpPost("addProduct")]
+        public async Task<IActionResult> addProduct([FromForm] ProductCreateRequest  file)
         {
             try
             {
@@ -129,6 +129,91 @@ namespace RookieShop.Backend.Controllers
             }
             return true;
         }
+        [HttpGet("sortDescbyPrice")]
+        public async Task<ActionResult<Product>> sortDescbyPrice()
+        {
+            try
+            {
+                var list = await _repo.SortDescOrderByPrice();
+
+                return Ok(list);
+
+
+            }
+            catch (Exception ex)
+            {
+                return Ok(ex);
+            }
+
+        }
+        [HttpGet("sortAscbyPrice")]
+        public async Task<ActionResult<Product>> sortAscbyPrice()
+        {
+            try
+            {
+                var list = await _repo.SortDescAscByPrice();
+
+                return Ok(list);
+
+
+            }
+            catch (Exception ex)
+            {
+                return Ok(ex);
+            }
+        }
+            [HttpGet("sortDescbyName")]
+            public async Task<ActionResult<Product>> sortDescbyName()
+            {
+                try
+                {
+                var list = await _repo.SortDescOrderByName();
+
+                    return Ok(list);
+
+
+                }
+                catch (Exception ex)
+                {
+                return Ok(ex);
+            }
+
+            }
+            [HttpGet("sortAscbyName")]
+            public async Task<ActionResult<Product>> sortAscbyName()
+            {
+                try
+                {
+                var list = await _repo.SortAscByName();
+
+                    return Ok(list);
+
+
+                }
+                catch (Exception ex)
+                {
+                return Ok(ex);
+            }
+
+            }
+        [HttpGet("search/{name}")]
+        public async Task<ActionResult<Product>> search(string name)
+        {
+            try
+            {
+                var product = await _repo.searchbyName(name);
+
+                return Ok(product);
+
+
+            }
+            catch (Exception ex)
+            {
+                return Ok(ex);
+            }
+
+        }
+
 
     }
 }

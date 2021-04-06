@@ -89,10 +89,9 @@ namespace RookieShop.Backend.Services.Implement
             return productList;
         }
 
-        public async Task<List<ProductListVM>> getListProductbyCategoryID(int? id)
+        public async Task<List<Product>> getListProductbyCategoryID(int? id)
         {
-            var productList = await _context.Products.Include(p => p.ProductImages).Where(p=>p.categoryID ==id)
-                .Select(x => new ProductListVM { productID = x.productID, productName = x.productName, unitPrice = x.unitPrice, isNew = x.isNew, imgDefault = x.ProductImages.ToList()[0].pathName }).ToListAsync();
+            var productList = await _context.Products.Include(p => p.ProductImages).Where(p=>p.categoryID ==id).ToListAsync();
             return productList;
         }
 
@@ -107,20 +106,18 @@ namespace RookieShop.Backend.Services.Implement
                 
         }
 
-        public async Task<List<ProductListVM>> SortDescAsyncByPrice()
+        public async Task<List<Product>> SortDescAscByPrice()
         {
 
-            var productList = await _context.Products.Include(p => p.ProductImages)
-                .Select(x => new ProductListVM { productID = x.productID, productName = x.productName, unitPrice = x.unitPrice, isNew = x.isNew, imgDefault = x.ProductImages.ToList()[0].pathName }).ToListAsync();
+            var productList = await _context.Products.Include(p => p.ProductImages).ToListAsync();
             return productList;
         }
     
 
-        public async Task<List<ProductListVM>> SortDescOrderByPrice()
+        public async Task<List<Product>> SortDescOrderByPrice()
         {
 
-            var productList = await _context.Products.Include(p => p.ProductImages)
-               .Select(x => new ProductListVM { productID = x.productID, productName = x.productName, unitPrice = x.unitPrice, isNew = x.isNew, imgDefault = x.ProductImages.ToList()[0].pathName }).OrderByDescending(p => p.unitPrice).ToListAsync();
+            var productList = await _context.Products.Include(p => p.ProductImages).OrderByDescending(p=>p.unitPrice).ToListAsync();
             return productList;
         }
 
@@ -220,6 +217,24 @@ namespace RookieShop.Backend.Services.Implement
 
             }
             return true;
+        }
+
+        public async Task<List<Product>> SortDescOrderByName()
+        {
+            var productList = await _context.Products.Include(p => p.ProductImages).OrderByDescending(p=>p.productName).ToListAsync();
+            return productList;
+        }
+
+        public async Task<List<Product>> SortAscByName()
+        {
+            var productList = await _context.Products.Include(p => p.ProductImages).ToListAsync();
+            return productList;
+        }
+
+        public async Task<Product> searchbyName(string keyword)
+        {
+            var product = _context.Products.Include(p => p.ProductImages).Where(p => p.productName.Contains(keyword)).OrderByDescending(p => p.productName).FirstOrDefault();
+            return product;
         }
     }
 
