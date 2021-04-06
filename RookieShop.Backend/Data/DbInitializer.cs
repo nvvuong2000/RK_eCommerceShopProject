@@ -30,12 +30,12 @@ namespace RookieShop.Backend.Data
                 Email = "admin@gmail.com",
                 EmailConfirmed = true,
                 PhoneNumber = "0869295974",
-                customerName = "admin",
+                customerName = "admin@gmail.com",
                 PhoneNumberConfirmed = true
             };
             if (userManager.Users.Count(u => u.Email == defaultUser.Email) == 0)
             {
-                IdentityResult result = await userManager.CreateAsync(defaultUser, "admin2000");
+                IdentityResult result = await userManager.CreateAsync(defaultUser, "Admin2000@");
                 if (result.Succeeded)
                 {
               

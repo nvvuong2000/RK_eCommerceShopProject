@@ -13,7 +13,8 @@ using Microsoft.OpenApi.Models;
 using RookieShop.Backend.Data;
 using RookieShop.Backend.IdentityServer;
 using RookieShop.Backend.Models;
-
+using RookieShop.Backend.Services.Implement;
+using RookieShop.Backend.Services.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,8 +40,8 @@ namespace RookieShop.Backend
                     Configuration.GetConnectionString("DefaultConnection")));
          
             services.AddDatabaseDeveloperPageExceptionFilter();
-            
 
+            services.AddTransient<ICategory, CategoryRepo>();
             services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
