@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
@@ -43,6 +45,7 @@ namespace RookieShop.Backend
 
             services.AddTransient<ICategory, CategoryRepo>();
             services.AddTransient<IProduct, ProductRepo>();
+            services.AddTransient<IUserDF, UserRepo>();
             services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -78,6 +81,11 @@ namespace RookieShop.Backend
             });
 
             services.AddDistributedMemoryCache();
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            // Or you can also register as follows
+
+            services.AddHttpContextAccessor();
             services.AddSession(options =>
             {
 
