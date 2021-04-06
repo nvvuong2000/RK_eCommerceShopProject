@@ -14,10 +14,7 @@ namespace RookieShop.Backend.Data
         public static async Task Initialize( UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
             //Seed Roles
-            if (!roleManager.RoleExistsAsync("superadmin").Result)
-            {
-                await roleManager.CreateAsync(new IdentityRole("superadmin"));
-            }
+            
             if (!roleManager.RoleExistsAsync("admin").Result)
             {
                 await roleManager.CreateAsync(new IdentityRole("admin"));
@@ -29,16 +26,16 @@ namespace RookieShop.Backend.Data
             //Seed Default User
             var defaultUser = new User
             {
-                UserName = "superadmin@gmail.com",
-                Email = "superadmin@gmail.com",
+                UserName = "admin@gmail.com",
+                Email = "admin@gmail.com",
                 EmailConfirmed = true,
-                PhoneNumber = "0867537750",
-              //  FullName = "Super Admin",
+                PhoneNumber = "0869295974",
+                customerName = "admin",
                 PhoneNumberConfirmed = true
             };
             if (userManager.Users.Count(u => u.Email == defaultUser.Email) == 0)
             {
-                IdentityResult result = await userManager.CreateAsync(defaultUser, "Qpzm1092@");
+                IdentityResult result = await userManager.CreateAsync(defaultUser, "admin2000");
                 if (result.Succeeded)
                 {
               

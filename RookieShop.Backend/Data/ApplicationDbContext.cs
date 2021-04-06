@@ -40,7 +40,7 @@ namespace RookieShop.Backend.Data
                 .WithOne(ca => ca.User)
                 .HasForeignKey<Cart>(ca => ca.userID).IsRequired();
             modelBuilder.Entity<ProviderProduct>().HasKey(sc => new { sc.productID, sc.providerID });
-            modelBuilder.Entity<ProducerProduct>().HasKey(sc => new { sc.productID, sc.producerID });
+            modelBuilder.Entity<RattingProduct>().HasKey(sc => new { sc.productID, sc.userID, sc.RattingProductID });
 
         }
         public DbSet<Product> Products { get; set; }
@@ -50,7 +50,7 @@ namespace RookieShop.Backend.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Order> Order { get; set; }
         public DbSet<OrderDetails> OrderDetails { get; set; }
-        public DbSet<Producer> Producers { get; set; }
+        public DbSet<RattingProduct> RattingProduct { get; set; }
         public DbSet<Provider> Providers { get; set; }
         public DbSet<ProductImages> ProductImages { get; set; }
     }

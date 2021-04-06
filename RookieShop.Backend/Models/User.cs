@@ -14,6 +14,7 @@ namespace RookieShop.Backend.Models
 
         public string avatar { get; set; }
         public ICollection<Order> Orders { get; set; }
+        public ICollection<RattingProduct> RattingProduct { get; set; }
         public Cart Cart { get; set; }
     }
 }

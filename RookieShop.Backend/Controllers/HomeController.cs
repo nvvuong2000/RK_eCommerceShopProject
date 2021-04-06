@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RookieShop.Backend.Models;
-using RookieShop.Backend.Services;
+
 using RookieShop.Backend.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -17,7 +17,7 @@ namespace RookieShop.Backend.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly ILogger<HomeController> _logger;
-       private readonly IUserServices _user;
+
 
         public HomeController(ILogger<HomeController> logger)
 

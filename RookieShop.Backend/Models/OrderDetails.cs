@@ -16,5 +16,6 @@ namespace  RookieShop.Backend.Models
         public int quantity { get; set; }
         public decimal unitPrice { get; set; }
         public Order Order { get; set; }
+        public Product Product { get; set; }
     }
 }

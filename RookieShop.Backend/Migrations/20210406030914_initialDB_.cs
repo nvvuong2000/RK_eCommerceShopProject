@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RookieShop.Backend.Migrations
 {
-    public partial class initialDB : Migration
+    public partial class initialDB_ : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -60,24 +60,6 @@ namespace RookieShop.Backend.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.categoryID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Producers",
-                columns: table => new
-                {
-                    producerID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    producerName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    info = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    tel = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    logo = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Producers", x => x.producerID);
                 });
 
             migrationBuilder.CreateTable(
@@ -210,7 +192,8 @@ namespace RookieShop.Backend.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     userID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     status = table.Column<int>(type: "int", nullable: false),
-                    dateOrdered = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    dateOrdered = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Total = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -230,16 +213,14 @@ namespace RookieShop.Backend.Migrations
                     productID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     providerID = table.Column<int>(type: "int", nullable: false),
-                    producerID = table.Column<int>(type: "int", nullable: false),
                     categoryID = table.Column<int>(type: "int", nullable: false),
                     productName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     stock = table.Column<int>(type: "int", nullable: false),
                     unitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    url = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    viewCount = table.Column<int>(type: "int", nullable: false),
-                    buyCount = table.Column<int>(type: "int", nullable: false),
-                    isNew = table.Column<bool>(type: "bit", nullable: false)
+                    isNew = table.Column<bool>(type: "bit", nullable: false),
+                    status = table.Column<bool>(type: "bit", nullable: false),
+                    rating = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -249,28 +230,6 @@ namespace RookieShop.Backend.Migrations
                         column: x => x.categoryID,
                         principalTable: "Categories",
                         principalColumn: "categoryID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "OrderDetails",
-                columns: table => new
-                {
-                    orderdetailsID = table.Column<int>(type: "int", nullable: false),
-                    orderID = table.Column<int>(type: "int", nullable: false),
-                    productID = table.Column<int>(type: "int", nullable: false),
-                    productName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    quantity = table.Column<int>(type: "int", nullable: false),
-                    unitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OrderDetails", x => x.orderdetailsID);
-                    table.ForeignKey(
-                        name: "FK_OrderDetails_Order_orderdetailsID",
-                        column: x => x.orderdetailsID,
-                        principalTable: "Order",
-                        principalColumn: "orderID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -303,23 +262,27 @@ namespace RookieShop.Backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProducerProduct",
+                name: "OrderDetails",
                 columns: table => new
                 {
-                    producerID = table.Column<int>(type: "int", nullable: false),
-                    productID = table.Column<int>(type: "int", nullable: false)
+                    orderdetailsID = table.Column<int>(type: "int", nullable: false),
+                    orderID = table.Column<int>(type: "int", nullable: false),
+                    productID = table.Column<int>(type: "int", nullable: false),
+                    productName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    quantity = table.Column<int>(type: "int", nullable: false),
+                    unitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProducerProduct", x => new { x.productID, x.producerID });
+                    table.PrimaryKey("PK_OrderDetails", x => x.orderdetailsID);
                     table.ForeignKey(
-                        name: "FK_ProducerProduct_Producers_producerID",
-                        column: x => x.producerID,
-                        principalTable: "Producers",
-                        principalColumn: "producerID",
+                        name: "FK_OrderDetails_Order_orderdetailsID",
+                        column: x => x.orderdetailsID,
+                        principalTable: "Order",
+                        principalColumn: "orderID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProducerProduct_Products_productID",
+                        name: "FK_OrderDetails_Products_productID",
                         column: x => x.productID,
                         principalTable: "Products",
                         principalColumn: "productID",
@@ -369,6 +332,32 @@ namespace RookieShop.Backend.Migrations
                         column: x => x.providerID,
                         principalTable: "Providers",
                         principalColumn: "providerID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RattingProduct",
+                columns: table => new
+                {
+                    RattingProductID = table.Column<int>(type: "int", nullable: false),
+                    userID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    productID = table.Column<int>(type: "int", nullable: false),
+                    numberRating = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RattingProduct", x => new { x.productID, x.userID, x.RattingProductID });
+                    table.ForeignKey(
+                        name: "FK_RattingProduct_AspNetUsers_userID",
+                        column: x => x.userID,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RattingProduct_Products_productID",
+                        column: x => x.productID,
+                        principalTable: "Products",
+                        principalColumn: "productID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -428,9 +417,9 @@ namespace RookieShop.Backend.Migrations
                 column: "userID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProducerProduct_producerID",
-                table: "ProducerProduct",
-                column: "producerID");
+                name: "IX_OrderDetails_productID",
+                table: "OrderDetails",
+                column: "productID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductImages_ProductID",
@@ -446,6 +435,11 @@ namespace RookieShop.Backend.Migrations
                 name: "IX_ProviderProduct_providerID",
                 table: "ProviderProduct",
                 column: "providerID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RattingProduct_userID",
+                table: "RattingProduct",
+                column: "userID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -472,13 +466,13 @@ namespace RookieShop.Backend.Migrations
                 name: "OrderDetails");
 
             migrationBuilder.DropTable(
-                name: "ProducerProduct");
-
-            migrationBuilder.DropTable(
                 name: "ProductImages");
 
             migrationBuilder.DropTable(
                 name: "ProviderProduct");
+
+            migrationBuilder.DropTable(
+                name: "RattingProduct");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -487,13 +481,10 @@ namespace RookieShop.Backend.Migrations
                 name: "Order");
 
             migrationBuilder.DropTable(
-                name: "Producers");
+                name: "Providers");
 
             migrationBuilder.DropTable(
                 name: "Products");
-
-            migrationBuilder.DropTable(
-                name: "Providers");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

@@ -13,6 +13,7 @@ namespace  RookieShop.Backend.Models
         public string userID { get; set; }
         public int status { get; set; }
         public DateTime dateOrdered { get; set; }
+        public decimal Total { get; set; }
         public User User { get; set; }
         public ICollection<OrderDetails> OrderDetails { get; set; }
     }

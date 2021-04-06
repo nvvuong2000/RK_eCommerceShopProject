@@ -8,11 +8,13 @@ using System.Text;
 
 namespace  RookieShop.Backend.Models
 {
-    public class ProducerProduct
+    public class RattingProduct
     {
-        public int producerID { get; set; }
+        public int RattingProductID { get; set; }
+        public string userID { get; set; }
         public int productID { get; set; }
-        public Producer Producer { get; set; }
+        public int numberRating { get; set; }
+        public User User { get; set; }
         public Product Product { get; set; }
 
     }

@@ -57,7 +57,7 @@ namespace RookieShop.Backend.Controllers
                 categoryID = file.categoryID,
                 productName = file.productName,
                 providerID = file.providerID,
-                producerID = file.producerID,
+               
                 description = file.description,
                 stock = file.stock,
                 unitPrice = file.unitPrice,
@@ -120,7 +120,7 @@ namespace RookieShop.Backend.Controllers
                 productEdit.unitPrice = product.unitPrice;
                 productEdit.stock = product.stock;
                 productEdit.providerID = product.providerID;
-                productEdit.producerID = product.producerID;
+               
 
                 var productImagesEdit  = await _context.ProductImages.Where(p => p.ProductID == id).ToListAsync();
                 if(productImagesEdit != null)

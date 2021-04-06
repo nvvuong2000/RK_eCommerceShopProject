@@ -34,7 +34,7 @@ namespace RookieShop.Backend.Controllers
             IEnumerable<Claim> claims = identity.Claims;
             var Userid = claims.FirstOrDefault(s => s.Type == "sub")?.Value;
 
-            var listOrder = await _context.Order.Include(o=>o.OrderDetails).Include(o=>o.OrderDetails.p).Where(x => x.userID == Userid).ToListAsync();
+            var listOrder = await _context.Order.Include(o=>o.OrderDetails).Include(o=>o.OrderDetails).Where(x => x.userID == Userid).ToListAsync();
             return listOrder;
 
         }

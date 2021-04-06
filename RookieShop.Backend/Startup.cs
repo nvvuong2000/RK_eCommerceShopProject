@@ -13,7 +13,7 @@ using Microsoft.OpenApi.Models;
 using RookieShop.Backend.Data;
 using RookieShop.Backend.IdentityServer;
 using RookieShop.Backend.Models;
-using RookieShop.Backend.Services;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
