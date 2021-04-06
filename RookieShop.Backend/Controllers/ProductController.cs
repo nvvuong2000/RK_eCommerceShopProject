@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using RookieShop.Backend.Data;
 using RookieShop.Backend.Models;
+using RookieShop.Backend.Services.Interface;
 using RookieShop.Shared;
+using RookieShop.Shared.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,169 +21,98 @@ namespace RookieShop.Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
     public class ProductController : ControllerBase
     {
+        private readonly IProduct _repo;
+        // GET: CategoryController
+       
+
         private readonly ApplicationDbContext _context;
         private IHostingEnvironment _hostingEnv;
         private int productID = 0;
 
 
-        public ProductController(ApplicationDbContext context, IHostingEnvironment hostingEnv)
+        public ProductController(ApplicationDbContext context, IHostingEnvironment hostingEnv, IProduct repo)
         {
             _context = context;
             _hostingEnv = hostingEnv;
+            _repo = repo;
         }
         // GET: api/<Product>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetAsync()
+        public async Task<ActionResult<Product>> GetAsync()
         {
-            return await _context.Products.Include(p => p.ProductImages).ToListAsync();
-               
+            try
+            {
+                var list = await _repo.getListProductAsync();
+                
+                return Ok(list);
+
+              
+            }
+            catch (Exception ex)
+            {
+                return Ok(ex);
+            }
+
         }
 
         // GET api/<Product>/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> Get(int id)
-        {      
-            return _context.Products.Where(x => x.productID == id).Include(p=>p.ProductImages).Include(p=>p.Category).FirstOrDefault();
+        {
+            try
+            {
+                var list = await _repo.getProductAsync(id);
+
+                return Ok(list);
+
+
+            }
+            catch (Exception ex)
+            {
+                return Ok(ex);
+            }
         }
         
 
         
       
         [HttpPost("getFile")]
-        public async Task<IActionResult> UploadFile([FromForm] FileModel  file)
+        public async Task<IActionResult> UploadFile([FromForm] ProductCreateRequest  file)
         {
-            var newProduct = new Product()
-            {
-                categoryID = file.categoryID,
-                productName = file.productName,
-                providerID = file.providerID,
-               
-                description = file.description,
-                stock = file.stock,
-                unitPrice = file.unitPrice,
-            };
-            _context.Products.Add(newProduct);
-            await _context.SaveChangesAsync();
-            productID = newProduct.productID;
             try
             {
+                var list = await _repo.addProduct(file);
+              
+                return Ok(StatusCodes.Status201Created);
 
-                foreach (var formFile in file.FormFiles)
-                {
-                    Random getrandom = new Random();
-                    int random = getrandom.Next(1, 99);
-                    string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", random.ToString()+ formFile.FileName );
-                    if (formFile.Length > 0)
-                    {
-                        using (var stream = new FileStream(path, FileMode.Create))
-                        {
-                            formFile.CopyToAsync(stream);
-                            
-                        }
-                    }
-                    var ProductImage = new ProductImages
-                    {
-                        ProductID = productID,
 
-                        pathName = Path.Combine("/images/"+ random.ToString() + formFile.FileName),
-
-                        isDefault = false,
-                        captionImage = "Hình ảnh minh họa cho sản phẩm " + file.productName,
-
-                    };
-                    _context.ProductImages.Add(ProductImage);
-                    await _context.SaveChangesAsync();
-                }
-                return StatusCode(StatusCodes.Status201Created);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return null;
             }
-
-            return RedirectToAction("Index", "Home");
+         
         }
         // PUT api/<Product>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromForm] FileModel product)
+        public async Task<IActionResult> Put(int id, [FromForm] ProductCreateRequest product)
         {
-            var productEdit = await _context.Products.Include(img=>img.ProductImages).Where(p=>p.productID ==id).FirstOrDefaultAsync();
-            if(productEdit == null)
+            try
             {
-                return NotFound();
-            }
-            else
-            {
-                productEdit.categoryID = product.categoryID;
-                productEdit.description = product.description;
-                productEdit.productName = product.productName;
-                productEdit.unitPrice = product.unitPrice;
-                productEdit.stock = product.stock;
-                productEdit.providerID = product.providerID;
-               
+                var list = await _repo.updateProduct(id,product);
 
-                var productImagesEdit  = await _context.ProductImages.Where(p => p.ProductID == id).ToListAsync();
-                if(productImagesEdit != null)
-                {
-                    for (int i = 0; i < productImagesEdit.Count;i++)
-                    {
-                        if (DeleteFile(productImagesEdit[i].pathName) == true)
-                        {
-                            var img = await _context.ProductImages.FindAsync(productImagesEdit[i].ID);
-                            if (img == null)
-                            {
-                                return NotFound();
-                            }
+                return Ok(StatusCodes.Status202Accepted);
 
-                            _context.ProductImages.Remove(img);
-                            await _context.SaveChangesAsync();
-                        }
-                    }
-                   
-                }
-
-                await _context.SaveChangesAsync();
-                try
-                {
-
-                    foreach (var formFile in product.FormFiles)
-                    {
-                        Random getrandom = new Random();
-                        int random = getrandom.Next(1, 99);
-                        string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", random.ToString() + formFile.FileName);
-                        if (formFile.Length > 0)
-                        {
-                            using (var stream = new FileStream(path, FileMode.Create))
-                            {
-                                formFile.CopyToAsync(stream);
-
-                            }
-                        }
-                        var ProductImage = new ProductImages
-                        {
-                            ProductID = id,
-
-                            pathName = Path.Combine("/images/" + random.ToString() + formFile.FileName),
-
-                            isDefault = false,
-                            captionImage = "Hình ảnh minh họa cho sản phẩm " + product.productName,
-
-                        };
-                        _context.ProductImages.Add(ProductImage);
-                        await _context.SaveChangesAsync();
-                    }
-                    return StatusCode(StatusCodes.Status201Created);
-                }
-                catch (Exception)
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError);
-                }
-
-                return NoContent();
 
             }
+            catch (Exception ex)
+            {
+                return null;
+            }
+            
         }
         [HttpGet("deleteFile")]
         public bool DeleteFile(string file)
@@ -198,6 +129,6 @@ namespace RookieShop.Backend.Controllers
             }
             return true;
         }
-        // DELETE api/<Product>/5
+
     }
 }

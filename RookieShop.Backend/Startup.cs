@@ -42,6 +42,7 @@ namespace RookieShop.Backend
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddTransient<ICategory, CategoryRepo>();
+            services.AddTransient<IProduct, ProductRepo>();
             services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
