@@ -11,6 +11,11 @@ namespace RookieShop.Backend.Services.Interface
         public Task<List<Cart>> myCart(string id);
         public Task<bool> AddProductIntoCart(int id);
         public Task<bool> RemoveItem(int id);
+        public Task<decimal> TotalBill();
+        public Task<int> FindId(int id);
+        public Task<bool> Checkout();
+
+
 
 
     }

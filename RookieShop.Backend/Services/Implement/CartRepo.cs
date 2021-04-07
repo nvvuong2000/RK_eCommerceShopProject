@@ -100,5 +100,34 @@ namespace RookieShop.Backend.Services.Implement
             await _context.SaveChangesAsync();
             return true;
         }
+
+        public async  Task<decimal> TotalBill()
+        {
+            decimal total = 0;
+            var listItem = await _context.Carts.Where(x => x.userId == _repoUser.getUserID()).ToListAsync();
+
+            for (int i = 0; i < listItem.Count; i++)
+            {
+
+                total += listItem[i].unitPrice * listItem[i].quantity;
+            }
+            return total;
+        }
+
+        public async Task<int> FindId(int id)
+        {
+
+            var listItem = await _context.Carts.Where(x => x.userId == _repoUser.getUserID()).ToListAsync();
+
+            for (int i = 0; i < listItem.Count; i++)
+            {
+
+                if (listItem[i].productId == id)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
     }
 }

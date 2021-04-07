@@ -104,6 +104,12 @@ namespace RookieShop.Backend
                     .WithMethods("POST", "GET", "PUT", "DELETE")
                     .WithHeaders(HeaderNames.ContentType);
                 });
+                options.AddPolicy("Policy1", builder =>
+                {
+                    builder.WithOrigins("https://localhost:44367")
+                    .WithMethods("POST", "GET", "PUT", "DELETE")
+                    .WithHeaders(HeaderNames.ContentType);
+                });
             });
             //  services.AddSingleton<IUserServices, UserServices>();
 

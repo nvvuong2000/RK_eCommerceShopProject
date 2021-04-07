@@ -1,6 +1,7 @@
 ﻿using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Newtonsoft.Json;
@@ -11,10 +12,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 namespace Rookie.CustomerSite.Controllers
 {
+
+   
     public class CartController : Controller
     {
         // GET: CartController
@@ -73,8 +77,8 @@ namespace Rookie.CustomerSite.Controllers
                 return RedirectToAction("Index", "Cart");
             }
         }
-        [HttpGet("/cart/add/{id}/{id}")]
-        public async Task<ActionResult> Add(int id, int productId)
+        [HttpPost("/cart/add")]
+        public async Task<ActionResult> Add(IFormCollection form)
         {
             using (var client = new HttpClient())
             {
@@ -86,7 +90,17 @@ namespace Rookie.CustomerSite.Controllers
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
                 client.SetBearerToken(accessToken);
-                string endpoit = "/api/Cart/" + id.ToString();
+
+                var item = new
+                {
+                    id = int.Parse(form["id"]),
+                    quantity = int.Parse(form["quantity"]),
+                };
+                //addquantity/{product}/number/{quan}
+                JsonContent content = JsonContent.Create(item);
+
+        
+                string endpoit = "/api/Cart/addquantity/" + item.id.ToString() +"/number/" +item.quantity.ToString();
                 HttpResponseMessage Res = await client.GetAsync(endpoit);
 
                 return RedirectToAction("Index", "Cart");

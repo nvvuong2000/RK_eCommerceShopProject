@@ -24,7 +24,7 @@ namespace RookieShop.Backend.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IUserDF _repoUser;
         private readonly ICart _repo;
-        
+
 
         public CartController(ApplicationDbContext context, IUserDF repoUser, ICart repo)
         {
@@ -41,27 +41,27 @@ namespace RookieShop.Backend.Controllers
             var userId = _repoUser.getUserID();
             try
             {
-                
-               var list = await _repo.myCart(userId);
+
+                var list = await _repo.myCart(userId);
 
 
                 return list;
-               
+
             }
             catch (Exception ex)
             {
                 return null;
             }
-        }      
-        [HttpGet("{id}")]
-     
+        }
+        [HttpPost("/add")]
+
         public async Task<IActionResult> Buy(int id)
         {
             var Userid = _repoUser.getUserID();
-            var listItem = await _context.Carts.Where(x => x.userId == Userid).ToListAsync();
+            var listItem = await _repo.myCart(Userid);
 
 
-            var index = await FindID(id);
+            var index = await _repo.FindId(id);
             if (index != -1)
             {
                 listItem[index].quantity = listItem[index].quantity + 1;
@@ -78,55 +78,52 @@ namespace RookieShop.Backend.Controllers
             }
             await _context.SaveChangesAsync();
             return Ok(StatusCodes.Status200OK);
-            //  return RedirectToAction("Index");
-            //try
-            //{
-
-            //    var list = await _repo.AddProductIntoCart(id);
-
-
-            //    return Ok(StatusCodes.Status200OK);
-
-            //}
-            //catch (Exception ex)
-            //{
-            //    return BadRequest(ex.Message);
-            //}
+          
 
         }
-        [HttpGet("find/{id}")]
-        public async  Task<int> FindID(int id)
+        [HttpGet("addquantity/{product}/number/{quan}")]
+
+        public async Task<IActionResult> AddQuantity(int product, int quan)
         {
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var userId = claims.FirstOrDefault(s => s.Type == "sub")?.Value;
-            var listItem =  await _context.Carts.Where(x => x.userId == userId).ToListAsync();
+            var Userid = _repoUser.getUserID();
+            var listItem = await _repo.myCart(Userid);
+            var result = _context.Products.FirstOrDefault(x => x.Id == product);
 
-            for (int i = 0; i < listItem.Count; i++)
+            var index = await _repo.FindId(product);
+            if (index != -1)
             {
-
-                if (listItem[i].productId == id)
+                if (result.stock < quan)
                 {
-                    return i;
+                    throw new Exception("Số lượng vượt quá số lượng tồn");
                 }
+                listItem[index].quantity = quan;
             }
-            return -1;
+            else
+            {
+                return Ok(StatusCodes.Status404NotFound);
+            }
+            await _context.SaveChangesAsync();
+            return Ok(StatusCodes.Status200OK);
+
         }
+     
+        
         [HttpGet("total")]
         public async Task<decimal> TotalBill()
         {
-            decimal total = 0;
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var userId = claims.FirstOrDefault(s => s.Type == "sub")?.Value;
-            var listItem = await _context.Carts.Where(x => x.userId == userId).ToListAsync();
-
-            for (int i = 0; i < listItem.Count; i++)
+            try
             {
 
-                total += listItem[i].unitPrice * listItem[i].quantity;
+                var result = await _repo.TotalBill();
+
+
+                return result;
+
             }
-            return total;
+            catch (Exception ex)
+            {
+                return 0;
+            }
         }
 
         [HttpGet("/remove/{id}")]
