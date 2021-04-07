@@ -78,7 +78,7 @@ namespace RookieShop.Backend.Controllers
             }
             await _context.SaveChangesAsync();
             return Ok(StatusCodes.Status200OK);
-          
+
 
         }
         [HttpGet("addquantity/{product}/number/{quan}")]
@@ -106,8 +106,8 @@ namespace RookieShop.Backend.Controllers
             return Ok(StatusCodes.Status200OK);
 
         }
-     
-        
+
+
         [HttpGet("total")]
         public async Task<decimal> TotalBill()
         {
@@ -129,7 +129,7 @@ namespace RookieShop.Backend.Controllers
         [HttpGet("/remove/{id}")]
         public async Task<IActionResult> Remove(int id)
         {
-           
+
             try
             {
 
@@ -147,49 +147,22 @@ namespace RookieShop.Backend.Controllers
 
         }
         [HttpGet("checkout")]
-        public async  Task<IActionResult> Checkout()
+        public async Task<IActionResult> Checkout()
         {
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var userId = claims.FirstOrDefault(s => s.Type == "sub")?.Value;
-            var listItem = await _context.Carts.Where(x => x.userId == userId).ToListAsync();
 
-            var order = new Order()
+            try
             {
-                userId = userId,
-                dateOrdered = DateTime.Now,
-                status = 0,
-            };
-            _context.Order.Add(order);
-            await _context.SaveChangesAsync();
-          
-            for (int i = 0; i < listItem.Count; i++)
-            {
-                var result = _context.Products.FirstOrDefault(x => x.Id == listItem[i].productId);
 
-                Random random = new Random();
-                int randomNumber = random.Next(0, 1000);
-                var orderItem = new OrderDetails()
-                {
+                var result = await _repo.Checkout();
 
-                    Id = randomNumber,
-                    orderId = order.Id,
-                    productId = listItem[i].productId,
-                    quantity = listItem[i].quantity,
-                    unitPrice = listItem[i].unitPrice,
-                    productName = result.productName,
-                };
-                _context.OrderDetails.Add(orderItem);
-                _context.Carts.Remove(listItem[i]);
-                await _context.SaveChangesAsync();
+                return Ok(StatusCodes.Status200OK);
+
             }
-
- 
-
-            return Ok();
-
-
-
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
     }
+
 }

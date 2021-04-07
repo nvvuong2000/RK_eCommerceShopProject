@@ -129,5 +129,52 @@ namespace RookieShop.Backend.Services.Implement
             }
             return -1;
         }
+
+        public async Task<bool> Checkout()
+        {
+            var listItem = await _context.Carts.Where(x => x.userId == _repoUser.getUserID()).ToListAsync();
+
+            var order = new Order()
+            {
+                userId = _repoUser.getUserID(),
+                dateOrdered = DateTime.Now,
+                status = 0,
+                Total = await TotalBill(),
+            };
+            _context.Order.Add(order);
+            await _context.SaveChangesAsync();
+
+            for (int i = 0; i < listItem.Count; i++)
+            {
+                var result = _context.Products.FirstOrDefault(x => x.Id == listItem[i].productId);
+
+                Random random = new Random();
+                int randomNumber = random.Next(0, 1000);
+                var orderItem = new OrderDetails()
+                {
+
+                  //  Id = randomNumber,
+                    orderId = order.Id,
+                    productId = listItem[i].productId,
+                    quantity = listItem[i].quantity,
+                    unitPrice = listItem[i].unitPrice,
+                    productName = result.productName,
+                };
+             
+                _context.Carts.Remove(listItem[i]);
+                await _context.SaveChangesAsync();
+                result.stock = result.stock - listItem[i].quantity;
+               
+                _context.Products.Update(result);
+                await _context.SaveChangesAsync();
+                _context.OrderDetails.Add(orderItem);
+                await _context.SaveChangesAsync();
+
+            }
+
+            return true;
+
+
+        }
     }
 }
