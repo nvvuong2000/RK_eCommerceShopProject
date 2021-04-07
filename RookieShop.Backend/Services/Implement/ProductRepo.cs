@@ -28,16 +28,16 @@ namespace RookieShop.Backend.Services.Implement
         {
             var newProduct = new Product()
             {
-                categoryID = product.categoryID,
+                categoryId = product.categoryID,
                 productName = product.productName,
-                providerID = product.providerID,
+                providerId = product.providerID,
                 description = product.description,
                 stock = product.stock,
                 unitPrice = product.unitPrice,
             };
             _context.Products.Add(newProduct);
             await _context.SaveChangesAsync();
-            var productID = newProduct.productID;
+            var productId = newProduct.Id;
             try
             {
 
@@ -56,7 +56,7 @@ namespace RookieShop.Backend.Services.Implement
                     }
                     var ProductImage = new ProductImages
                     {
-                        ProductID = productID,
+                        ProductID = productId,
 
                         pathName = Path.Combine("/images/" + getrandom + formFile.FileName),
 
@@ -84,20 +84,20 @@ namespace RookieShop.Backend.Services.Implement
         public async Task<List<Product>> getListProductAsync()
         {
             var productList = await _context.Products.Include(p=>p.ProductImages).ToListAsync();
-                //.Select(x => new ProductListVM { productID = x.productID, productName = x.productName, unitPrice =x.unitPrice, isNew = x.isNew})
+                //.Select(x => new ProductListVM { productId = x.productId, productName = x.productName, unitPrice =x.unitPrice, isNew = x.isNew})
 
             return productList;
         }
 
         public async Task<List<Product>> getListProductbyCategoryID(int? id)
         {
-            var productList = await _context.Products.Include(p => p.ProductImages).Where(p=>p.categoryID ==id).ToListAsync();
+            var productList = await _context.Products.Include(p => p.ProductImages).Where(p=>p.Id ==id).ToListAsync();
             return productList;
         }
 
         public async Task<Product> getProductAsync(int? id)
         {
-            var product =  _context.Products.Include(p => p.ProductImages).Include(p => p.Category).Include(p => p.RattingProduct).Where(p => p.productID == id).FirstOrDefault();
+            var product =  _context.Products.Include(p => p.ProductImages).Include(p => p.Category).Include(p => p.RattingProduct).Where(p => p.Id == id).FirstOrDefault();
             if(product == null)
             {
                 return null;
@@ -123,22 +123,22 @@ namespace RookieShop.Backend.Services.Implement
 
         public async Task<bool> updateProduct(int id, [FromForm] ProductCreateRequest product)
         {
-            var productEdit = await _context.Products.Include(img => img.ProductImages).Where(p => p.productID == id).FirstOrDefaultAsync();
+            var productEdit = await _context.Products.Include(img => img.ProductImages).Where(p => p.Id == id).FirstOrDefaultAsync();
             if (productEdit == null)
             {
                 return false;
             }
             else
             {
-                productEdit.categoryID = product.categoryID;
+                productEdit.categoryId = product.categoryID;
                 productEdit.description = product.description;
                 productEdit.productName = product.productName;
                 productEdit.unitPrice = product.unitPrice;
                 productEdit.stock = product.stock;
-                productEdit.providerID = product.providerID;
+                productEdit.providerId = product.providerID;
 
 
-                var productImagesEdit = await _context.ProductImages.Where(p => p.ProductID == id).ToListAsync();
+                var productImagesEdit = await _context.ProductImages.Where(p => p.ID == id).ToListAsync();
                 if (productImagesEdit != null)
                 {
                     for (int i = 0; i < productImagesEdit.Count; i++)

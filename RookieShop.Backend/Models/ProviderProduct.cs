@@ -7,8 +7,8 @@ namespace RookieShop.Backend.Models
 {
     public class ProviderProduct
     {
-        public int providerID { get; set; }
-        public int productID { get; set; }
+        public int providerId { get; set; }
+        public int productId { get; set; }
         public Product Product { get; set; }
         public Provider Provider { get; set; }
     }

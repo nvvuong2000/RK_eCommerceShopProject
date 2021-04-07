@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using RookieShop.Backend.Data;
 using RookieShop.Backend.Models;
+using RookieShop.Backend.Services.Interface;
 using RookieShop.Shared;
 using System;
 using System.Collections;
@@ -21,39 +22,45 @@ namespace RookieShop.Backend.Controllers
     public class CartController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        public const string CARTKEY = "cart";
-        public CartController(ApplicationDbContext context)
+        private readonly IUserDF _repoUser;
+        private readonly ICart _repo;
+        
+
+        public CartController(ApplicationDbContext context, IUserDF repoUser, ICart repo)
         {
             _context = context;
+            _repoUser = repoUser;
+            _repo = repo;
         }
         [HttpGet]
         [Authorize(Roles = "user")]
-        public async Task<IActionResult> Index()
+        public async Task<List<Cart>> Index()
         {
 
-           
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var Userid = claims.FirstOrDefault(s => s.Type == "sub")?.Value;
-            if (Userid != null)
+
+            var userId = _repoUser.getUserID();
+            try
             {
                 
-                var listItem = await _context.Carts.Include(c=>c.Product).Include(p=>p.Product.ProductImages).Where(x => x.userID == Userid).ToListAsync();
+               var list = await _repo.myCart(userId);
 
-                return Ok(listItem);
+
+                return list;
+               
             }
-            return null;
+            catch (Exception ex)
+            {
+                return null;
+            }
         }      
         [HttpGet("{id}")]
      
         public async Task<IActionResult> Buy(int id)
         {
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var Userid = claims.FirstOrDefault(s => s.Type == "sub")?.Value;
-            var listItem = await _context.Carts.Where(x => x.userID == Userid).ToListAsync();
-           
-            
+            var Userid = _repoUser.getUserID();
+            var listItem = await _context.Carts.Where(x => x.userId == Userid).ToListAsync();
+
+
             var index = await FindID(id);
             if (index != -1)
             {
@@ -61,29 +68,44 @@ namespace RookieShop.Backend.Controllers
             }
             else
             {
-                var result = _context.Products.FirstOrDefault(x => x.productID == id);
+                var result = _context.Products.FirstOrDefault(x => x.Id == id);
                 if (result == null)
                 {
                     return NotFound();
                 }
-                var newItem = new Cart { productID = id, quantity = 1, unitPrice = result.unitPrice, userID = Userid };
+                var newItem = new Cart { productId = id, quantity = 1, unitPrice = result.unitPrice, userId = Userid };
                 _context.Carts.Add(newItem);
             }
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return Ok(StatusCodes.Status200OK);
+            //  return RedirectToAction("Index");
+            //try
+            //{
+
+            //    var list = await _repo.AddProductIntoCart(id);
+
+
+            //    return Ok(StatusCodes.Status200OK);
+
+            //}
+            //catch (Exception ex)
+            //{
+            //    return BadRequest(ex.Message);
+            //}
+
         }
         [HttpGet("find/{id}")]
         public async  Task<int> FindID(int id)
         {
             var identity = (ClaimsIdentity)User.Identity;
             IEnumerable<Claim> claims = identity.Claims;
-            var Userid = claims.FirstOrDefault(s => s.Type == "sub")?.Value;
-            var listItem =  await _context.Carts.Where(x => x.userID == Userid).ToListAsync();
+            var userId = claims.FirstOrDefault(s => s.Type == "sub")?.Value;
+            var listItem =  await _context.Carts.Where(x => x.userId == userId).ToListAsync();
 
             for (int i = 0; i < listItem.Count; i++)
             {
 
-                if (listItem[i].productID == id)
+                if (listItem[i].productId == id)
                 {
                     return i;
                 }
@@ -96,8 +118,8 @@ namespace RookieShop.Backend.Controllers
             decimal total = 0;
             var identity = (ClaimsIdentity)User.Identity;
             IEnumerable<Claim> claims = identity.Claims;
-            var Userid = claims.FirstOrDefault(s => s.Type == "sub")?.Value;
-            var listItem = await _context.Carts.Where(x => x.userID == Userid).ToListAsync();
+            var userId = claims.FirstOrDefault(s => s.Type == "sub")?.Value;
+            var listItem = await _context.Carts.Where(x => x.userId == userId).ToListAsync();
 
             for (int i = 0; i < listItem.Count; i++)
             {
@@ -110,20 +132,21 @@ namespace RookieShop.Backend.Controllers
         [HttpGet("/remove/{id}")]
         public async Task<IActionResult> Remove(int id)
         {
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var Userid = claims.FirstOrDefault(s => s.Type == "sub")?.Value;
-            var listItem = await _context.Carts.Where(x => x.userID == Userid).ToListAsync();
-
-            int  index = await FindID(id);
-            if (index == -1)
+           
+            try
             {
-                return NotFound();
+
+                var result = await _repo.RemoveItem(id);
+
+
+                return Ok(StatusCodes.Status200OK);
 
             }
-            _context.Carts.Remove(listItem[index]);
-            await _context.SaveChangesAsync();
-            return Ok();
+            catch (Exception ex)
+            {
+                return null;
+            }
+
 
         }
         [HttpGet("checkout")]
@@ -131,12 +154,12 @@ namespace RookieShop.Backend.Controllers
         {
             var identity = (ClaimsIdentity)User.Identity;
             IEnumerable<Claim> claims = identity.Claims;
-            var Userid = claims.FirstOrDefault(s => s.Type == "sub")?.Value;
-            var listItem = await _context.Carts.Where(x => x.userID == Userid).ToListAsync();
+            var userId = claims.FirstOrDefault(s => s.Type == "sub")?.Value;
+            var listItem = await _context.Carts.Where(x => x.userId == userId).ToListAsync();
 
             var order = new Order()
             {
-                userID = Userid,
+                userId = userId,
                 dateOrdered = DateTime.Now,
                 status = 0,
             };
@@ -145,16 +168,16 @@ namespace RookieShop.Backend.Controllers
           
             for (int i = 0; i < listItem.Count; i++)
             {
-                var result = _context.Products.FirstOrDefault(x => x.productID == listItem[i].productID);
+                var result = _context.Products.FirstOrDefault(x => x.Id == listItem[i].productId);
 
                 Random random = new Random();
                 int randomNumber = random.Next(0, 1000);
                 var orderItem = new OrderDetails()
                 {
 
-                    orderdetailsID = randomNumber,
-                    orderID = order.orderID,
-                    productID = listItem[i].productID,
+                    Id = randomNumber,
+                    orderId = order.Id,
+                    productId = listItem[i].productId,
                     quantity = listItem[i].quantity,
                     unitPrice = listItem[i].unitPrice,
                     productName = result.productName,

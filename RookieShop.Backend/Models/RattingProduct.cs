@@ -10,7 +10,7 @@ namespace  RookieShop.Backend.Models
 {
     public class RattingProduct
     {
-        public int RattingProductID { get; set; }
+        public int Id { get; set; }
         public string userID { get; set; }
         public int productID { get; set; }
         public int numberRating { get; set; }

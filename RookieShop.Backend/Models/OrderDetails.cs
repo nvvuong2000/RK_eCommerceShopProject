@@ -9,9 +9,9 @@ namespace  RookieShop.Backend.Models
     public class OrderDetails
 
     {
-        public int orderdetailsID { get; set; }
-        public int orderID { get; set; }
-        public int productID { get; set; }
+        public int Id { get; set; }
+        public int orderId { get; set; }
+        public int productId { get; set; }
         public string productName { get; set; }
         public int quantity { get; set; }
         public decimal unitPrice { get; set; }

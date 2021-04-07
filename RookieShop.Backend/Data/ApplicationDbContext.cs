@@ -15,32 +15,10 @@ namespace RookieShop.Backend.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<OrderDetails>()
-                .HasOne<Order>(o => o.Order)
-                .WithMany(od => od.OrderDetails)
-                .HasForeignKey(od => od.orderdetailsID);
-            modelBuilder.Entity<ProductImages>()
-               .HasOne<Product>(p => p.Product)
-               .WithMany(pi => pi.ProductImages)
-               .HasForeignKey(pi => pi.ProductID);
-            modelBuilder.Entity<Product>()
-             .HasOne<Category>(ca => ca.Category)
-             .WithMany(p => p.Products)
-             .HasForeignKey(ca => ca.categoryID);
-
-            modelBuilder.Entity<Order>()
-               .HasKey(o => o.orderID);
-            modelBuilder.Entity<Order>()
-
-               .HasOne<User>(o => o.User)
-               .WithMany(c => c.Orders)
-               .HasForeignKey(c => c.userID).IsRequired();
-            modelBuilder.Entity<User>()
-                .HasOne<Cart>(c => c.Cart)
-                .WithOne(ca => ca.User)
-                .HasForeignKey<Cart>(ca => ca.userID).IsRequired();
-            modelBuilder.Entity<ProviderProduct>().HasKey(sc => new { sc.productID, sc.providerID });
-            modelBuilder.Entity<RattingProduct>().HasKey(sc => new { sc.productID, sc.userID, sc.RattingProductID });
+        
+            modelBuilder.Entity<Cart>().HasKey(sc => new { sc.productId, sc.userId });
+            modelBuilder.Entity<ProviderProduct>().HasKey(sc => new { sc.productId, sc.providerId });
+            modelBuilder.Entity<RattingProduct>().HasKey(sc => new { sc.productID, sc.userID, sc.Id });
 
         }
         public DbSet<Product> Products { get; set; }

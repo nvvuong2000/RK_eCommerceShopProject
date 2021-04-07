@@ -73,6 +73,25 @@ namespace Rookie.CustomerSite.Controllers
                 return RedirectToAction("Index", "Cart");
             }
         }
+        [HttpGet("/cart/add/{id}/{id}")]
+        public async Task<ActionResult> Add(int id, int productId)
+        {
+            using (var client = new HttpClient())
+            {
+
+                client.BaseAddress = new Uri(Baseurl);
+
+                client.DefaultRequestHeaders.Clear();
+
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
+                client.SetBearerToken(accessToken);
+                string endpoit = "/api/Cart/" + id.ToString();
+                HttpResponseMessage Res = await client.GetAsync(endpoit);
+
+                return RedirectToAction("Index", "Cart");
+            }
+        }
         [HttpGet("/cart/remove/{id}")]
         public async Task<ActionResult> RemoveItem(int id)
         {

@@ -9,7 +9,7 @@ namespace  RookieShop.Backend.Models
 {
     public class Provider
     {
-        public int providerID { get; set; }
+        public int Id { get; set; }
         public string providerName { get; set; }
         public string tel { get; set; }
         public string email { get; set; }

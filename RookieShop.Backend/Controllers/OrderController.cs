@@ -34,7 +34,7 @@ namespace RookieShop.Backend.Controllers
             IEnumerable<Claim> claims = identity.Claims;
             var Userid = claims.FirstOrDefault(s => s.Type == "sub")?.Value;
 
-            var listOrder = await _context.Order.Include(o=>o.OrderDetails).Include(o=>o.OrderDetails).Where(x => x.userID == Userid).ToListAsync();
+            var listOrder = await _context.Order.Include(o=>o.OrderDetails).Include(o=>o.OrderDetails).Where(x => x.userId == Userid).ToListAsync();
             return listOrder;
 
         }
@@ -42,7 +42,7 @@ namespace RookieShop.Backend.Controllers
 
         public async Task<ActionResult<IEnumerable<OrderDetails>>> GetOrderbyID(int id)
         {
-            var result = await _context.OrderDetails.Where(od => od.orderID == id).ToListAsync();
+            var result = await _context.OrderDetails.Where(od => od.Id == id).ToListAsync();
             if (result == null)
             {
                 return NotFound();

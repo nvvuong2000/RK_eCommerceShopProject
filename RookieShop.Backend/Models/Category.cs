@@ -8,7 +8,7 @@ namespace  RookieShop.Backend.Models
 {
     public class Category
     {
-        public int categoryID { get; set; }
+        public int Id { get; set; }
         public string categoryName { get; set; }
         public ICollection<Product> Products { get; set; }
     }

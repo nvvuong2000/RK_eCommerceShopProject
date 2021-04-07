@@ -9,8 +9,8 @@ namespace  RookieShop.Backend.Models
 {
     public class Order
     {
-        public int orderID { get; set; }
-        public string userID { get; set; }
+        public int Id { get; set; }
+        public string userId { get; set; }
         public int status { get; set; }
         public DateTime dateOrdered { get; set; }
         public decimal Total { get; set; }

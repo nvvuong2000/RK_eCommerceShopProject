@@ -9,10 +9,10 @@ namespace  RookieShop.Backend.Models
 {
     public class Product
     {
-        public int productID { get; set; }
-        public int providerID { get; set; }
+        public int Id { get; set; }
+        public int providerId { get; set; }
        
-        public int categoryID { get; set; }
+        public int categoryId { get; set; }
 
         public string productName { get; set; }
         public int stock { get; set; }

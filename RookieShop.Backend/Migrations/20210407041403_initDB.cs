@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RookieShop.Backend.Migrations
 {
-    public partial class initialDB_ : Migration
+    public partial class initDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -53,20 +53,20 @@ namespace RookieShop.Backend.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    categoryID = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     categoryName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Categories", x => x.categoryID);
+                    table.PrimaryKey("PK_Categories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Providers",
                 columns: table => new
                 {
-                    providerID = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     providerName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     tel = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -75,7 +75,7 @@ namespace RookieShop.Backend.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Providers", x => x.providerID);
+                    table.PrimaryKey("PK_Providers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -188,32 +188,32 @@ namespace RookieShop.Backend.Migrations
                 name: "Order",
                 columns: table => new
                 {
-                    orderID = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    userID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    userId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     status = table.Column<int>(type: "int", nullable: false),
                     dateOrdered = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Total = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Order", x => x.orderID);
+                    table.PrimaryKey("PK_Order", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Order_AspNetUsers_userID",
-                        column: x => x.userID,
+                        name: "FK_Order_AspNetUsers_userId",
+                        column: x => x.userId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
                 {
-                    productID = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    providerID = table.Column<int>(type: "int", nullable: false),
-                    categoryID = table.Column<int>(type: "int", nullable: false),
+                    providerId = table.Column<int>(type: "int", nullable: false),
+                    categoryId = table.Column<int>(type: "int", nullable: false),
                     productName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     stock = table.Column<int>(type: "int", nullable: false),
                     unitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -224,12 +224,12 @@ namespace RookieShop.Backend.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products", x => x.productID);
+                    table.PrimaryKey("PK_Products", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Products_Categories_categoryID",
-                        column: x => x.categoryID,
+                        name: "FK_Products_Categories_categoryId",
+                        column: x => x.categoryId,
                         principalTable: "Categories",
-                        principalColumn: "categoryID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -237,27 +237,25 @@ namespace RookieShop.Backend.Migrations
                 name: "Carts",
                 columns: table => new
                 {
-                    cartID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    userID = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    productID = table.Column<int>(type: "int", nullable: false),
+                    userId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    productId = table.Column<int>(type: "int", nullable: false),
                     quantity = table.Column<int>(type: "int", nullable: false),
                     unitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Carts", x => x.cartID);
+                    table.PrimaryKey("PK_Carts", x => new { x.productId, x.userId });
                     table.ForeignKey(
-                        name: "FK_Carts_AspNetUsers_userID",
-                        column: x => x.userID,
+                        name: "FK_Carts_AspNetUsers_userId",
+                        column: x => x.userId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Carts_Products_productID",
-                        column: x => x.productID,
+                        name: "FK_Carts_Products_productId",
+                        column: x => x.productId,
                         principalTable: "Products",
-                        principalColumn: "productID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -265,27 +263,28 @@ namespace RookieShop.Backend.Migrations
                 name: "OrderDetails",
                 columns: table => new
                 {
-                    orderdetailsID = table.Column<int>(type: "int", nullable: false),
-                    orderID = table.Column<int>(type: "int", nullable: false),
-                    productID = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    orderId = table.Column<int>(type: "int", nullable: false),
+                    productId = table.Column<int>(type: "int", nullable: false),
                     productName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     quantity = table.Column<int>(type: "int", nullable: false),
                     unitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderDetails", x => x.orderdetailsID);
+                    table.PrimaryKey("PK_OrderDetails", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OrderDetails_Order_orderdetailsID",
-                        column: x => x.orderdetailsID,
+                        name: "FK_OrderDetails_Order_orderId",
+                        column: x => x.orderId,
                         principalTable: "Order",
-                        principalColumn: "orderID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OrderDetails_Products_productID",
-                        column: x => x.productID,
+                        name: "FK_OrderDetails_Products_productId",
+                        column: x => x.productId,
                         principalTable: "Products",
-                        principalColumn: "productID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -307,7 +306,7 @@ namespace RookieShop.Backend.Migrations
                         name: "FK_ProductImages_Products_ProductID",
                         column: x => x.ProductID,
                         principalTable: "Products",
-                        principalColumn: "productID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -315,23 +314,23 @@ namespace RookieShop.Backend.Migrations
                 name: "ProviderProduct",
                 columns: table => new
                 {
-                    providerID = table.Column<int>(type: "int", nullable: false),
-                    productID = table.Column<int>(type: "int", nullable: false)
+                    providerId = table.Column<int>(type: "int", nullable: false),
+                    productId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProviderProduct", x => new { x.productID, x.providerID });
+                    table.PrimaryKey("PK_ProviderProduct", x => new { x.productId, x.providerId });
                     table.ForeignKey(
-                        name: "FK_ProviderProduct_Products_productID",
-                        column: x => x.productID,
+                        name: "FK_ProviderProduct_Products_productId",
+                        column: x => x.productId,
                         principalTable: "Products",
-                        principalColumn: "productID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProviderProduct_Providers_providerID",
-                        column: x => x.providerID,
+                        name: "FK_ProviderProduct_Providers_providerId",
+                        column: x => x.providerId,
                         principalTable: "Providers",
-                        principalColumn: "providerID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -339,14 +338,14 @@ namespace RookieShop.Backend.Migrations
                 name: "RattingProduct",
                 columns: table => new
                 {
-                    RattingProductID = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     userID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     productID = table.Column<int>(type: "int", nullable: false),
                     numberRating = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RattingProduct", x => new { x.productID, x.userID, x.RattingProductID });
+                    table.PrimaryKey("PK_RattingProduct", x => new { x.productID, x.userID, x.Id });
                     table.ForeignKey(
                         name: "FK_RattingProduct_AspNetUsers_userID",
                         column: x => x.userID,
@@ -357,7 +356,7 @@ namespace RookieShop.Backend.Migrations
                         name: "FK_RattingProduct_Products_productID",
                         column: x => x.productID,
                         principalTable: "Products",
-                        principalColumn: "productID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -401,25 +400,25 @@ namespace RookieShop.Backend.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Carts_productID",
+                name: "IX_Carts_userId",
                 table: "Carts",
-                column: "productID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Carts_userID",
-                table: "Carts",
-                column: "userID",
+                column: "userId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Order_userID",
+                name: "IX_Order_userId",
                 table: "Order",
-                column: "userID");
+                column: "userId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderDetails_productID",
+                name: "IX_OrderDetails_orderId",
                 table: "OrderDetails",
-                column: "productID");
+                column: "orderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderDetails_productId",
+                table: "OrderDetails",
+                column: "productId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductImages_ProductID",
@@ -427,14 +426,14 @@ namespace RookieShop.Backend.Migrations
                 column: "ProductID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_categoryID",
+                name: "IX_Products_categoryId",
                 table: "Products",
-                column: "categoryID");
+                column: "categoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProviderProduct_providerID",
+                name: "IX_ProviderProduct_providerId",
                 table: "ProviderProduct",
-                column: "providerID");
+                column: "providerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RattingProduct_userID",

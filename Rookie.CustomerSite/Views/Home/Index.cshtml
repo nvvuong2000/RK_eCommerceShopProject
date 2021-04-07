@@ -89,16 +89,16 @@
                                                     <!-- Start Product Default Single Item -->
                                                     <div class="product-default-single-item product-color--golden" data-aos="fade-up" data-aos-delay="0">
                                                         <div class="image-box">
-                                                            <a asp-route-name="@Model[i].productName" asp-route-id="@Model[i].productID" class="image-link">
+                                                            <a asp-route-name="@Model[i].productName" asp-route-id="@Model[i].Id" class="image-link">
                                                                 <img src="https://localhost:44341@(Model[i].ProductImages.ToList()[0].pathName)" alt="">
                                                             </a>
                                                             <div class="action-link">
                                                                 <div class="action-link-left">
                                                                     @*data-bs-toggle="modal" data-bs-target="#modalAddcart*@
-                                                                    <a href="@Url.Action("AddProduct","Cart",new {id=Model[i].productID})">Add to Cart</a>
+                                                                    <a href="@Url.Action("AddProduct","Cart",new {id=Model[i].Id})">Add to Cart</a>
                                                                 </div>
                                                                 <div class="action-link-right">
-                                                                    <a href="@Url.Action("AddProduct","Cart",new {id=Model[i].productID})"  data-bs-target="#modalQuickview"><i class="icon-magnifier"></i></a>
+                                                                    <a href="@Url.Action("AddProduct","Cart",new {id=Model[i].Id})"  data-bs-target="#modalQuickview"><i class="icon-magnifier"></i></a>
                                                                     <a href="wishlist.html"><i class="icon-heart"></i></a>
                                                                     <a href="compare.html"><i class="icon-shuffle"></i></a>
                                                                 </div>
@@ -106,7 +106,7 @@
                                                         </div>
                                                         <div class="content">
                                                             <div class="content-left">
-                                                                <h6 class="title"><a href="@Url.Action("Details","Product",new {id=Model[i].productID})">@Model[i].productName</a></h6>
+                                                                <h6 class="title"><a href="@Url.Action("Details","Product",new {id=Model[i].Id})">@Model[i].productName</a></h6>
                                                                 <ul class="review-star">
                                                                     <li class="fill"><i class="ion-android-star"></i></li>
                                                                     <li class="fill"><i class="ion-android-star"></i></li>
