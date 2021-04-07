@@ -27,7 +27,7 @@ namespace RookieShop.Backend.Services.Implement
 
         public async Task<List<OrderDetails>> myOrderListbyId(int id)
         {
-            var result = await _context.OrderDetails.Where(od => od.Id == id).ToListAsync();
+            var result = await _context.OrderDetails.Where(od => od.orderId == id).ToListAsync();
             return result;
         }
     }

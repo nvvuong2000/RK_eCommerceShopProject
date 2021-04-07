@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RookieShop.Backend.Data;
 using RookieShop.Backend.Models;
+using RookieShop.Backend.Services.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,36 +20,58 @@ namespace RookieShop.Backend.Controllers
     public class OrderController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        private IHostingEnvironment _hostingEnv;
+        private readonly IUserDF _repoUser;
+        private readonly IOrder _repo;
 
-        public OrderController(ApplicationDbContext context, IHostingEnvironment hostingEnv)
+        public OrderController(ApplicationDbContext context, IUserDF repoUser, IOrder repo)
         {
             _context = context;
-            _hostingEnv = hostingEnv;
+            _repo = repo;
+            _repoUser = repoUser;
         }
         [HttpGet]
         [Authorize(Roles = "user")]
         public async Task<ActionResult<IEnumerable<Order>>> GetListOrder()
         {
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var Userid = claims.FirstOrDefault(s => s.Type == "sub")?.Value;
 
-            var listOrder = await _context.Order.Include(o=>o.OrderDetails).Include(o=>o.OrderDetails).Where(x => x.userId == Userid).ToListAsync();
-            return listOrder;
+            var userId = _repoUser.getUserID();
+            try
+            {
 
+                var list = await _repo.myOrderList();
+
+
+                return list;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+
+
+            }
         }
         [HttpGet("{id}")]
-
+        [Authorize(Roles = "user")]
         public async Task<ActionResult<IEnumerable<OrderDetails>>> GetOrderbyID(int id)
         {
-            var result = await _context.OrderDetails.Where(od => od.Id == id).ToListAsync();
-            if (result == null)
-            {
-                return NotFound();
-            }
-            return result;
 
+            var userId = _repoUser.getUserID();
+            try
+            {
+
+                var list = await _repo.myOrderListbyId(id);
+
+
+                return list;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+
+
+            }
         }
 
     }
