@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using RookieShop.Backend.Data;
 using RookieShop.Backend.Models;
 using RookieShop.Backend.Services.Interface;
+using RookieShop.Shared.Repo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,10 +61,54 @@ namespace RookieShop.Backend.Controllers
             try
             {
 
-                var list = await _repo.myOrderListbyId(id);
+                var list = await _repo.getorDetailsbyOrderId(id);
 
 
                 return list;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+
+
+            }
+        }
+        [HttpGet("updateSttOrder")]
+        [Authorize(Roles = "user")]
+        public bool UpdateSttOdCs(int id)
+        {
+
+            
+            try
+            {
+
+                var result = _repo.updateSttOrdrerCs(id);
+
+
+                return result;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+
+
+            }
+        }
+        [HttpGet("updateSttOrderad")]
+        [Authorize(Roles = "admin")]
+        public bool UpdateSttOdAd(StatusOrderRequest statusRequest)
+        {
+
+
+            try
+            {
+
+                var result = _repo.updateSttOrdrerAd(statusRequest);
+
+
+                return result;
 
             }
             catch (Exception ex)

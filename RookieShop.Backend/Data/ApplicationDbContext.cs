@@ -15,10 +15,17 @@ namespace RookieShop.Backend.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-        
+
             modelBuilder.Entity<Cart>().HasKey(sc => new { sc.productId, sc.userId });
             modelBuilder.Entity<ProviderProduct>().HasKey(sc => new { sc.productId, sc.providerId });
             modelBuilder.Entity<RattingProduct>().HasKey(sc => new { sc.productID, sc.userID, sc.Id });
+            modelBuilder.Entity<Provider>().HasData(
+               new Provider { Id = 3, providerName = "H&M" },
+               new Provider { Id = 4, providerName = "B&G" });
+            modelBuilder.Entity<Category>().HasData(
+               new Category { Id = 3, categoryName = "Jacket" },
+               new Category { Id = 4, categoryName = "Pant" });
+       
 
         }
         public DbSet<Product> Products { get; set; }

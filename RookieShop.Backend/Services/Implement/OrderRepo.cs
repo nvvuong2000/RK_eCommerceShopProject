@@ -2,6 +2,7 @@
 using RookieShop.Backend.Data;
 using RookieShop.Backend.Models;
 using RookieShop.Backend.Services.Interface;
+using RookieShop.Shared.Repo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,10 +26,44 @@ namespace RookieShop.Backend.Services.Implement
             return listOrder;
         }
 
-        public async Task<List<OrderDetails>> myOrderListbyId(int id)
+        public async Task<List<OrderDetails>> getorDetailsbyOrderId(int id)
         {
             var result = await _context.OrderDetails.Where(od => od.orderId == id).ToListAsync();
             return result;
         }
+        public async Task<Order> myOrderListbyId(int id)
+        {
+            var result = _context.Order.Where(od => od.Id == id).FirstOrDefault();
+            return result;
+        }
+
+        public bool updateSttOrdrerAd(StatusOrderRequest statusRequest )
+        {
+            var order = _context.Order.Where(od => od.Id == statusRequest.orderId).FirstOrDefault();
+            if (order == null)
+            {
+                return false;
+            }
+            order.status = statusRequest.statusId;
+
+            _context.Order.Update(order);
+            _context.SaveChanges();
+            return true;
+        }
+
+        public bool updateSttOrdrerCs(int Id)
+        {
+            var order = _context.Order.Where(od => od.Id == Id).FirstOrDefault();
+            if (order == null)
+            {
+                return false;
+            }
+            order.status = 1;
+            _context.Order.Update(order);
+            _context.SaveChanges();
+            return true;
+        }
+
+  
     }
 }

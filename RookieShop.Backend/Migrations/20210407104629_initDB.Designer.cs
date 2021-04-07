@@ -10,7 +10,7 @@ using RookieShop.Backend.Data;
 namespace RookieShop.Backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210407041403_initDB")]
+    [Migration("20210407104629_initDB")]
     partial class initDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -191,6 +191,18 @@ namespace RookieShop.Backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 3,
+                            categoryName = "Jacket"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            categoryName = "Pant"
+                        });
                 });
 
             modelBuilder.Entity("RookieShop.Backend.Models.Order", b =>
@@ -256,6 +268,9 @@ namespace RookieShop.Backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("categoryId")
                         .HasColumnType("int");
@@ -339,6 +354,18 @@ namespace RookieShop.Backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Providers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 3,
+                            providerName = "H&M"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            providerName = "B&G"
+                        });
                 });
 
             modelBuilder.Entity("RookieShop.Backend.Models.ProviderProduct", b =>

@@ -218,6 +218,7 @@ namespace RookieShop.Backend.Migrations
                     stock = table.Column<int>(type: "int", nullable: false),
                     unitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     isNew = table.Column<bool>(type: "bit", nullable: false),
                     status = table.Column<bool>(type: "bit", nullable: false),
                     rating = table.Column<double>(type: "float", nullable: false)
@@ -358,6 +359,24 @@ namespace RookieShop.Backend.Migrations
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "Id", "categoryName" },
+                values: new object[,]
+                {
+                    { 3, "Jacket" },
+                    { 4, "Pant" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Providers",
+                columns: new[] { "Id", "address", "email", "providerName", "tel" },
+                values: new object[,]
+                {
+                    { 3, null, null, "H&M", null },
+                    { 4, null, null, "B&G", null }
                 });
 
             migrationBuilder.CreateIndex(

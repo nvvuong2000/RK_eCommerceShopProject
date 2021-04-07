@@ -19,7 +19,7 @@ namespace  RookieShop.Backend.Models
         public decimal unitPrice { get; set; }
         public string description { get; set; }
         
-   
+        public DateTime DateCreated { get; set; }
         public bool isNew { get; set; }
         public bool status { get; set; }
         public double rating { get; set; }
