@@ -47,7 +47,7 @@ namespace RookieShop.Backend.Services.Implement
                 foreach (var formFile in product.FormFiles)
                 {
                     Guid getrandom = new Guid();
-                    
+
                     string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", getrandom + formFile.FileName);
                     if (formFile.Length > 0)
                     {
@@ -73,7 +73,7 @@ namespace RookieShop.Backend.Services.Implement
 
                 }
                 return true;
-              
+
             }
             catch (Exception)
             {
@@ -86,27 +86,48 @@ namespace RookieShop.Backend.Services.Implement
 
         public async Task<List<Product>> getListProductAsync()
         {
-            var productList = await _context.Products.Include(p=>p.ProductImages).ToListAsync();
-                //.Select(x => new ProductListVM { productId = x.productId, productName = x.productName, unitPrice =x.unitPrice, isNew = x.isNew})
+            var productList = await _context.Products.Include(p => p.ProductImages).ToListAsync();
+            //.Select(x => new ProductListVM { productId = x.productId, productName = x.productName, unitPrice =x.unitPrice, isNew = x.isNew})
 
             return productList;
         }
 
         public async Task<List<Product>> getListProductbyCategoryID(int? id)
         {
-            var productList = await _context.Products.Include(p => p.ProductImages).Where(p=>p.Id ==id).ToListAsync();
+            var productList = await _context.Products.Include(p => p.ProductImages).Where(p => p.categoryId == id).ToListAsync();
             return productList;
         }
 
-        public async Task<Product> getProductAsync(int? id)
+        public async Task<ProductDetailsVM> getProductAsync(int? id)
         {
-            var product =  _context.Products.Include(p => p.ProductImages).Include(p => p.Category).Include(p => p.RattingProduct).Where(p => p.Id == id).FirstOrDefault();
-            if(product == null)
+            var product = _context.Products.Include(p => p.ProductImages).Include(p => p.Category).Include(p => p.RattingProduct).Where(p => p.Id == id).FirstOrDefault();
+
+            if (product == null)
             {
                 return null;
             }
-            return product;
+            int totalStar = product.RattingProduct.Sum(r => r.numberRating);
+            int number = product.RattingProduct.Count();
+            double avg = totalStar / number;
+            var details = new ProductDetailsVM()
+            {
+                Id = product.Id,
+                productName = product.productName,
                 
+                categoryName = product.Category.categoryName,
+                providerId = product.providerId,
+                categoryId = product.categoryId,
+                stock = product.stock,
+                unitPrice = product.unitPrice,
+                description = product.description,
+                DateCreated = product.DateCreated,
+                isNew = product.isNew,
+                status = product.status,
+                ProductImages = (ICollection<ProductImagesVM>)product.ProductImages,
+                rating = avg,
+            };
+            return details;
+
         }
 
         public async Task<List<Product>> SortDescAscByPrice()
@@ -115,12 +136,12 @@ namespace RookieShop.Backend.Services.Implement
             var productList = await _context.Products.Include(p => p.ProductImages).ToListAsync();
             return productList;
         }
-    
+
 
         public async Task<List<Product>> SortDescOrderByPrice()
         {
 
-            var productList = await _context.Products.Include(p => p.ProductImages).OrderByDescending(p=>p.unitPrice).ToListAsync();
+            var productList = await _context.Products.Include(p => p.ProductImages).OrderByDescending(p => p.unitPrice).ToListAsync();
             return productList;
         }
 
@@ -224,7 +245,7 @@ namespace RookieShop.Backend.Services.Implement
 
         public async Task<List<Product>> SortDescOrderByName()
         {
-            var productList = await _context.Products.Include(p => p.ProductImages).OrderByDescending(p=>p.productName).ToListAsync();
+            var productList = await _context.Products.Include(p => p.ProductImages).OrderByDescending(p => p.productName).ToListAsync();
             return productList;
         }
 
@@ -243,38 +264,41 @@ namespace RookieShop.Backend.Services.Implement
         public async Task<List<ProductListVM>> getlistProductNeedRating(string userId)
         {
 
-            var query = await( from od in _context.OrderDetails
-                        join o in _context.Order on od.orderId equals o.Id
-                        join p in _context.Products on od.productId equals p.Id
-                        join pm in _context.ProductImages on p.Id equals pm.ProductID
-                //        join pr in _context.RattingProduct on p.Id equals pr.productID
-                        where (o.status == 2 && pm.isDefault==true && o.userId.Equals(userId))
-                        select new ProductListVM
-                        {
-                            productID = p.Id,
-                            productName = p.productName,
-                            imgDefault = pm.pathName,
-                        }).ToListAsync();
-           var productberated = await(
-                        from p in _context.Products 
-                        join pm in _context.ProductImages on p.Id equals pm.ProductID
-                        join pr in _context.RattingProduct on p.Id equals pr.productID
-                        where (pm.isDefault == true  && pr.userID.Equals(userId))
-                        select new ProductListVM
-                        {
-                            productID = p.Id,
-                            productName = p.productName,
-                            imgDefault = pm.pathName,
-                        }).ToListAsync();
+            var query = await (from od in _context.OrderDetails
+                               join o in _context.Order on od.orderId equals o.Id
+                               join p in _context.Products on od.productId equals p.Id
+                               join pm in _context.ProductImages on p.Id equals pm.ProductID
+                               //        join pr in _context.RattingProduct on p.Id equals pr.productID
+                               where (o.status == 2 && pm.isDefault == true && o.userId.Equals(userId))
+                               select new ProductListVM
+                               {
+                                   productID = p.Id,
+                                   productName = p.productName,
+                                   imgDefault = pm.pathName,
+                               }).ToListAsync();
+            var productberated = await (
+                         from p in _context.Products
+                         join pm in _context.ProductImages on p.Id equals pm.ProductID
+                         join pr in _context.RattingProduct on p.Id equals pr.productID
+                         where (pm.isDefault == true && pr.userID.Equals(userId))
+                         select new ProductListVM
+                         {
+                             productID = p.Id,
+                             productName = p.productName,
+                             imgDefault = pm.pathName,
+                         }).ToListAsync();
             var NotInRecord = query.Where(p => !productberated.Any(p2 => p2.productID == p.productID)).ToList();
-            
+
             return NotInRecord;
         }
 
         public async Task<bool> ratingProduct(RatingProductRequest request)
         {
+            Random getrandom = new Random();
+            int random = getrandom.Next(1, 999);
             var rating = new RattingProduct()
             {
+                Id = random,
                 userID = _repoUser.getUserID(),
                 productID = request.productId,
                 numberRating = request.numberRating,
@@ -282,8 +306,14 @@ namespace RookieShop.Backend.Services.Implement
             };
             _context.RattingProduct.Add(rating);
             _context.SaveChanges();
+            int totalStar = _context.RattingProduct.Where(r=>r.productID==request.productId).Sum(r => r.numberRating);
+            int number = _context.RattingProduct.Where(r => r.productID == request.productId).Count();
+            double avg = totalStar / number;
+            var product = _context.Products.Where(p => p.Id == request.productId).FirstOrDefault();
+            product.rating = avg;
+            _context.SaveChanges();
             return true;
-            
+
         }
     }
 
