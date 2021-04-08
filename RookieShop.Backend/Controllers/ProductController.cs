@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -7,6 +8,7 @@ using RookieShop.Backend.Data;
 using RookieShop.Backend.Models;
 using RookieShop.Backend.Services.Interface;
 using RookieShop.Shared;
+using RookieShop.Shared.Repo;
 using RookieShop.Shared.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -21,26 +23,25 @@ namespace RookieShop.Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize("Bearer")]
 
     public class ProductController : ControllerBase
     {
         private readonly IProduct _repo;
-        // GET: CategoryController
-       
-
         private readonly ApplicationDbContext _context;
+        private readonly IUserDF _repoUser;
         private IHostingEnvironment _hostingEnv;
-        private int productID = 0;
 
-
-        public ProductController(ApplicationDbContext context, IHostingEnvironment hostingEnv, IProduct repo)
+        public ProductController(ApplicationDbContext context, IUserDF repoUser,IProduct repo, IHostingEnvironment hostingEnv)
         {
             _context = context;
-            _hostingEnv = hostingEnv;
+            _repoUser = repoUser;
             _repo = repo;
+            _hostingEnv = hostingEnv;
         }
         // GET: api/<Product>
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<Product>> GetAsync()
         {
             try
@@ -60,6 +61,7 @@ namespace RookieShop.Backend.Controllers
 
         // GET api/<Product>/5
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<Product>> Get(int id)
         {
             try
@@ -130,6 +132,7 @@ namespace RookieShop.Backend.Controllers
             return true;
         }
         [HttpGet("sortDescbyPrice")]
+        [AllowAnonymous]
         public async Task<ActionResult<Product>> sortDescbyPrice()
         {
             try
@@ -147,6 +150,7 @@ namespace RookieShop.Backend.Controllers
 
         }
         [HttpGet("sortAscbyPrice")]
+        [AllowAnonymous]
         public async Task<ActionResult<Product>> sortAscbyPrice()
         {
             try
@@ -180,7 +184,8 @@ namespace RookieShop.Backend.Controllers
 
             }
             [HttpGet("sortAscbyName")]
-            public async Task<ActionResult<Product>> sortAscbyName()
+        [AllowAnonymous]
+        public async Task<ActionResult<Product>> sortAscbyName()
             {
                 try
                 {
@@ -210,6 +215,44 @@ namespace RookieShop.Backend.Controllers
             catch (Exception ex)
             {
                 return Ok(ex);
+            }
+
+        }
+        [HttpGet("/rating")]
+        [Authorize(Roles ="user")]
+        public async Task<ActionResult<ProductListVM>> rating()
+        {
+            try
+            {
+
+                var userId = _repoUser.getUserID();
+                var product = await _repo.getlistProductNeedRating(userId);
+                return Ok(product);
+
+
+            }
+            catch (Exception ex)
+            {
+                return Ok(ex);
+            }
+
+        }
+        [HttpPost("/rating")]
+        [Authorize(Roles = "user")]
+        public async Task<IActionResult> rattingRequest(RatingProductRequest request)
+        {
+            try
+            {
+
+
+                var product = await _repo.ratingProduct(request);
+                return Ok(StatusCodes.Status200OK);
+
+
+            }
+            catch (Exception ex)
+            {
+                throw new (ex.Message);
             }
 
         }

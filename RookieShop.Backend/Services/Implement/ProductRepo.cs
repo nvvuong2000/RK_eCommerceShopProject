@@ -6,6 +6,7 @@ using RookieShop.Backend.Data;
 using RookieShop.Backend.Models;
 using RookieShop.Backend.Services.Interface;
 using RookieShop.Shared;
+using RookieShop.Shared.Repo;
 using RookieShop.Shared.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -18,11 +19,13 @@ namespace RookieShop.Backend.Services.Implement
     public class ProductRepo : IProduct
     {
         private readonly ApplicationDbContext _context;
+        private readonly IUserDF _repoUser;
         private IHostingEnvironment _hostingEnv;
-        public ProductRepo(ApplicationDbContext context, IHostingEnvironment hostingEnv)
+        public ProductRepo(ApplicationDbContext context, IHostingEnvironment hostingEnv, IUserDF repoUser)
         {
             _context = context;
             _hostingEnv = hostingEnv;
+            _repoUser = repoUser;
         }
         public async Task<bool> addProduct([FromForm] ProductCreateRequest product)
         {
@@ -235,6 +238,52 @@ namespace RookieShop.Backend.Services.Implement
         {
             var product = _context.Products.Include(p => p.ProductImages).Where(p => p.productName.Contains(keyword)).OrderByDescending(p => p.productName).FirstOrDefault();
             return product;
+        }
+
+        public async Task<List<ProductListVM>> getlistProductNeedRating(string userId)
+        {
+
+            var query = await( from od in _context.OrderDetails
+                        join o in _context.Order on od.orderId equals o.Id
+                        join p in _context.Products on od.productId equals p.Id
+                        join pm in _context.ProductImages on p.Id equals pm.ProductID
+                //        join pr in _context.RattingProduct on p.Id equals pr.productID
+                        where (o.status == 2 && pm.isDefault==true && o.userId.Equals(userId))
+                        select new ProductListVM
+                        {
+                            productID = p.Id,
+                            productName = p.productName,
+                            imgDefault = pm.pathName,
+                        }).ToListAsync();
+           var productberated = await(
+                        from p in _context.Products 
+                        join pm in _context.ProductImages on p.Id equals pm.ProductID
+                        join pr in _context.RattingProduct on p.Id equals pr.productID
+                        where (pm.isDefault == true  && pr.userID.Equals(userId))
+                        select new ProductListVM
+                        {
+                            productID = p.Id,
+                            productName = p.productName,
+                            imgDefault = pm.pathName,
+                        }).ToListAsync();
+            var NotInRecord = query.Where(p => !productberated.Any(p2 => p2.productID == p.productID)).ToList();
+            
+            return NotInRecord;
+        }
+
+        public async Task<bool> ratingProduct(RatingProductRequest request)
+        {
+            var rating = new RattingProduct()
+            {
+                userID = _repoUser.getUserID(),
+                productID = request.productId,
+                numberRating = request.numberRating,
+
+            };
+            _context.RattingProduct.Add(rating);
+            _context.SaveChanges();
+            return true;
+            
         }
     }
 

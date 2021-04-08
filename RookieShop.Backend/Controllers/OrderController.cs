@@ -96,7 +96,7 @@ namespace RookieShop.Backend.Controllers
 
             }
         }
-        [HttpGet("updateSttOrderad")]
+        [HttpPost("updateSttOrderad")]
         [Authorize(Roles = "admin")]
         public bool UpdateSttOdAd(StatusOrderRequest statusRequest)
         {

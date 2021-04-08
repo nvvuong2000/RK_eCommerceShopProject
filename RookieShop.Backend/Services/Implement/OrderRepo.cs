@@ -58,7 +58,7 @@ namespace RookieShop.Backend.Services.Implement
             {
                 return false;
             }
-            order.status = 1;
+            order.status = 2;
             _context.Order.Update(order);
             _context.SaveChanges();
             return true;
