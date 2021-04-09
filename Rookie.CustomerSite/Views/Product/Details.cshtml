@@ -2,609 +2,437 @@
 @{
     ViewData["Title"] = "DetailsAsync";
 }
-<div class="breadcrumb-section breadcrumb-bg-color--golden">
-    <div class="breadcrumb-wrapper">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <h3 class="breadcrumb-title">Product Details - Gallery Left</h3>
-                    <div class="breadcrumb-nav breadcrumb-nav-color--black breadcrumb-nav-hover-color--golden">
-                        <nav aria-label="breadcrumb">
-                            <ul>
-                                <li><a href="index.html">Home</a></li>
-                                <li><a href="shop-grid-sidebar-left.html">Shop</a></li>
-                                <li class="active" aria-current="page">Product Details Gallery Left</li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="product-details-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-5 col-lg-6">
-                <div class="product-details-gallery-area clearfix">
-                    <div class="product-large-image product-large-image-style-gallery clearfix" data-aos="fade-up" data-aos-delay="0">
-                        @for (int i = 0; i < Model.ProductImages.Count; i++)
-                        {
-                            if (Model.ProductImages.ToList()[i].isDefault == true)
-                            {
-                                <div class="product-image-gallery-single mb-4 mr-4">
-                                    <img src="https://localhost:44341@(Model.ProductImages.ToList()[i].pathName)" alt="">
-                                </div>
-                            }
-                            else
-                            {
-                                <div class="product-image-gallery-single mb-4 mr-4">
-                                    <img src="https://localhost:44341@(Model.ProductImages.ToList()[i].pathName)" alt="">
-                                </div>
-                            }
-                        }
-                
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-7 col-lg-6">
-                <div class="product-details-content-area product-details--golden" data-aos="fade-up" data-aos-delay="200">
-                    <!-- Start  Product Details Text Area-->
-                    <div class="product-details-text">
-                        <h4 class="title"> <a href="@Url.Action("Details","Cart",new { id = Model.Id })"> </a> @Model.productName </h4>
-                        <div class="d-flex align-items-center">
-                            <ul class="review-star">
-                                <li class="fill"><i class="ion-android-star"></i></li>
-                                <li class="fill"><i class="ion-android-star"></i></li>
-                                <li class="fill"><i class="ion-android-star"></i></li>
-                                <li class="fill"><i class="ion-android-star"></i></li>
-                                <li class="empty"><i class="ion-android-star"></i></li>
-                            </ul>
-                            <a href="#" class="customer-review ml-2">(customer review )</a>
-                        </div>
-                        <div class="price">$@Model.unitPrice</div>
-                        <p>
-                            @Model.description                        
-                        </p>
-                    </div>
-                 
-                    <!-- End Product Details Section -->
-                    <!-- End  Product Details Text Area-->
-                    <!-- Start Product Variable Area -->
-                    <div class="product-details-variable">
-                        <h4 class="title">Available Options</h4>
-                        <!-- Product Variable Single Item -->
-                        <div class="variable-single-item">
-                            <div class="product-stock"> <span class="product-stock-in"><i class="ion-checkmark-circled"></i></span> @Model.stock IN STOCK</div>
-                        </div>
-                        <div class="d-flex align-items-center ">
-                            <div class="variable-single-item ">
-                                <span>Quantity</span>
-                                <div class="product-variable-quantity">
-                                    <input min="1" max="100" value="1" type="number">
-                                </div>
-                            </div>
-
-                            <div class="product-add-to-cart-btn">
-                                <a href="@Url.Action("AddProduct","Cart",new {id=Model.Id})" data-bs-toggle="modal" data-bs-target="#modalAddcart">+ Add To Cart</a>
-                            </div>
-                        </div>                    
-                    </div>
-                    <!-- End Product Variable Area -->
-                    <!-- Start  Product Details Catagories Area-->
-                    <div class="product-details-catagory mb-2">
-                        <span class="title">CATEGORIES:</span>
-                        <ul>
-                            <li><a href="#">@Model.Category.categoryName </a></li>
-                         
-                        </ul>
-                    </div>
-                    <!-- End  Product Details Catagories Area-->
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- End Product Details Section -->
-<!-- Start Product Content Tab Section -->
-<div class="product-details-content-tab-section section-top-gap-100">
+<!-- START HEADING SECTION -->
+<div class="about_content">
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <div class="product-details-content-tab-wrapper" data-aos="fade-up" data-aos-delay="0">
 
-                    <!-- Start Product Details Tab Button -->
-                    <ul class="nav tablist product-details-content-tab-btn d-flex justify-content-center">
-                        <li>
-                            <a class="nav-link active" data-bs-toggle="tab" href="#description">
-                                Description
-                            </a>
-                        </li>
-                        <li>
-                            <a class="nav-link" data-bs-toggle="tab" href="#specification">
-                                Specification
-                            </a>
-                        </li>
-                        <li>
-                            <a class="nav-link" data-bs-toggle="tab" href="#review">
-                                Reviews (1)
-                            </a>
-                        </li>
-                    </ul> <!-- End Product Details Tab Button -->
-                    <!-- Start Product Details Tab Content -->
-                    <div class="product-details-content-tab">
-                        <div class="tab-content">
-                            <!-- Start Product Details Tab Content Singel -->
-                            <div class="tab-pane active show" id="description">
-                                <div class="single-tab-content-item">
-                                    @Model.description
-                                </div>
-                            </div> <!-- End Product Details Tab Content Singel -->
-                      
-                            <!-- Start Product Details Tab Content Singel -->
-                            <div class="tab-pane" id="review">
-                                <div class="single-tab-content-item">
-                                    <!-- Start - Review Comment -->
-                                    <ul class="comment">
-                                        <!-- Start - Review Comment list-->
-                                        <!--<li class="comment-list">
-                                            <div class="comment-wrapper">
-                                                <div class="comment-img">
-                                                    <img src="assets/images/user/image-1.png" alt="">
-                                                </div>
-                                                <div class="comment-content">
-                                                    <div class="comment-content-top">
-                                                        <div class="comment-content-left">
-                                                            <h6 class="comment-name">Kaedyn Fraser</h6>
-                                                            <ul class="review-star">
-                                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                                <li class="empty"><i class="ion-android-star"></i></li>
-                                                            </ul>
-                                                        </div>
-                                                        <div class="comment-content-right">
-                                                            <a href="#"><i class="fa fa-reply"></i>Reply</a>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="para-content">
-                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora inventore dolorem a unde modi iste odio amet, fugit fuga aliquam, voluptatem maiores animi dolor nulla magnam ea! Dignissimos aspernatur cumque nam quod sint provident modi alias culpa, inventore deserunt accusantium amet earum soluta consequatur quasi eum eius laboriosam, maiores praesentium explicabo enim dolores quaerat! Voluptas ad ullam quia odio sint sunt. Ipsam officia, saepe repellat. </p>
-                                                    </div>
-                                                </div>
-                                            </div>-->
-                                            <!-- Start - Review Comment Reply-->
-                                            <!--<ul class="comment-reply">
-                                                <li class="comment-reply-list">
-                                                    <div class="comment-wrapper">
-                                                        <div class="comment-img">
-                                                            <img src="assets/images/user/image-2.png" alt="">
-                                                        </div>
-                                                        <div class="comment-content">
-                                                            <div class="comment-content-top">
-                                                                <div class="comment-content-left">
-                                                                    <h6 class="comment-name">Oaklee Odom</h6>
-                                                                </div>
-                                                                <div class="comment-content-right">
-                                                                    <a href="#"><i class="fa fa-reply"></i>Reply</a>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="para-content">
-                                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora inventore dolorem a unde modi iste odio amet, fugit fuga aliquam, voluptatem maiores animi dolor nulla magnam ea! Dignissimos aspernatur cumque nam quod sint provident modi alias culpa, inventore deserunt accusantium amet earum soluta consequatur quasi eum eius laboriosam, maiores praesentium explicabo enim dolores quaerat! Voluptas ad ullam quia odio sint sunt. Ipsam officia, saepe repellat. </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>--> <!-- End - Review Comment Reply-->
-                                        <!--</li>--> <!-- End - Review Comment list-->
-                                        <!-- Start - Review Comment list-->
-                                        <!--<li class="comment-list">
-                                            <div class="comment-wrapper">
-                                                <div class="comment-img">
-                                                    <img src="assets/images/user/image-3.png" alt="">
-                                                </div>
-                                                <div class="comment-content">
-                                                    <div class="comment-content-top">
-                                                        <div class="comment-content-left">
-                                                            <h6 class="comment-name">Jaydin Jones</h6>
-                                                            <ul class="review-star">
-                                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                                <li class="empty"><i class="ion-android-star"></i></li>
-                                                            </ul>
-                                                        </div>
-                                                        <div class="comment-content-right">
-                                                            <a href="#"><i class="fa fa-reply"></i>Reply</a>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="para-content">
-                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora inventore dolorem a unde modi iste odio amet, fugit fuga aliquam, voluptatem maiores animi dolor nulla magnam ea! Dignissimos aspernatur cumque nam quod sint provident modi alias culpa, inventore deserunt accusantium amet earum soluta consequatur quasi eum eius laboriosam, maiores praesentium explicabo enim dolores quaerat! Voluptas ad ullam quia odio sint sunt. Ipsam officia, saepe repellat. </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>--> <!-- End - Review Comment list-->
-                                    </ul> <!-- End - Review Comment -->
-                                    <div class="review-form">
-                                        <div class="review-form-text-top">
-                                            <h5>ADD A REVIEW</h5>
-                                            <p>Your email address will not be published. Required fields are marked *</p>
-                                        </div>
-
-                                        <form action="#" method="post">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="default-form-box">
-                                                        <label for="comment-name">Your name <span>*</span></label>
-                                                        <input id="comment-name" type="text" placeholder="Enter your name" required>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="default-form-box">
-                                                        <label for="comment-email">Your Email <span>*</span></label>
-                                                        <input id="comment-email" type="email" placeholder="Enter your email" required>
-                                                    </div>
-                                                </div>
-                                                <div class="col-12">
-                                                    <div class="default-form-box">
-                                                        <label for="comment-review-text">Your review <span>*</span></label>
-                                                        <textarea id="comment-review-text" placeholder="Write a review" required></textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="col-12">
-                                                    <button class="btn btn-md btn-black-default-hover" type="submit">Submit</button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div> <!-- End Product Details Tab Content Singel -->
-                        </div>
-                    </div> <!-- End Product Details Tab Content -->
-
-                </div>
-            </div>
-        </div>
-    </div>
-</div> <!-- End Product Content Tab Section -->
-<!-- Start Product Default Slider Section -->
-<div class="product-default-slider-section section-top-gap-100 section-fluid">
-    <!-- Start Section Content Text Area -->
-    <div class="section-title-wrapper" data-aos="fade-up" data-aos-delay="0">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="section-content-gap">
-                        <div class="secton-content">
-                            <h3 class="section-title">RELATED PRODUCTS</h3>
-                            <p>Browse the collection of our related products.</p>
+                <div class="product-body">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb text-center text-lg-left">
+                            <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0)">Categories</a></li>
+                            <li class="breadcrumb-item" aria-current="page"><a href="javascript:void(0)">Books</a></li>
+                            <li class="breadcrumb-item"><a class="active" href="javascript:void(0)">The Road</a></li>
+                        </ol>
+                    </nav>
+                    <div class="pro-detail-sec row">
+                        <div class="col-12">
+                            <h4 class="pro-heading text-center text-lg-left">Books  Collections</h4>
+                            <p class="pro-text text-center text-lg-left">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.</p>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Start Section Content Text Area -->
-    <div class="product-wrapper" data-aos="fade-up" data-aos-delay="0">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="product-slider-default-1row default-slider-nav-arrow">
-                        <!-- Slider main container -->
-                        <div class="swiper-container product-default-slider-4grid-1row">
-                            <!-- Additional required wrapper -->
-                            <div class="swiper-wrapper">
-                                <!-- End Product Default Single Item -->
-                                <!-- Start Product Default Single Item -->
-                                <div class="product-default-single-item product-color--golden swiper-slide">
-                                    <div class="image-box">
-                                        <a href="product-details-default.html" class="image-link">
-                                            <img src="assets/images/product/default/home-1/default-9.jpg" alt="">
-                                            <img src="assets/images/product/default/home-1/default-10.jpg" alt="">
-                                        </a>
-                                        <div class="action-link">
-                                            <div class="action-link-left">
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalAddcart">Add to Cart</a>
-                                            </div>
-                                            <div class="action-link-right">
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalQuickview"><i class="icon-magnifier"></i></a>
-                                                <a href="wishlist.html"><i class="icon-heart"></i></a>
-                                                <a href="compare.html"><i class="icon-shuffle"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="content">
-                                        <div class="content-left">
-                                            <h6 class="title"><a href="product-details-default.html">Epicuri per lobortis</a></h6>
-                                            <ul class="review-star">
-                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                <li class="empty"><i class="ion-android-star"></i></li>
-                                            </ul>
-                                        </div>
-                                        <div class="content-right">
-                                            <span class="price">$68</span>
-                                        </div>
+                    <div class="row product-list product-detail">
 
+                        <div class="col-12 col-lg-6 product-detail-slider">
+                            <div class="wrapper">
+                                <div class="Gallery swiper-container img-magnifier-container" id="gallery">
+                                    <div class="swiper-wrapper myimgs">
+                                        <div class="swiper-slide"> <a href="~/book-shop/img/book-1-1.jpg" data-fancybox="1" title="Zoom In"><img class="myimage" src="~/book-shop/img/book-1-1.jpg" alt="gallery"></a></div>
+                                        <div class="swiper-slide"> <a href="~/book-shop/img/book-1.jpg" data-fancybox="2" title="Zoom In"><img class="myimage" src="~/book-shop/img/book-1.jpg" alt="thumnails"></a></div>
+                                        <div class="swiper-slide"> <a href="~/book-shop/img/book-1-2.jpg" data-fancybox="3" title="Zoom In"><img class="myimage" src="~/book-shop/img/book-1-2.jpg" alt="thumnails"></a></div>
                                     </div>
                                 </div>
-                                <!-- End Product Default Single Item -->
-                                <!-- Start Product Default Single Item -->
-                                <div class="product-default-single-item product-color--golden swiper-slide">
-                                    <div class="image-box">
-                                        <a href="product-details-default.html" class="image-link">
-                                            <img src="assets/images/product/default/home-1/default-11.jpg" alt="">
-                                            <img src="assets/images/product/default/home-1/default-3.jpg" alt="">
-                                        </a>
-                                        <div class="action-link">
-                                            <div class="action-link-left">
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalAddcart">Add to Cart</a>
-                                            </div>
-                                            <div class="action-link-right">
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalQuickview"><i class="icon-magnifier"></i></a>
-                                                <a href="wishlist.html"><i class="icon-heart"></i></a>
-                                                <a href="compare.html"><i class="icon-shuffle"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="content">
-                                        <div class="content-left">
-                                            <h6 class="title"><a href="product-details-default.html">Kaoreet lobortis sagit</a></h6>
-                                            <ul class="review-star">
-                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                <li class="empty"><i class="ion-android-star"></i></li>
-                                            </ul>
-                                        </div>
-                                        <div class="content-right">
-                                            <span class="price">$95.00</span>
-                                        </div>
-
+                                <div class="Thumbs swiper-container" id="thumbs">
+                                    <div class="swiper-wrapper">
+                                        <div class="swiper-slide"> <img src="~/book-shop/img/book-1-1.jpg" alt="thumnails"></div>
+                                        <div class="swiper-slide"> <img src="~/book-shop/img/book-1.jpg" alt="thumnails"></div>
+                                        <div class="swiper-slide"> <img src="~/book-shop/img/book-1-2.jpg" alt="thumnails"></div>
                                     </div>
                                 </div>
-                                <!-- End Product Default Single Item -->
-                                <!-- Start Product Default Single Item -->
-                                <div class="product-default-single-item product-color--golden swiper-slide">
-                                    <div class="image-box">
-                                        <a href="product-details-default.html" class="image-link">
-                                            <img src="assets/images/product/default/home-1/default-5.jpg" alt="">
-                                            <img src="assets/images/product/default/home-1/default-7.jpg" alt="">
-                                        </a>
-                                        <div class="action-link">
-                                            <div class="action-link-left">
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalAddcart">Add to Cart</a>
-                                            </div>
-                                            <div class="action-link-right">
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalQuickview"><i class="icon-magnifier"></i></a>
-                                                <a href="wishlist.html"><i class="icon-heart"></i></a>
-                                                <a href="compare.html"><i class="icon-shuffle"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="content">
-                                        <div class="content-left">
-                                            <h6 class="title"><a href="product-details-default.html">Condimentum posuere</a></h6>
-                                            <ul class="review-star">
-                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                <li class="empty"><i class="ion-android-star"></i></li>
-                                            </ul>
-                                        </div>
-                                        <div class="content-right">
-                                            <span class="price">$115.00</span>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <!-- End Product Default Single Item -->
-                                <!-- Start Product Default Single Item -->
-                                <div class="product-default-single-item product-color--golden swiper-slide">
-                                    <div class="image-box">
-                                        <a href="product-details-default.html" class="image-link">
-                                            <img src="assets/images/product/default/home-1/default-6.jpg" alt="">
-                                            <img src="assets/images/product/default/home-1/default-9.jpg" alt="">
-                                        </a>
-                                        <div class="action-link">
-                                            <div class="action-link-left">
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalAddcart">Add to Cart</a>
-                                            </div>
-                                            <div class="action-link-right">
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalQuickview"><i class="icon-magnifier"></i></a>
-                                                <a href="wishlist.html"><i class="icon-heart"></i></a>
-                                                <a href="compare.html"><i class="icon-shuffle"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="content">
-                                        <div class="content-left">
-                                            <h6 class="title"><a href="product-details-default.html">Convallis quam sit</a></h6>
-                                            <ul class="review-star">
-                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                <li class="empty"><i class="ion-android-star"></i></li>
-                                            </ul>
-                                        </div>
-                                        <div class="content-right">
-                                            <span class="price">$75.00 - $85.00</span>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <!-- End Product Default Single Item -->
-                                <!-- Start Product Default Single Item -->
-                                <div class="product-default-single-item product-color--golden swiper-slide">
-                                    <div class="image-box">
-                                        <a href="product-details-default.html" class="image-link">
-                                            <img src="assets/images/product/default/home-1/default-1.jpg" alt="">
-                                            <img src="assets/images/product/default/home-1/default-2.jpg" alt="">
-                                        </a>
-                                        <div class="tag">
-                                            <span>sale</span>
-                                        </div>
-                                        <div class="action-link">
-                                            <div class="action-link-left">
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalAddcart">Add to Cart</a>
-                                            </div>
-                                            <div class="action-link-right">
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalQuickview"><i class="icon-magnifier"></i></a>
-                                                <a href="wishlist.html"><i class="icon-heart"></i></a>
-                                                <a href="compare.html"><i class="icon-shuffle"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="content">
-                                        <div class="content-left">
-                                            <h6 class="title"><a href="product-details-default.html">Aliquam lobortis</a></h6>
-                                            <ul class="review-star">
-                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                <li class="empty"><i class="ion-android-star"></i></li>
-                                            </ul>
-                                        </div>
-                                        <div class="content-right">
-                                            <span class="price">$75.00 - $85.00</span>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <!-- End Product Default Single Item -->
-                                <!-- Start Product Default Single Item -->
-                                <div class="product-default-single-item product-color--golden swiper-slide">
-                                    <div class="image-box">
-                                        <a href="product-details-default.html" class="image-link">
-                                            <img src="assets/images/product/default/home-1/default-3.jpg" alt="">
-                                            <img src="assets/images/product/default/home-1/default-4.jpg" alt="">
-                                        </a>
-                                        <div class="tag">
-                                            <span>sale</span>
-                                        </div>
-                                        <div class="action-link">
-                                            <div class="action-link-left">
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalAddcart">Add to Cart</a>
-                                            </div>
-                                            <div class="action-link-right">
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalQuickview"><i class="icon-magnifier"></i></a>
-                                                <a href="wishlist.html"><i class="icon-heart"></i></a>
-                                                <a href="compare.html"><i class="icon-shuffle"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="content">
-                                        <div class="content-left">
-                                            <h6 class="title"><a href="product-details-default.html">Condimentum posuere</a></h6>
-                                            <ul class="review-star">
-                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                <li class="empty"><i class="ion-android-star"></i></li>
-                                            </ul>
-                                        </div>
-                                        <div class="content-right">
-                                            <span class="price"><del>$89.00</del> $80.00</span>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <!-- End Product Default Single Item -->
-                                <!-- Start Product Default Single Item -->
-                                <div class="product-default-single-item product-color--golden swiper-slide">
-                                    <div class="image-box">
-                                        <a href="product-details-default.html" class="image-link">
-                                            <img src="assets/images/product/default/home-1/default-5.jpg" alt="">
-                                            <img src="assets/images/product/default/home-1/default-6.jpg" alt="">
-                                        </a>
-                                        <div class="tag">
-                                            <span>sale</span>
-                                        </div>
-                                        <div class="action-link">
-                                            <div class="action-link-left">
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalAddcart">Add to Cart</a>
-                                            </div>
-                                            <div class="action-link-right">
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalQuickview"><i class="icon-magnifier"></i></a>
-                                                <a href="wishlist.html"><i class="icon-heart"></i></a>
-                                                <a href="compare.html"><i class="icon-shuffle"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="content">
-                                        <div class="content-left">
-                                            <h6 class="title"><a href="product-details-default.html">Cras neque metus</a></h6>
-                                            <ul class="review-star">
-                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                <li class="empty"><i class="ion-android-star"></i></li>
-                                            </ul>
-                                        </div>
-                                        <div class="content-right">
-                                            <span class="price"><del>$70.00</del> $60.00</span>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <!-- End Product Default Single Item -->
-                                <!-- Start Product Default Single Item -->
-                                <div class="product-default-single-item product-color--golden swiper-slide">
-                                    <div class="image-box">
-                                        <a href="product-details-default.html" class="image-link">
-                                            <img src="assets/images/product/default/home-1/default-7.jpg" alt="">
-                                            <img src="assets/images/product/default/home-1/default-8.jpg" alt="">
-                                        </a>
-                                        <div class="action-link">
-                                            <div class="action-link-left">
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalAddcart">Add to Cart</a>
-                                            </div>
-                                            <div class="action-link-right">
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalQuickview"><i class="icon-magnifier"></i></a>
-                                                <a href="wishlist.html"><i class="icon-heart"></i></a>
-                                                <a href="compare.html"><i class="icon-shuffle"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="content">
-                                        <div class="content-left">
-                                            <h6 class="title"><a href="product-details-default.html">Donec eu libero ac</a></h6>
-                                            <ul class="review-star">
-                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                <li class="fill"><i class="ion-android-star"></i></li>
-                                                <li class="empty"><i class="ion-android-star"></i></li>
-                                            </ul>
-                                        </div>
-                                        <div class="content-right">
-                                            <span class="price">$74</span>
-                                        </div>
-
-                                    </div>
-                                </div> <!-- End Product Default Single Item -->
                             </div>
                         </div>
-                        <!-- If we need navigation buttons -->
-                        <div class="swiper-button-prev"></div>
-                        <div class="swiper-button-next"></div>
+
+                        <div class="col-12 col-lg-6 text-center text-lg-left">
+                            <div class="product-single-price">
+                                <h4><span class="real-price">$249</span> <span><del>$450</del></span></h4>
+                                <p class="pro-description">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.</p>
+                            </div>
+
+                            <div class="product-checklist">
+                                <ul>
+                                    <li><i class="fas fa-check"></i> Satisfaction 100% Guaranteed</li>
+                                    <li><i class="fas fa-check"></i> free shipping on orders over $99</li>
+                                    <li><i class="fas fa-check"></i> 14 days easy Return</li>
+                                </ul>
+                            </div>
+
+                            <div class="row product-quantity input_plus_mins no-gutters">
+
+                                <div class="qty col-12 col-lg-3 d-lg-flex  align-items-lg-center d-inline-block">
+                                    <span class="minus bg-dark"><i class="lni-minus"></i></span>
+                                    <input type="number" class="count" name="qty" value="1">
+                                    <span class="plus bg-dark"><i class="lni-plus"></i></span>
+                                </div>
+                                <div class="col-12 col-lg-9">
+                                    <button class="btn green-color-yellow-gradient-btn">ADD TO CART</button>
+                                </div>
+                            </div>
+
+
+                            <div class="dropdown-divider"></div>
+
+                            <div class="product-tags-list">
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><p class="d-inline">SKU: <span>00012</span></p></li>
+                                        <li class="breadcrumb-item"><span class="d-inline">Categories: <a href="javascript:void(0)">Classic</a><span class="comma-separtor">,</span><a href="javascript:void(0)">Fantasy</a></span></li>
+                                        <li class="breadcrumb-item" aria-current="page"><p class="d-inline">Tags: <a href="javascript:void(0)">Fantasy</a><span class="comma-separtor">,</span><a href="javascript:void(0)">Classic</a></p></li>
+                                    </ol>
+                                </nav>
+                            </div>
+
+                            <div class="share-product-details">
+                                <ul class="share-product-icons">
+                                    <li><p>Share Link:</p></li>
+                                    <li><a href="javascript:void(0)" class="facebook-bg-hvr"><i class="fab fa-facebook-f" aria-hidden="true"></i></a></li>
+                                    <li><a href="javascript:void(0)" class="twitter-bg-hvr"><i class="fab fa-twitter" aria-hidden="true"></i></a> </li>
+                                    <li><a href="javascript:void(0)" class="linkedin-bg-hvr"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a></li>
+                                    <li><a href="javascript:void(0)" class="instagram-bg-hvr"><i class="fab fa-instagram" aria-hidden="true"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mt-4 mb-4">
+                            <div class="row no-gutters product-all-details">
+
+                                <ul class="col-12 nav nav-tabs" id="myTab" role="tablist">
+
+
+                                    <li class="col-4 nav-item">
+                                        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="true">Customer Reviews  (2)</a>
+                                    </li>
+                                </ul>
+                                <div class="col-12 tab-content" id="myTabContent">
+
+                                    <div class="tab-pane fade reviews" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+
+                                        <div class="media">
+                                            <div class="row no-gutter">
+                                                <div class="col-12 col-lg-2 p-0">
+
+                                                    <div class="row no-gutters">
+                                                        <div class="col-12 d-flex  justify-content-center">
+                                                            <img src="img/user.jpg" alt="Generic placeholder image">
+                                                        </div>
+                                                        <div class="col-12 d-flex mt-2 justify-content-center">
+                                                            <ul class="user-rating">
+                                                                <li><a href="#"><i class="lni-star-filled"></i></a></li>
+                                                                <li><a href="#"><i class="lni-star-filled"></i></a></li>
+                                                                <li><a href="#"><i class="lni-star-filled"></i></a></li>
+                                                                <li><a href="#"><i class="lni-star-filled"></i></a></li>
+                                                                <li><a href="#"><i class="lni-star"></i></a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="col-12 col-lg-10 p-0">
+                                                    <div class="media-body">
+                                                        <span class="text-center text-lg-left d-block">27 Aug 2017</span>
+                                                        <h5 class="mb-2 text-center text-lg-left">Media heading</h5>
+                                                        <p class="text-center text-lg-left">Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam.</p>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="media">
+                                            <div class="row no-gutter">
+                                                <div class="col-12 col-lg-2 p-0">
+
+                                                    <div class="row no-gutters">
+                                                        <div class="col-12 d-flex  justify-content-center">
+                                                            <img src="img/user2.jpg" alt="Generic placeholder image">
+                                                        </div>
+                                                        <div class="col-12 d-flex mt-2 justify-content-center">
+                                                            <ul class="user-rating">
+                                                                <li><a href="#"><i class="lni-star-filled"></i></a></li>
+                                                                <li><a href="#"><i class="lni-star-filled"></i></a></li>
+                                                                <li><a href="#"><i class="lni-star-filled"></i></a></li>
+                                                                <li><a href="#"><i class="lni-star-filled"></i></a></li>
+                                                                <li><a href="#"><i class="lni-star"></i></a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="col-12 col-lg-10 p-0">
+                                                    <div class="media-body ">
+                                                        <span class="text-center text-lg-left d-block">27 Aug 2017</span>
+                                                        <h5 class="mb-2 text-center text-lg-left">Media heading</h5>
+                                                        <p class="text-center text-lg-left">Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam.</p>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="row pl-2 pr-2">
+                                            <div class="col-12 d-flex mb-4 mt-3">
+                                                <h5 class="text-nowrap">Add Review</h5>
+                                                <hr class="w-100 ml-5">
+                                            </div>
+                                            <div class="col-12">
+                                                <form class="getin_form border-form" id="register">
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-sm-12">
+                                                            <div class="form-group bottom35">
+                                                                <input type="text" class="form-control"
+                                                                       placeholder="Name*" required="" id="registerName">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-sm-12">
+                                                            <div class="form-group bottom35">
+                                                                <input type="email" class="form-control"
+                                                                       placeholder="Email*" required="" id="registerEmail">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12 col-lg-2 text-center text-lg-left">
+                                                            <h5 class="text-nowrap">Your Rating</h5>
+                                                        </div>
+                                                        <div class="col-12 col-lg-10 text-center text-lg-left">
+                                                            <ul class="user-rating">
+                                                                <li><a href="#"><i class="lni-star-filled"></i></a></li>
+                                                                <li><a href="#"><i class="lni-star-filled"></i></a></li>
+                                                                <li><a href="#"><i class="lni-star-filled"></i></a></li>
+                                                                <li><a href="#"><i class="lni-star-filled"></i></a></li>
+                                                                <li><a href="#"><i class="lni-star"></i></a></li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <div class="form-group">
+                                                                <!--                                                                            <label for="comment">Your Rating:</label>-->
+                                                                <textarea class="form-control textareaclass" rows="5"
+                                                                          id="comment" placeholder="Your Review"></textarea>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-12 mt-3">
+                                                            <div class="form-group d-flex justify-content-center d-lg-block">
+                                                                <button class="text-center btn green-color-yellow-gradient-btn">
+                                                                    Add
+                                                                    Review
+                                                                </button>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!--START LATEST ARRIVALS-->
+    <div class="lastest_arrivals">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 mb-4">
+                    <h1>Published Books</h1>
+                </div>
+
+                <div class="col-12">
+                    <div class="lastest_featured_products owl-carousel owl-theme">
+
+                        <div class="lastest_arrival_items item">
+                            <a href="product-detail.html" class="lastest-addto-cart"><i class="fa fa-shopping-cart"></i></a>
+                            <div class="card">
+                                <span class="product-type">NEW</span>
+                                <div class="image-holder">
+                                    <a href="img/l1.jpg" data-fancybox="lastest_product" data-title="Shirt Name">
+                                        <img src="img/l1.jpg" class="card-img-top" alt="Lastest Arrivals 1">
+                                    </a>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12 text-center">
+                                            <h5 class="card-title">Love In The Time</h5>
+                                        </div>
+                                        <div class="col-12 text-center">
+                                            <p class="card-text"> $750.00</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="lastest_arrival_items item">
+                            <a href="product-detail.html" class="lastest-addto-cart"><i class="fa fa-shopping-cart"></i></a>
+                            <div class="card">
+                                <span class="product-type">NEW</span>
+                                <div class="image-holder">
+                                    <a href="img/l7.jpg" data-fancybox="lastest_product" data-title="Lastest Arrivals 1">
+                                        <img src="img/l7.jpg" class="card-img-top" alt="Lastest Arrivals 1">
+                                    </a>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12 text-center">
+                                            <h5 class="card-title">The Joke</h5>
+                                        </div>
+                                        <div class="col-12 text-center">
+                                            <p class="card-text text-center"> $850.00</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="lastest_arrival_items item">
+                            <a href="product-detail.html" class="lastest-addto-cart"><i class="fa fa-shopping-cart"></i></a>
+                            <div class="card">
+                                <span class="product-type">NEW</span>
+                                <div class="image-holder">
+                                    <a href="img/l8.jpg" data-fancybox="lastest_product" data-title="Lastest Arrivals 1">
+                                        <img src="img/l8.jpg" class="card-img-top" alt="Lastest Arrivals 1">
+                                    </a>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12 text-center">
+                                            <h5 class="card-title">Never Let Me Go </h5>
+                                        </div>
+                                        <div class="col-12 text-center">
+                                            <p class="card-text text-center"> $650.00</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="lastest_arrival_items item">
+                            <a href="product-detail.html" class="lastest-addto-cart"><i class="fa fa-shopping-cart"></i></a>
+                            <div class="card">
+                                <span class="product-type">NEW</span>
+                                <div class="image-holder">
+                                    <a href="img/l9.jpg" data-fancybox="lastest_product" data-title="Lastest Arrivals 1">
+                                        <img src="img/l9.jpg" class="card-img-top" alt="Lastest Arrivals 1">
+                                    </a>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12 text-center">
+                                            <h5 class="card-title"> The Last World</h5>
+                                        </div>
+                                        <div class="col-12 text-center">
+                                            <p class="card-text text-center"> $680.00</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="lastest_arrival_items item">
+                            <a href="product-detail.html" class="lastest-addto-cart"><i class="fa fa-shopping-cart"></i></a>
+                            <div class="card">
+                                <span class="product-type">NEW</span>
+                                <div class="image-holder">
+                                    <a href="img/l10.jpg" data-fancybox="lastest_product" data-title="Lastest Arrivals 1">
+                                        <img src="img/l10.jpg" class="card-img-top" alt="Lastest Arrivals 1">
+                                    </a>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12 text-center">
+                                            <h5 class="card-title">Brave New World</h5>
+                                        </div>
+                                        <div class="col-12 text-center">
+                                            <p class="card-text text-center"> $250.00</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="lastest_arrival_items item">
+                            <a href="product-detail.html" class="lastest-addto-cart"><i class="fa fa-shopping-cart"></i></a>
+                            <div class="card">
+                                <span class="product-type">NEW</span>
+                                <div class="image-holder">
+                                    <a href="img/l11.jpg" data-fancybox="lastest_product" data-title="Lastest Arrivals 1">
+                                        <img src="img/l11.jpg" class="card-img-top" alt="Lastest Arrivals 1">
+                                    </a>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12 text-center">
+                                            <h5 class="card-title">Life Without Money</h5>
+                                        </div>
+                                        <div class="col-12 text-center">
+                                            <p class="card-text text-center"> $850.00</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="lastest_arrival_items item">
+                            <a href="product-detail.html" class="lastest-addto-cart"><i class="fa fa-shopping-cart"></i></a>
+                            <div class="card">
+                                <span class="product-type">NEW</span>
+                                <div class="image-holder">
+                                    <a href="img/l12.jpg" data-fancybox="lastest_product" data-title="Lastest Arrivals 1">
+                                        <img src="img/l12.jpg" class="card-img-top" alt="Lastest Arrivals 1">
+                                    </a>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12 text-center">
+                                            <h5 class="card-title">Life Is Elsewhere</h5>
+                                        </div>
+                                        <div class="col-12 text-center">
+                                            <p class="card-text text-center"> $950.00</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="lastest_arrival_items item">
+                            <a href="product-detail.html" class="lastest-addto-cart"><i class="fa fa-shopping-cart"></i></a>
+                            <div class="card">
+                                <span class="product-type">NEW</span>
+                                <div class="image-holder">
+                                    <a href="img/l7.jpg" data-fancybox="lastest_product" data-title="Lastest Arrivals 1">
+                                        <img src="img/l13.jpg" class="card-img-top" alt="Lastest Arrivals 1">
+                                    </a>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12 text-center">
+                                            <h5 class="card-title">The Road</h5>
+                                        </div>
+                                        <div class="col-12 text-center">
+                                            <p class="card-text text-center"> $550.00</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <!--END LATEST ARRIVALS-->
+
 </div>
-<!-- End Pro
 

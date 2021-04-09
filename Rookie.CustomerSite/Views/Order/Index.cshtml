@@ -5,52 +5,84 @@
 @{
 }
 
-<div class="col-sm-12 col-md-9 col-lg-9">
-    <!-- Tab panes -->
+<!-- START SHOP CART SECTION -->
 
-    <h4>Orders</h4>
-    <div class="table_page table-responsive">
-        <table>
-            <thead>
-                <tr>
-                    <th>Order</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th>Total</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var i in Model)
-                {
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-10  text-center text-lg-left wow slideInUp" data-wow-duration="2s">
+            <h1 class="heading">Get Ready For Checkout?</h1>
 
-
-                    <tr>
-                        <td>#</td>
-                        <td>@i.dateOrdered</td>
-                        <td>
-                            @if (i.status == 0)
-                            {
-                                <span class="success">Processing</span>
-                            }
-                            else
-                            {
-                                <span class="success">Completed</span>
-                            }
-
-                        </td>
-                        @for(int j=0; j< i.OrderDetails.Count; j++)
-                        {
-                            //<td>@j.</td>
-                        }
-
-
-                        <td><a href="cart.html" class="view">view</a></td>
-                    </tr>
-                }
-
-            </tbody>
-        </table>
+        </div>
     </div>
 </div>
+<div class="shop-cart wow slideInUp" data-wow-duration="2s">
+    <div class="container">
+        <!-- START SHOP CART TABLE -->
+        <div class="row pt-5">
+            <div class="col-12 col-md-12  cart_table wow fadeInUp animated" data-wow-delay="300ms" style="visibility: visible; animation-delay: 300ms; animation-name: fadeInUp;">
+                <div class="table-responsive">
+                    <table class="table table-bordered border-radius">
+                        <thead>
+                            <tr>
 
+                                <th class="darkcolor">Order Id</th>
+                                <th class="darkcolor">Product</th>
+                                <th class="darkcolor">Status</th>
+                                <th class="darkcolor">Total</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <div class="d-table product-detail-cart">
+
+                                        <div class="media">
+                                            <div class="row no-gutters">
+
+                                                <div class="col-12 col-lg-2 product-detail-cart-image">
+                                                    <a class="shopping-product" href="javascript:void(0)"><img src="img\shopcart-1.jpg" alt="Generic placeholder image"></a>
+                                                </div>
+
+                                                <div class="col-12 col-lg-10 mt-auto product-detail-cart-data">
+                                                    <div class="media-body ml-lg-3">
+                                                        <h4 class="product-name"><a href="product-detail.html">Love Does</a></h4>
+                                                        <p class="product-des">We offer the most complete in the country</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <h4 class="text-center amount">Proccessing</h4>
+                                </td>
+                                <td>
+                                    <h4 class="text-center amount">$130.00</h4>
+                                </td>
+
+
+                                <td class="text-center"><a class="btn-close" href="javascript:void(0)"><i class="lni-eye"></i></a></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="apply_coupon">
+                    <div class="row">
+                        <div class="col-12 text-left">
+                            <a href="shop-cart.html" class="btn yellow-color-green-gradient-btn">GO BACK</a>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END SHOP CART TABLE -->
+
+
+    </div>
+</div>
+<!-- END SHOP CART SECTION-->

@@ -14,6 +14,7 @@ namespace  RookieShop.Backend.Models
         public string userID { get; set; }
         public int productID { get; set; }
         public int numberRating { get; set; }
+        public DateTime date { get; set; }
         public User User { get; set; }
         public Product Product { get; set; }
 

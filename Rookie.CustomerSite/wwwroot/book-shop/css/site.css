@@ -1,0 +1,140 @@
+﻿* {
+    box-sizing: border-box;
+}
+
+body {
+    background: #ddd;
+    padding: 20px;
+}
+
+@-webkit-keyframes dance {
+    0% {
+        transform: rotate(-5deg);
+    }
+
+    50% {
+        transform: rotate(5deg);
+    }
+
+    100% {
+        transform: rotate(-5deg);
+    }
+}
+
+@keyframes dance {
+    0% {
+        transform: rotate(-5deg);
+    }
+
+    50% {
+        transform: rotate(5deg);
+    }
+
+    100% {
+        transform: rotate(-5deg);
+    }
+}
+
+.star-rating {
+    font-size: 20px;
+    padding: 0.25em 0.375em;
+    display: inline-flex;
+    flex-flow: row-reverse;
+    overflow: hidden;
+    border-radius: 0.75em;
+    background-color: white;
+}
+
+    .star-rating input {
+        cursor: pointer;
+        position: relative;
+        padding: 0;
+        width: 1em;
+        height: 1em;
+        float: left;
+        text-align: center;
+        line-height: 1em;
+    }
+
+        .star-rating input:before,
+        .star-rating input:after {
+            display: block;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            position: absolute;
+        }
+
+        .star-rating input:before {
+            content: "";
+            background-color: white;
+        }
+
+        .star-rating input:after {
+            content: "\f005";
+            font-family: FontAwesome;
+            color: #eee;
+            transition: color 0.2s;
+        }
+
+        .star-rating input:checked:after,
+        .star-rating input:checked ~ input:after {
+            color: #fc0;
+            -webkit-animation: 0.5s dance infinite;
+            animation: 0.5s dance infinite;
+        }
+
+.heart-rating {
+    padding: 0.25em 0.375em;
+    display: inline-flex;
+    flex-flow: row-reverse;
+    overflow: hidden;
+    border-radius: 0.75em;
+    background-color: black;
+    font-size: 20px;
+}
+
+    .heart-rating input {
+        cursor: pointer;
+        position: relative;
+        padding: 0;
+        width: 1em;
+        height: 1em;
+        float: left;
+        text-align: center;
+        line-height: 1em;
+    }
+
+        .heart-rating input:before,
+        .heart-rating input:after {
+            display: block;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            position: absolute;
+        }
+
+        .heart-rating input:before {
+            content: "";
+            background-color: black;
+        }
+
+        .heart-rating input:after {
+            content: "\f004";
+            font-family: FontAwesome;
+            color: #333;
+            transition: color 0.2s;
+        }
+
+        .heart-rating input:checked:after,
+        .heart-rating input:checked ~ input:after {
+            color: #f06;
+            -webkit-animation: 0.5s dance infinite;
+            animation: 0.5s dance infinite;
+        }
+
+        .heart-rating input:after {
+            font-size: 16px;
+        }

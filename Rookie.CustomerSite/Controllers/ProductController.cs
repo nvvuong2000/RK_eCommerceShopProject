@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using RookieShop.Backend.Models;
 using RookieShop.Shared;
+using RookieShop.Shared.Repo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,6 +46,10 @@ namespace Rookie.CustomerSite.Controllers
                 return View();
                 
             }
+        }
+        public async Task<ActionResult> Ratings(RatingProductRequest request)
+        {
+            return View();
         }
     }
 }

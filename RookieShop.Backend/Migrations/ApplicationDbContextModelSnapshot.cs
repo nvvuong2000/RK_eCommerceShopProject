@@ -170,8 +170,7 @@ namespace RookieShop.Backend.Migrations
 
                     b.HasKey("productId", "userId");
 
-                    b.HasIndex("userId")
-                        .IsUnique();
+                    b.HasIndex("userId");
 
                     b.ToTable("Carts");
                 });
@@ -392,6 +391,9 @@ namespace RookieShop.Backend.Migrations
                     b.Property<int>("Id")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("date")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("numberRating")
                         .HasColumnType("int");
 
@@ -536,8 +538,8 @@ namespace RookieShop.Backend.Migrations
                         .IsRequired();
 
                     b.HasOne("RookieShop.Backend.Models.User", "User")
-                        .WithOne("Cart")
-                        .HasForeignKey("RookieShop.Backend.Models.Cart", "userId")
+                        .WithMany()
+                        .HasForeignKey("userId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -660,8 +662,6 @@ namespace RookieShop.Backend.Migrations
 
             modelBuilder.Entity("RookieShop.Backend.Models.User", b =>
                 {
-                    b.Navigation("Cart");
-
                     b.Navigation("Orders");
 
                     b.Navigation("RattingProduct");

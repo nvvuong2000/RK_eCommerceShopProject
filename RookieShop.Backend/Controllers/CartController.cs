@@ -53,28 +53,47 @@ namespace RookieShop.Backend.Controllers
                 return null;
             }
         }
-        [HttpPost("/add")]
-
+        [HttpGet("/add/{id}")]
+        [Authorize(Roles = "user")]
         public async Task<IActionResult> Buy(int id)
+        
         {
+            // Kiểm tra UserId hiện tại
             var Userid = _repoUser.getUserID();
-            var listItem = await _repo.myCart(Userid);
 
+            // Lấy danh sách sản phẩm trong giỏ hàng
+            var listItem = await _repo.myCart(Userid);
+            
+            // Lấy product theo Id
+            var result = _context.Products.FirstOrDefault(x => x.Id == id);
+
+            // Kiểm tra sản phẩm có trong giỏ hàng chưa?
 
             var index = await _repo.FindId(id);
-            if (index != -1)
+
+            if (result.stock <= 0)
             {
-                listItem[index].quantity = listItem[index].quantity + 1;
+                throw new Exception("Số lượng vượt quá số lượng tồn");
             }
             else
             {
-                var result = _context.Products.FirstOrDefault(x => x.Id == id);
-                if (result == null)
+                if (index != -1)
                 {
-                    return NotFound();
+                    
+                    // Nếu có sản phẩm thì tăng số lượng lên 1
+                    listItem[index].quantity = listItem[index].quantity + 1;
                 }
-                var newItem = new Cart { productId = id, quantity = 1, unitPrice = result.unitPrice, userId = Userid };
-                _context.Carts.Add(newItem);
+                else
+                {
+
+                    if (result == null)
+                    {
+                        return NotFound();
+                    }
+                    // Tạo mới 1 đối tượng cart
+                    var newItem = new Cart { productId = id, quantity = 1, unitPrice = result.unitPrice, userId = Userid };
+                    _context.Carts.Add(newItem);
+                }
             }
             await _context.SaveChangesAsync();
             return Ok(StatusCodes.Status200OK);
@@ -82,11 +101,12 @@ namespace RookieShop.Backend.Controllers
 
         }
         [HttpGet("addquantity/{product}/number/{quan}")]
-
+        [Authorize(Roles = "user")]
         public async Task<IActionResult> AddQuantity(int product, int quan)
         {
             var Userid = _repoUser.getUserID();
             var listItem = await _repo.myCart(Userid);
+
             var result = _context.Products.FirstOrDefault(x => x.Id == product);
 
             var index = await _repo.FindId(product);
@@ -109,6 +129,7 @@ namespace RookieShop.Backend.Controllers
 
 
         [HttpGet("total")]
+        [Authorize(Roles = "user")]
         public async Task<decimal> TotalBill()
         {
             try
@@ -127,6 +148,7 @@ namespace RookieShop.Backend.Controllers
         }
 
         [HttpGet("/remove/{id}")]
+        [Authorize(Roles = "user")]
         public async Task<IActionResult> Remove(int id)
         {
 
@@ -147,6 +169,7 @@ namespace RookieShop.Backend.Controllers
 
         }
         [HttpGet("checkout")]
+        [Authorize(Roles = "user")]
         public async Task<IActionResult> Checkout()
         {
 

@@ -17,6 +17,9 @@ namespace RookieShop.Backend.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Cart>().HasKey(sc => new { sc.productId, sc.userId });
+
+
+
             modelBuilder.Entity<ProviderProduct>().HasKey(sc => new { sc.productId, sc.providerId });
             modelBuilder.Entity<RattingProduct>().HasKey(sc => new { sc.productID, sc.userID, sc.Id });
             modelBuilder.Entity<Provider>().HasData(

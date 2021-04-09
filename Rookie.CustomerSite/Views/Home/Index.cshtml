@@ -5,286 +5,488 @@
 @{
 }
 @Html.Partial("~/Views/Shared/_LoginPartial.cshtml")
-<div class="breadcrumb-section breadcrumb-bg-color--golden">
-    <div class="breadcrumb-wrapper">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <h3 class="breadcrumb-title">Shop - Grid Left Sidebar</h3>
-                    <div class="breadcrumb-nav breadcrumb-nav-color--black breadcrumb-nav-hover-color--golden">
-                        <nav aria-label="breadcrumb">
-                            <ul>
-                                <li><a href="index.html">Home</a></li>
-                                <li><a href="shop-grid-sidebar-left.html">Shop</a></li>
-                                <li class="active" aria-current="page">Shop Grid Left Sidebar</li>
-                            </ul>
-                        </nav>
+<div class="portfolio-section">
+    <div class="container">
+        <div class="row">
+
+            <!-- START PORTFOLIO HEADING -->
+            <div class="col-12">
+                <div class="portfolioHeading text-center">
+                    <h1 class="high-lighted-heading">Our Popular Product</h1>
+                    <p>Aenean imperdiet. Etiam ultricies nisi vel augue men tuhi spectrum alle me.</p>
+                </div>
+            </div>
+            <!-- END PORTFOLIO HEADING -->
+            <!-- START FILTERS -->
+            <div class="col-12">
+                <div class="clearfix d-flex justify-content-center">
+                    <div id="js-filters-blog-posts" class="cbp-l-filters-button cbp-1-filters-alignCenter">
+                        <div data-filter="*" class="cbp-filter-item-active cbp-filter-item">All </div>
+                        <div data-filter=".Classic" class="cbp-filter-item">Classics</div>
+                        <div data-filter=".Fantasy" class="cbp-filter-item">Fantasy</div>
+                        <div data-filter=".motion" class="cbp-filter-item">Historical Fiction</div>
                     </div>
+                </div>
+            </div>
+            <!-- END FILTERS -->
+            <!-- START PORTFOLIO IMAGES -->
+            <div class="col-12">
+                <div id="js-grid-blog-posts" class="cbp">
+
+                    <div class="cbp-item Classic Fantasy">
+                        <a class="portfolio-circle-cart" href="book-shop\shop-cart.html">
+                            <i class="fa fa-shopping-cart"></i>
+                        </a>
+                        <div class="cbp-caption-defaultWrap  owl-theme sync-portfolio-carousel owl-carousel">
+                            <div class="item"> <a href="book-shop\img\book-1.jpg" class="cbp-caption" data-fancybox="gallery1" data-title="Book 1"><img src="book-shop\img\book-1.jpg" alt="Book 1"></a></div>
+                            <div class="item"> <a href="book-shop\img\book-1-1.jpg" class="cbp-caption" data-fancybox="gallery1" data-title="Book 1"><img src="book-shop\img\book-1-1.jpg" alt="Book 1"></a></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <div class="cbp-l-grid-blog-title"><a href="#" target="_blank" class="portfolio-title">So Sad Today</a></div>
+                            </div>
+                            <div class="col-12 text-center">
+                                <div class="cbp-l-grid-blog-desc portfolio-des">$750.00</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cbp-item Classic Fantasy">
+                        <a class="portfolio-circle-cart" href="book-shop\shop-cart.html">
+                            <i class="fa fa-shopping-cart"></i>
+                        </a>
+                        <div class="cbp-caption-defaultWrap  owl-theme sync-portfolio-carousel owl-carousel">
+                            <div class="item"> <a href="book-shop\img\book-2.jpg" class="cbp-caption" data-fancybox="gallery2" data-title="Book2"> <img src="book-shop\img\book-2.jpg" alt=""></a></div>
+                            <div class="item"> <a href="book-shop\img\book-2-1.jpg" class="cbp-caption" data-fancybox="gallery2" data-title="Book2"><img src="book-shop\img\book-2-1.jpg" alt=""></a></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <div class="cbp-l-grid-blog-title"><a href="#" target="_blank" class="portfolio-title">The Last Stand</a></div>
+                            </div>
+                            <div class="col-12 text-center">
+                                <div class="cbp-l-grid-blog-desc portfolio-des">$550.00</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cbp-item Classic">
+                        <a class="portfolio-circle-cart" href="book-shop\shop-cart.html">
+                            <i class="fa fa-shopping-cart"></i>
+                        </a>
+                        <div class="cbp-caption-defaultWrap  owl-theme sync-portfolio-carousel owl-carousel">
+                            <div class="item"> <a href="book-shop\img\book-3.jpg" class="cbp-caption" data-fancybox="gallery3" data-title="Shirt Name"> <img src="book-shop\img\book-3.jpg" alt=""></a></div>
+                            <div class="item"> <a href="book-shop\img\book-3-1.jpg" class="cbp-caption" data-fancybox="gallery3" data-title="Shirt Name"><img src="book-shop\img\book-3-1.jpg" alt=""></a></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <div class="cbp-l-grid-blog-title"><a href="#" target="_blank" class="portfolio-title">Love Does</a></div>
+                            </div>
+                            <div class="col-12 text-center">
+                                <div class="cbp-l-grid-blog-desc portfolio-des">$450.00</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cbp-item Fantasy motion">
+
+                        <a class="portfolio-circle-cart" href="book-shop\shop-cart.html">
+                            <i class="fa fa-shopping-cart"></i>
+                        </a>
+
+                        <div class="cbp-caption-defaultWrap  owl-theme sync-portfolio-carousel owl-carousel">
+                            <div class="item"> <a href="book-shop\img\book-4.jpg" class="cbp-caption" data-fancybox="gallery4" data-title="Shirt Name"> <img src="book-shop\img\book-4.jpg" alt=""></a></div>
+                            <div class="item"> <a href="book-shop\img\book-4-1.jpg" class="cbp-caption" data-fancybox="gallery4" data-title="Shirt Name"><img src="book-shop\img\book-4-1.jpg" alt=""></a></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <div class="cbp-l-grid-blog-title"><a href="#" target="_blank" class="portfolio-title">The Imortal Rules</a></div>
+                            </div>
+                            <div class="col-12 text-center">
+                                <div class="cbp-l-grid-blog-desc portfolio-des">$750.00</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cbp-item Fantasy motion">
+                        <a class="portfolio-circle-cart" href="book-shop\shop-cart.html">
+                            <i class="fa fa-shopping-cart"></i>
+                        </a>
+
+                        <div class="cbp-caption-defaultWrap  owl-theme sync-portfolio-carousel owl-carousel">
+                            <div class="item"> <a href="book-shop\img\book-5.jpg" class="cbp-caption" data-fancybox="gallery5" data-title="Shirt Name"> <img src="book-shop\img\book-5.jpg" alt=""></a></div>
+                            <div class="item"> <a href="book-shop\img\book-5-1.jpg" class="cbp-caption" data-fancybox="gallery5" data-title="Shirt Name"><img src="book-shop\img\book-5-1.jpg" alt=""></a></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <div class="cbp-l-grid-blog-title"><a href="#" target="_blank" class="portfolio-title">As I Lay Dying</a></div>
+                            </div>
+                            <div class="col-12 text-center">
+                                <div class="cbp-l-grid-blog-desc portfolio-des">$450.00</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="cbp-item Fantasy motion">
+                        <a class="portfolio-circle-cart" href="book-shop\shop-cart.html">
+                            <i class="fa fa-shopping-cart"></i>
+                        </a>
+
+                        <div class="cbp-caption-defaultWrap  owl-theme sync-portfolio-carousel owl-carousel">
+                            <div class="item"> <a href="book-shop\img\book-6.jpg" class="cbp-caption" data-fancybox="gallery6" data-title="Shirt Name"> <img src="book-shop\img\book-6.jpg" alt=""></a></div>
+                            <div class="item"> <a href="book-shop\img\book-6-1.jpg" class="cbp-caption" data-fancybox="gallery6" data-title="Shirt Name"><img src="book-shop\img\book-6-1.jpg" alt=""></a></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <div class="cbp-l-grid-blog-title"><a href="#" target="_blank" class="portfolio-title">No One Belongs</a></div>
+                            </div>
+                            <div class="col-12 text-center">
+                                <div class="cbp-l-grid-blog-desc portfolio-des">$999.00</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <!-- END PORTFOLIO IMAGES -->
+
+        </div>
+    </div>
+</div>
+<!--START BANNER SECTION-->
+<div class="banner-section parallax-slide">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-6 text-center text-lg-left">
+                <div class="banner-content-wrapper">
+                    <span>TRENDING PRODUCT OF THE WEEK</span>
+                    <h1>Books <span>Collections</span></h1>
+                    <p>Aenean imperdiet. Etiam ultricies nisi vel augue men tuhi spectrum alle me</p>
+                    <button type="button" class="btn green-color-yellow-gradient-btn">BUY NOW</button>
                 </div>
             </div>
         </div>
     </div>
-</div> <!-- ...:::: End Breadcrumb Section:::... -->
-<!-- ...:::: Start Shop Section:::... -->
-<div class="shop-section">
+</div>
+<!--END BANNER SECTION-->
+<!--START LATEST ARRIVALS-->
+<div class="lastest_arrivals">
     <div class="container">
-        <div class="row flex-column-reverse flex-lg-row">
-            <div class="col-lg-3">
-
+        <div class="row">
+            <div class="col-12 mb-4">
+                <h1>Published Books</h1>
             </div>
-            <div class="col-lg-9">
-                <!-- Start Shop Product Sorting Section -->
-                <div class="shop-sort-section">
-                    <div class="container">
-                        <div class="row">
-                            <!-- Start Sort Wrapper Box -->
-                            <div class="sort-box d-flex justify-content-between align-items-md-center align-items-start flex-md-row flex-column" data-aos="fade-up" data-aos-delay="0">
-                                <!-- Start Sort tab Button -->
-                                <div class="sort-tablist d-flex align-items-center">
-                                    <ul class="tablist nav sort-tab-btn">
-                                        <li><a class="nav-link active" data-bs-toggle="tab" href="#layout-3-grid"><img src="assets/images/icons/bkg_grid.png" alt=""></a></li>
 
-                                    </ul>
+            <div class="col-12">
+                <div class="lastest_featured_products owl-carousel owl-theme">
 
-                                    <!-- Start Page Amount -->
-                                    <div class="page-amount ml-2">
-                                        <span>Showing 1–9 of 21 results</span>
-                                    </div> <!-- End Page Amount -->
-                                </div> <!-- End Sort tab Button -->
-                                <!-- Start Sort Select Option -->
-                                <div class="sort-select-list d-flex align-items-center">
-                                    <label class="mr-2">Sort By:</label>
-                                    <form action="#">
-                                        <fieldset>
-                                            <select name="speed" id="speed">
-                                                <option>Sort by average rating</option>
-                                                <option>Sort by popularity</option>
-                                                <option selected="selected">Sort by newness</option>
-                                                <option>Sort by price: low to high</option>
-                                                <option>Sort by price: high to low</option>
-                                                <option>Product Name: Z</option>
-                                            </select>
-                                        </fieldset>
-                                    </form>
-                                </div> <!-- End Sort Select Option -->
-
-
-
-                            </div> <!-- Start Sort Wrapper Box -->
-                        </div>
-                    </div>
-                </div> <!-- End Section Content -->
-                <!-- Start Tab Wrapper -->
-                <div class="sort-product-tab-wrapper">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="tab-content tab-animate-zoom">
-                                    <!-- Start Grid View Product -->
-                                    <div class="tab-pane active show sort-layout-single" id="layout-3-grid">
-                                        <div class="row">
-                                            @for (int i = 0; i < Model.Count; i++)
-                                            {
-                                                <div class="col-xl-4 col-sm-6 col-12">
-                                                    <!-- Start Product Default Single Item -->
-                                                    <div class="product-default-single-item product-color--golden" data-aos="fade-up" data-aos-delay="0">
-                                                        <div class="image-box">
-                                                            <a asp-route-name="@Model[i].productName" asp-route-id="@Model[i].Id" class="image-link">
-                                                                <img src="https://localhost:44341@(Model[i].ProductImages.ToList()[0].pathName)" alt="">
-                                                            </a>
-                                                            <div class="action-link">
-                                                                <div class="action-link-left">
-                                                                    @*data-bs-toggle="modal" data-bs-target="#modalAddcart*@
-                                                                    <a href="@Url.Action("AddProduct","Cart",new {id=Model[i].Id})">Add to Cart</a>
-                                                                </div>
-                                                                <div class="action-link-right">
-                                                                    <a href="@Url.Action("AddProduct","Cart",new {id=Model[i].Id})"  data-bs-target="#modalQuickview"><i class="icon-magnifier"></i></a>
-                                                                    <a href="wishlist.html"><i class="icon-heart"></i></a>
-                                                                    <a href="compare.html"><i class="icon-shuffle"></i></a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="content">
-                                                            <div class="content-left">
-                                                                <h6 class="title"><a href="@Url.Action("Details","Product",new {id=Model[i].Id})">@Model[i].productName</a></h6>
-                                                                <ul class="review-star">
-                                                                    <li class="fill"><i class="ion-android-star"></i></li>
-                                                                    <li class="fill"><i class="ion-android-star"></i></li>
-                                                                    <li class="fill"><i class="ion-android-star"></i></li>
-                                                                    <li class="fill"><i class="ion-android-star"></i></li>
-                                                                    <li class="empty"><i class="ion-android-star"></i></li>
-                                                                </ul>
-                                                            </div>
-                                                            <div class="content-right">
-                                                                <span class="price">@Model[i].unitPrice</span>
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-                                                    <!-- End Product Default Single Item -->
-                                                </div>
-
-                                            }
-
-
-
-                                        </div>
-                                    </div> <!-- End Grid View Product -->
-                                    <!-- Start List View Product -->
-                                    <div class="tab-pane sort-layout-single" id="layout-list">
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <!-- Start Product Defautlt Single -->
-                                                <div class="product-list-single product-color--golden">
-                                                    <a href="product-details-default.html" class="product-list-img-link">
-                                                        <img class="img-fluid" src="assets/images/product/default/home-1/default-1.jpg" alt="">
-                                                        <img class="img-fluid" src="assets/images/product/default/home-1/default-2.jpg" alt="">
-                                                    </a>
-                                                    <div class="product-list-content">
-                                                        <h5 class="product-list-link"><a href="product-details-default.html">KAOREET LOBORTIS SAGIT</a></h5>
-                                                        <ul class="review-star">
-                                                            <li class="fill"><i class="ion-android-star"></i></li>
-                                                            <li class="fill"><i class="ion-android-star"></i></li>
-                                                            <li class="fill"><i class="ion-android-star"></i></li>
-                                                            <li class="fill"><i class="ion-android-star"></i></li>
-                                                            <li class="empty"><i class="ion-android-star"></i></li>
-                                                        </ul>
-                                                        <span class="product-list-price"><del>$30.12</del> $25.12</span>
-                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis ad, iure incidunt. Ab consequatur temporibus non eveniet inventore doloremque necessitatibus sed, ducimus quisquam, ad asperiores</p>
-                                                        <div class="product-action-icon-link-list">
-                                                            <a href="#" data-bs-toggle="modal" data-bs-target="#modalAddcart" class="btn btn-lg btn-black-default-hover">Add to cart</a>
-                                                            <a href="#" data-bs-toggle="modal" data-bs-target="#modalQuickview" class="btn btn-lg btn-black-default-hover"><i class="icon-magnifier"></i></a>
-                                                            <a href="wishlist.html" class="btn btn-lg btn-black-default-hover"><i class="icon-heart"></i></a>
-                                                            <a href="compare.html" class="btn btn-lg btn-black-default-hover"><i class="icon-shuffle"></i></a>
-                                                        </div>
-                                                    </div>
-                                                </div> <!-- End Product Defautlt Single -->
-                                            </div>
-                                            <div class="col-12">
-                                                <!-- Start Product Defautlt Single -->
-                                                <div class="product-list-single product-color--golden">
-                                                    <a href="product-details-default.html" class="product-list-img-link">
-                                                        <img class="img-fluid" src="assets/images/product/default/home-1/default-3.jpg" alt="">
-                                                        <img class="img-fluid" src="assets/images/product/default/home-1/default-4.jpg" alt="">
-                                                    </a>
-                                                    <div class="product-list-content">
-                                                        <h5 class="product-list-link"><a href="product-details-default.html">CONDIMENTUM POSUERE</a></h5>
-                                                        <ul class="review-star">
-                                                            <li class="fill"><i class="ion-android-star"></i></li>
-                                                            <li class="fill"><i class="ion-android-star"></i></li>
-                                                            <li class="fill"><i class="ion-android-star"></i></li>
-                                                            <li class="fill"><i class="ion-android-star"></i></li>
-                                                            <li class="empty"><i class="ion-android-star"></i></li>
-                                                        </ul>
-                                                        <span class="product-list-price">$95.00</span>
-                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis ad, iure incidunt. Ab consequatur temporibus non eveniet inventore doloremque necessitatibus sed, ducimus quisquam, ad asperiores</p>
-                                                        <div class="product-action-icon-link-list">
-                                                            <a href="#" data-bs-toggle="modal" data-bs-target="#modalAddcart" class="btn btn-lg btn-black-default-hover">Add to cart</a>
-                                                            <a href="#" data-bs-toggle="modal" data-bs-target="#modalQuickview" class="btn btn-lg btn-black-default-hover"><i class="icon-magnifier"></i></a>
-                                                            <a href="wishlist.html" class="btn btn-lg btn-black-default-hover"><i class="icon-heart"></i></a>
-                                                            <a href="compare.html" class="btn btn-lg btn-black-default-hover"><i class="icon-shuffle"></i></a>
-                                                        </div>
-                                                    </div>
-                                                </div> <!-- End Product Defautlt Single -->
-                                            </div>
-                                            <div class="col-12">
-                                                <!-- Start Product Defautlt Single -->
-                                                <div class="product-list-single product-color--golden">
-                                                    <a href="product-details-default.html" class="product-list-img-link">
-                                                        <img class="img-fluid" src="assets/images/product/default/home-1/default-5.jpg" alt="">
-                                                        <img class="img-fluid" src="assets/images/product/default/home-1/default-6.jpg" alt="">
-                                                    </a>
-                                                    <div class="product-list-content">
-                                                        <h5 class="product-list-link"><a href="product-details-default.html">ALIQUAM LOBORTIS</a></h5>
-                                                        <ul class="review-star">
-                                                            <li class="fill"><i class="ion-android-star"></i></li>
-                                                            <li class="fill"><i class="ion-android-star"></i></li>
-                                                            <li class="fill"><i class="ion-android-star"></i></li>
-                                                            <li class="fill"><i class="ion-android-star"></i></li>
-                                                            <li class="empty"><i class="ion-android-star"></i></li>
-                                                        </ul>
-                                                        <span class="product-list-price"> $25.12</span>
-                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis ad, iure incidunt. Ab consequatur temporibus non eveniet inventore doloremque necessitatibus sed, ducimus quisquam, ad asperiores</p>
-                                                        <div class="product-action-icon-link-list">
-                                                            <a href="#" data-bs-toggle="modal" data-bs-target="#modalAddcart" class="btn btn-lg btn-black-default-hover">Add to cart</a>
-                                                            <a href="#" data-bs-toggle="modal" data-bs-target="#modalQuickview" class="btn btn-lg btn-black-default-hover"><i class="icon-magnifier"></i></a>
-                                                            <a href="wishlist.html" class="btn btn-lg btn-black-default-hover"><i class="icon-heart"></i></a>
-                                                            <a href="compare.html" class="btn btn-lg btn-black-default-hover"><i class="icon-shuffle"></i></a>
-                                                        </div>
-                                                    </div>
-                                                </div> <!-- End Product Defautlt Single -->
-                                            </div>
-                                            <div class="col-12">
-                                                <!-- Start Product Defautlt Single -->
-                                                <div class="product-list-single product-color--golden">
-                                                    <a href="product-details-default.html" class="product-list-img-link">
-                                                        <img class="img-fluid" src="assets/images/product/default/home-1/default-7.jpg" alt="">
-                                                        <img class="img-fluid" src="assets/images/product/default/home-1/default-8.jpg" alt="">
-                                                    </a>
-                                                    <div class="product-list-content">
-                                                        <h5 class="product-list-link"><a href="product-details-default.html">CONVALLIS QUAM SIT</a></h5>
-                                                        <ul class="review-star">
-                                                            <li class="fill"><i class="ion-android-star"></i></li>
-                                                            <li class="fill"><i class="ion-android-star"></i></li>
-                                                            <li class="fill"><i class="ion-android-star"></i></li>
-                                                            <li class="fill"><i class="ion-android-star"></i></li>
-                                                            <li class="empty"><i class="ion-android-star"></i></li>
-                                                        </ul>
-                                                        <span class="product-list-price">$75.00 - $85.00</span>
-                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis ad, iure incidunt. Ab consequatur temporibus non eveniet inventore doloremque necessitatibus sed, ducimus quisquam, ad asperiores</p>
-                                                        <div class="product-action-icon-link-list">
-                                                            <a href="#" data-bs-toggle="modal" data-bs-target="#modalAddcart" class="btn btn-lg btn-black-default-hover">Add to cart</a>
-                                                            <a href="#" data-bs-toggle="modal" data-bs-target="#modalQuickview" class="btn btn-lg btn-black-default-hover"><i class="icon-magnifier"></i></a>
-                                                            <a href="wishlist.html" class="btn btn-lg btn-black-default-hover"><i class="icon-heart"></i></a>
-                                                            <a href="compare.html" class="btn btn-lg btn-black-default-hover"><i class="icon-shuffle"></i></a>
-                                                        </div>
-                                                    </div>
-                                                </div> <!-- End Product Defautlt Single -->
-                                            </div>
-                                            <div class="col-12">
-                                                <!-- Start Product Defautlt Single -->
-                                                <div class="product-list-single product-color--golden">
-                                                    <a href="product-details-default.html" class="product-list-img-link">
-                                                        <img class="img-fluid" src="assets/images/product/default/home-1/default-9.jpg" alt="">
-                                                        <img class="img-fluid" src="assets/images/product/default/home-1/default-10.jpg" alt="">
-                                                    </a>
-                                                    <div class="product-list-content">
-                                                        <h5 class="product-list-link"><a href="product-details-default.html">DONEC EU LIBERO AC</a></h5>
-                                                        <ul class="review-star">
-                                                            <li class="fill"><i class="ion-android-star"></i></li>
-                                                            <li class="fill"><i class="ion-android-star"></i></li>
-                                                            <li class="fill"><i class="ion-android-star"></i></li>
-                                                            <li class="fill"><i class="ion-android-star"></i></li>
-                                                            <li class="empty"><i class="ion-android-star"></i></li>
-                                                        </ul>
-                                                        <span class="product-list-price"><del>$25.12</del> $20.00</span>
-                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis ad, iure incidunt. Ab consequatur temporibus non eveniet inventore doloremque necessitatibus sed, ducimus quisquam, ad asperiores</p>
-                                                        <div class="product-action-icon-link-list">
-                                                            <a href="#" data-bs-toggle="modal" data-bs-target="#modalAddcart" class="btn btn-lg btn-black-default-hover">Add to cart</a>
-                                                            <a href="#" data-bs-toggle="modal" data-bs-target="#modalQuickview" class="btn btn-lg btn-black-default-hover"><i class="icon-magnifier"></i></a>
-                                                            <a href="wishlist.html" class="btn btn-lg btn-black-default-hover"><i class="icon-heart"></i></a>
-                                                            <a href="compare.html" class="btn btn-lg btn-black-default-hover"><i class="icon-shuffle"></i></a>
-                                                        </div>
-                                                    </div>
-                                                </div> <!-- End Product Defautlt Single -->
-                                            </div>
-                                        </div>
-                                    </div> <!-- End List View Product -->
+                    <div class="lastest_arrival_items item">
+                        <a href="~/book-shop/product-detail.html" class="lastest-addto-cart"><i class="fa fa-shopping-cart"></i></a>
+                        <div class="card">
+                            <span class="product-type">NEW</span>
+                            <div class="image-holder">
+                                <a href="~/book-shop/img/l1.jpg" data-fancybox="lastest_product" data-title="Shirt Name">
+                                    <img src="~/book-shop/img/l1.jpg" class="card-img-top" alt="Lastest Arrivals 1">
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12 text-center">
+                                        <h5 class="card-title">Love In The Time</h5>
+                                    </div>
+                                    <div class="col-12 text-center">
+                                        <p class="card-text"> $750.00</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div> <!-- End Tab Wrapper -->
-                <!-- Start Pagination -->
-                <div class="page-pagination text-center" data-aos="fade-up" data-aos-delay="0">
-                    <ul>
-                        <li><a class="active" href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#"><i class="ion-ios-skipforward"></i></a></li>
-                    </ul>
-                </div> <!-- End Pagination -->
+
+                    <div class="lastest_arrival_items item">
+                        <a href="~/book-shop/product-detail.html" class="lastest-addto-cart"><i class="fa fa-shopping-cart"></i></a>
+                        <div class="card">
+                            <span class="product-type">NEW</span>
+                            <div class="image-holder">
+                                <a href="~/book-shop/img/l7.jpg" data-fancybox="lastest_product" data-title="Lastest Arrivals 1">
+                                    <img src="~/book-shop/img/l7.jpg" class="card-img-top" alt="Lastest Arrivals 1">
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12 text-center">
+                                        <h5 class="card-title">The Joke</h5>
+                                    </div>
+                                    <div class="col-12 text-center">
+                                        <p class="card-text text-center"> $850.00</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lastest_arrival_items item">
+                        <a href="~/book-shop/product-detail.html" class="lastest-addto-cart"><i class="fa fa-shopping-cart"></i></a>
+                        <div class="card">
+                            <span class="product-type">NEW</span>
+                            <div class="image-holder">
+                                <a href="~/book-shop/img/l8.jpg" data-fancybox="lastest_product" data-title="Lastest Arrivals 1">
+                                    <img src="~/book-shop/img/l8.jpg" class="card-img-top" alt="Lastest Arrivals 1">
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12 text-center">
+                                        <h5 class="card-title">Never Let Me Go </h5>
+                                    </div>
+                                    <div class="col-12 text-center">
+                                        <p class="card-text text-center"> $650.00</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lastest_arrival_items item">
+                        <a href="~/book-shop/product-detail.html" class="lastest-addto-cart"><i class="fa fa-shopping-cart"></i></a>
+                        <div class="card">
+                            <span class="product-type">NEW</span>
+                            <div class="image-holder">
+                                <a href="~/book-shop/img/l9.jpg" data-fancybox="lastest_product" data-title="Lastest Arrivals 1">
+                                    <img src="~/book-shop/img/l9.jpg" class="card-img-top" alt="Lastest Arrivals 1">
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12 text-center">
+                                        <h5 class="card-title"> The Last World</h5>
+                                    </div>
+                                    <div class="col-12 text-center">
+                                        <p class="card-text text-center"> $680.00</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lastest_arrival_items item">
+                        <a href="~/book-shop/product-detail.html" class="lastest-addto-cart"><i class="fa fa-shopping-cart"></i></a>
+                        <div class="card">
+                            <span class="product-type">NEW</span>
+                            <div class="image-holder">
+                                <a href="~/book-shop/img/l10.jpg" data-fancybox="lastest_product" data-title="Lastest Arrivals 1">
+                                    <img src="~/book-shop/img/l10.jpg" class="card-img-top" alt="Lastest Arrivals 1">
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12 text-center">
+                                        <h5 class="card-title">Brave New World</h5>
+                                    </div>
+                                    <div class="col-12 text-center">
+                                        <p class="card-text text-center"> $250.00</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lastest_arrival_items item">
+                        <a href="~/book-shop/product-detail.html" class="lastest-addto-cart"><i class="fa fa-shopping-cart"></i></a>
+                        <div class="card">
+                            <span class="product-type">NEW</span>
+                            <div class="image-holder">
+                                <a href="~/book-shop/img/l11.jpg" data-fancybox="lastest_product" data-title="Lastest Arrivals 1">
+                                    <img src="~/book-shop/img/l11.jpg" class="card-img-top" alt="Lastest Arrivals 1">
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12 text-center">
+                                        <h5 class="card-title">Life Without Money</h5>
+                                    </div>
+                                    <div class="col-12 text-center">
+                                        <p class="card-text text-center"> $850.00</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lastest_arrival_items item">
+                        <a href="~/book-shop/product-detail.html" class="lastest-addto-cart"><i class="fa fa-shopping-cart"></i></a>
+                        <div class="card">
+                            <span class="product-type">NEW</span>
+                            <div class="image-holder">
+                                <a href="~/book-shop/img/l12.jpg" data-fancybox="lastest_product" data-title="Lastest Arrivals 1">
+                                    <img src="~/book-shop/img/l12.jpg" class="card-img-top" alt="Lastest Arrivals 1">
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12 text-center">
+                                        <h5 class="card-title">Life Is Elsewhere</h5>
+                                    </div>
+                                    <div class="col-12 text-center">
+                                        <p class="card-text text-center"> $950.00</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lastest_arrival_items item">
+                        <a href="~/book-shop/product-detail.html" class="lastest-addto-cart"><i class="fa fa-shopping-cart"></i></a>
+                        <div class="card">
+                            <span class="product-type">NEW</span>
+                            <div class="image-holder">
+                                <a href="~/book-shop/img/l7.jpg" data-fancybox="lastest_product" data-title="Lastest Arrivals 1">
+                                    <img src="~/book-shop/img/l13.jpg" class="card-img-top" alt="Lastest Arrivals 1">
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12 text-center">
+                                        <h5 class="card-title">The Road</h5>
+                                    </div>
+                                    <div class="col-12 text-center">
+                                        <p class="card-text text-center"> $550.00</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
-</div> <!-- ...:::: End Shop Section:::... -->
+</div>
+
+
+<!--START SEARCH AREA-->
+<div class="search-box-overlay">
+    <a><i class="fas fa-times cross-sign" id="close-window"></i></a>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12 search-col">
+                <form action="javascript:void(0)">
+                    <div class="input-group search-box-form">
+                        <input type="text" class="form-control" placeholder="Search Here" aria-label="Search Here">
+                        <div class="input-group-prepend">
+                            <button class="input-group-text" type="submit" id="basic-addon1">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-12">
+                <hr>
+            </div>
+
+
+
+
+        </div>
+    </div>
+
+</div>
+<!--END SEARCH AREA -->
+<!--START Cart Box-->
+<div class="cart-box-overlay">
+    <a><i class="fas fa-times cross-sign" id="close-window1"></i></a>
+
+    <div class="container">
+        <div class="row">
+            <div class="search-listing row">
+                <div class="col-12 mb-4">
+                    <h4 class="">Shop Cart</h4>
+                </div>
+                <div class="col-12">
+                    <div class="listing-search-scroll">
+                        <div class="media row">
+                            <div class="img-holder ml-1 mr-2 col-4">
+                                <a href="javascript:void(0)">
+                                    <img src="~/book-shop/img/book-1.jpg"
+                                         class="align-self-center" alt="cartitem">
+                                </a>
+                            </div>
+                            <div class="media-body mt-auto mb-auto col-8">
+                                <h5 class="name"><a href="javascript:void(0)">So Sad Today</a></h5>
+                                <p class="category">light wear Lastest</p>
+                                <a class="btn black-sm-btn" href="~/book-shop/shop-cart.html">
+                                    <i class="fas fa-shopping-bag"></i>
+                                </a>
+                                <a class="btn black-sm-btn"><i class="fas fa-eye"></i></a>
+                            </div>
+                        </div>
+                        <div class="media row">
+                            <div class="img-holder ml-1 mr-2 col-4">
+                                <a href="javascript:void(0)">
+                                    <img src="~/book-shop/img/book-2.jpg"
+                                         class="align-self-center" alt="cartitem">
+                                </a>
+                            </div>
+                            <div class="media-body mt-auto mb-auto col-8">
+                                <h5 class="name"><a href="javascript:void(0)">As I Lay Dying</a></h5>
+                                <p class="category">light wear Lastest</p>
+                                <a class="btn black-sm-btn" href="~/book-shop/shop-cart.html">
+                                    <i class="fas fa-shopping-bag"></i>
+                                </a>
+                                <a class="btn black-sm-btn" href="javascript:void(0)"><i class="fas fa-eye"></i></a>
+                            </div>
+                        </div>
+                        <div class="media row">
+                            <div class="img-holder ml-1 mr-2 col-4">
+                                <a href="javascript:void(0)">
+                                    <img src="~/book-shop/img/book-3.jpg"
+                                         class="align-self-center" alt="cartitem">
+                                </a>
+                            </div>
+                            <div class="media-body mt-auto mb-auto col-8">
+                                <h5 class="name"><a href="javascript:void(0)">Love Does</a></h5>
+                                <p class="category">light wear Lastest</p>
+                                <a class="btn black-sm-btn" href="~/book-shop/shop-cart.html">
+                                    <i class="fas fa-shopping-bag"></i>
+                                </a>
+                                <a class="btn black-sm-btn" href="javascript:void(0)"><i class="fas fa-eye"></i></a>
+                            </div>
+                        </div>
+                        <div class="media row">
+                            <div class="img-holder ml-1 mr-2 col-4">
+                                <a href="javascript:void(0)">
+                                    <img src="~/book-shop/img/book-2-1.jpg"
+                                         class="align-self-center" alt="cartitem">
+                                </a>
+                            </div>
+                            <div class="media-body mt-auto mb-auto col-8">
+                                <h5 class="name"><a href="javascript:void(0)">The Last Stand</a></h5>
+                                <p class="category">light wear Lastest</p>
+                                <a class="btn black-sm-btn" href="~/book-shop/shop-cart.html">
+                                    <i class="fas fa-shopping-bag"></i>
+                                </a>
+                                <a class="btn black-sm-btn" href="javascript:void(0)"><i class="fas fa-eye"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bag-btn">
+            <h4 class="total"><span>Total: </span>100$</h4>
+            <a href="javascript:void(0)" class="btn green-color-yellow-gradient-btn">View Bag </a>
+            <a href="javascript:void(0)" class="btn yellow-color-green-gradient-btn">Checkout </a>
+        </div>
+
+    </div>
+
+</div>
+<!--END Cart Box -->

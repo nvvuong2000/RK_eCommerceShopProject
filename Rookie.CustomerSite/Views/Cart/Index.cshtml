@@ -1,129 +1,235 @@
 ﻿@model IEnumerable<RookieShop.Backend.Models.Cart>
 @{
     ViewData["Title"] = "Index";
-}
-<!-- ...:::: Start Breadcrumb Section:::... -->
-<div class="breadcrumb-section breadcrumb-bg-color--golden">
-    <div class="breadcrumb-wrapper">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <h3 class="breadcrumb-title">Cart</h3>
-                    <div class="breadcrumb-nav breadcrumb-nav-color--black breadcrumb-nav-hover-color--golden">
-                        <nav aria-label="breadcrumb">
-                            <ul>
-                                <li><a href="index.html">Home</a></li>
-                                <li><a href="shop-grid-sidebar-left.html">Shop</a></li>
-                                <li class="active" aria-current="page">Cart</li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
+}<!-- START HEADING SECTION -->
+<div class="about_content">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-10  text-center text-lg-left wow slideInUp" data-wow-duration="2s">
+                <h1 class="heading">Get Ready For Checkout?</h1>
+                
             </div>
         </div>
     </div>
-</div> <!-- ...:::: End Breadcrumb Section:::... -->
-<!-- ...:::: Start Cart Section:::... -->
-<div class="cart-section">
-    <!-- Start Cart Table -->
-    <div class="cart-table-wrapper" data-aos="fade-up" data-aos-delay="0">
+
+
+    <!-- START SHOP CART SECTION -->
+    <div class="shop-cart wow slideInUp" data-wow-duration="2s">
         <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    @if (Model.ToList().Count>0)
-                    {
-                        <div class="table_desc">
-                            <div class="table_page table-responsive">
+            <!-- START SHOP CART TABLE -->
+            <div class="row pt-5">
+                <div class="col-12 col-md-12  cart_table wow fadeInUp animated" data-wow-delay="300ms" style="visibility: visible; animation-delay: 300ms; animation-name: fadeInUp;">
+                    <div class="table-responsive">
+                        <table class="table table-bordered border-radius">
+                            <thead>
+                                <tr>
+                                    <th class="darkcolor">Product</th>
+                                    <th class="darkcolor">Price</th>
+                                    <th class="darkcolor">Quantity</th>
+                                    <th class="darkcolor">Total</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="d-table product-detail-cart">
 
+                                            <div class="media">
+                                                <div class="row no-gutters">
 
-                                
-                                <table>
-                                    <!-- Start Cart Table Head -->
-                                    <thead>
-                                        <tr>
-                                            <th class="product_remove">Delete</th>
-                                            <th class="product_thumb">Image</th>
-                                            <th class="product_name">Product</th>
-                                            <th class="product-price">Price</th>
-                                            <th class="product_quantity">Quantity</th>
-                                            <th class="product_total">Total</th>
-                                        </tr>
-                                    </thead> <!-- End Cart Table Head -->
-                                    <tbody>
-                                        @foreach (var i in Model)
-                                        {
-                                        <tr>
-                                            <td class="product_remove"><a href="@Url.ActionLink("RemoveItem","Cart",new { id = i.productId })"><i class="fa fa-trash-o"></i></a></td>
-                                            @*  <td class="product_thumb"><a href="product-details-default.html"><img src="https://localhost:4434@i.Product.ProductImages.ToList()[0].pathName" alt=""></a></td>*@
-                                            <td class="product_name"><a href="@Url.Action("Details","Product",new {id=i.productId})"></a></td>
-                                            <td class="product-price">@i.unitPrice</td>
-                                            <td class="product_quantity">
-                                                <label></label>
-                                                <form action="/cart/add" method="post">
-                                                    <input min="1" max="100" value="@i.quantity" name="quantity" type="number">
-                                                    <input value="@i.productId" name="id"  type="hidden">
-                                                    <button class="btn btn-md btn-golden" type="submit">update cart</button>
+                                                    <div class="col-12 col-lg-2 product-detail-cart-image">
+                                                        <a class="shopping-product" href="javascript:void(0)"><img src="img\shopcart-1.jpg" alt="Generic placeholder image"></a>
+                                                    </div>
 
-                                                </form>
-                                            </td>
-                                            <td class="product_total">@Convert.ToDecimal(Convert.ToInt32(i.quantity) * @Convert.ToDecimal(i.unitPrice)) </td>
-                                        </tr>
-                                            <!-- End Cart Single Item-->
-                                        }
+                                                    <div class="col-12 col-lg-10 mt-auto product-detail-cart-data">
+                                                        <div class="media-body ml-lg-3">
+                                                            <h4 class="product-name"><a href="product-detail.html">Love Does</a></h4>
+                                                            <p class="product-des">We offer the most complete in the country</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <h4 class="text-center amount">$130.00</h4>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="quote text-center mt-1">
+                                            <input type="number" placeholder="1" class="quote" min="1" max="100">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <h4 class="text-center amount">$136.00</h4>
+                                    </td>
+                                    <td class="text-center"><a class="btn-close" href="javascript:void(0)"><i class="lni-trash"></i></a></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="d-table product-detail-cart">
 
+                                            <div class="media">
+                                                <div class="row no-gutters">
 
+                                                    <div class="col-12 col-lg-2 product-detail-cart-image">
+                                                        <a class="shopping-product" href="javascript:void(0)"><img src="img\shopcart-2.jpg" alt="Generic placeholder image"></a>
+                                                    </div>
 
+                                                    <div class="col-12 col-lg-10 mt-auto product-detail-cart-data">
+                                                        <div class="media-body ml-lg-3">
+                                                            <h4 class="product-name"><a href="product-detail.html">The Last Stand</a></h4>
+                                                            <p class="product-des">We offer the most complete in the country</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <h4 class="text-center d-table-price amount">$100.00</h4>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="quote text-center mt-1">
+                                            <input type="number" placeholder="1" class="quote" min="1" max="100">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <h4 class="text-center amount">$106.00</h4>
+                                    </td>
+                                    <td class="text-center"><a class="btn-close" href="javascript:void(0)"><i class="lni-trash"></i></a></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="d-table product-detail-cart">
 
-                                    </tbody>
-                                </table>
+                                            <div class="media">
+                                                <div class="row no-gutters">
 
+                                                    <div class="col-12 col-lg-2 product-detail-cart-image">
+                                                        <a class="shopping-product" href="javascript:void(0)"><img src="img\shopcart-1.jpg" alt="Generic placeholder image"></a>
+                                                    </div>
+
+                                                    <div class="col-12 col-lg-10 mt-auto product-detail-cart-data">
+                                                        <div class="media-body ml-lg-3">
+                                                            <h4 class="product-name"><a href="product-detail.html">The Road</a></h4>
+                                                            <p class="product-des">We offer the most complete in the country</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <h4 class="text-center d-table-price amount">$150.00</h4>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="quote text-center mt-1">
+                                            <input type="number" placeholder="1" class="quote" min="1" max="100">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <h4 class="text-center amount">$150.00</h4>
+                                    </td>
+                                    <td class="text-center"><a class="btn-close" href="javascript:void(0)"><i class="lni-trash"></i></a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="apply_coupon">
+                        <div class="row">
+                            <div class="col-12 text-left">
+                                <a href="shop-cart.html" class="btn yellow-color-green-gradient-btn">UPDATE</a>
+                                <a href="shop-cart.html" class="btn green-color-yellow-gradient-btn ">CHECKOUT</a>
                             </div>
-                            <div class="cart_submit">
-                                <button class="btn btn-md btn-golden" type="submit">update cart</button>
-                            </div>
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="emptycart-content text-center">
-                            <div class="image">
-                                <img class="img-fluid" src="assets/images/emprt-cart/empty-cart.png" alt="">
-                            </div>
-                            <h4 class="title">Your Cart is Empty</h4>
-                            <h6 class="sub-title">Sorry Mate... No item Found inside your cart!</h6>
-                            <a href="shop-grid-sidebar-left.html" class="btn btn-lg btn-golden">Continue Shopping</a>
-                        </div>
-                    }
-                </div>
-            </div>
-        </div>
-    </div> <!-- End Cart Table -->
-    <!-- Start Coupon Start -->
-    <div class="coupon_area">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 col-md-6">
-                   
-                </div>
-                <div class="col-lg-6 col-md-6">
-                    <div class="coupon_code right" data-aos="fade-up" data-aos-delay="400">
-                        <h3>Cart Totals</h3>
-                        <div class="coupon_inner">
-                            
-                           
-                           
-
-                            <div class="cart_subtotal">
-                                <p>Total</p>
-                                <p class="cart_amount">$@ViewBag.Total</p>
-                            </div>
-                            <div class="checkout_btn">
-                                <a href="#" class="btn btn-md btn-golden">Proceed to Checkout</a>
-                            </div>
+                            <!--                            <div class="col-6  coupon text-left">-->
+                            <!--                                <a href="shop-cart.html" class="btn pink-color-black-gradient-btn ">CHECKOUT</a>-->
+                            <!--                            </div>-->
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- END SHOP CART TABLE -->
+            <!-- START SHOP CART CHECKOUT FORM -->
+            <div class="row pt-5">
+                <div class="col-12 col-lg-6 wow slideInLeft" data-wow-duration="2s">
+                    <div class="calculate-shipping">
+                        <h4 class="heading">Calculate Shipping</h4>
+                        <form>
+                            <div class="form-group">
+                                <label class="select form-control">
+                                    <select name="country" id="states">
+                                        <option>USA</option>
+                                        <option>Canada</option>
+                                        <option>Chile</option>
+                                        <option>France</option>
+                                    </select>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="select form-control">
+                                    <select name="country" id="state">
+                                        <option>USA</option>
+                                        <option>Canada</option>
+                                        <option>Chile</option>
+                                        <option>France</option>
+                                    </select>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" placeholder="Postal/Zip Code">
+                            </div>
+                            <a href="#" class="btn yellow-color-green-gradient-btn">Calculate</a>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 wow slideInRight" data-wow-duration="2s">
+                    <div class="card-total">
+                        <h4 class="heading">Card Total</h4>
+                        <table>
+                            <tr>
+                                <td>Subtotal</td>
+                                <td>$251.00</td>
+                            </tr>
+                            <tr>
+                                <td>Shipping</td>
+                                <td>
+                                    <ul class="color-grey">
+                                        <li>
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio" id="flat-rate" name="shipping" class="custom-control-input" checked="">
+                                                <label class="custom-control-label" for="flat-rate">Flat Rate : $49.00</label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio" id="free-shipping" name="shipping" class="custom-control-input">
+                                                <label class="custom-control-label" for="free-shipping">Free Shipping</label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio" id="cod-shipping" name="shipping" class="custom-control-input">
+                                                <label class="custom-control-label" for="cod-shipping">Cash on Delivery</label>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Total</td>
+                                <td>$300.00</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- END SHOP CART CHECKOUT FORM -->
+
         </div>
-    </div> <!-- End Coupon Start -->
-</div> <!-- ...:::: End Cart Section:::... -->
+    </div>
+    <!-- END SHOP CART SECTION-->
+
+</div>
+<!-- END HEADING SECTION -->
