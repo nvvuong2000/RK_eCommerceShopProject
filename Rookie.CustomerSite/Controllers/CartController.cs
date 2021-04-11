@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Newtonsoft.Json;
 using RookieShop.Backend.Models;
+using RookieShop.Shared.Repo;
+using RookieShop.Shared.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +15,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Rookie.CustomerSite.Controllers
@@ -24,9 +27,9 @@ namespace Rookie.CustomerSite.Controllers
         // GET: CartController
 
         string Baseurl = "https://localhost:44341/";
-
+        [HttpGet("/cart")]
         [Authorize]
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> IndexCart()
         {
             using (var client = new HttpClient())
             {
@@ -40,8 +43,8 @@ namespace Rookie.CustomerSite.Controllers
                 var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
                 client.SetBearerToken(accessToken);
 
-                string endpoit = "/api/Cart";
-                HttpResponseMessage Res = await client.GetAsync(endpoit);
+                string endpoint = "/api/Cart";
+                HttpResponseMessage Res = await client.GetAsync(endpoint);
                 Res.EnsureSuccessStatusCode();
              
                 decimal total = await Total();
@@ -49,11 +52,15 @@ namespace Rookie.CustomerSite.Controllers
                 if (Res.IsSuccessStatusCode)
                 {
 
-                    var cartResponse = await Res.Content.ReadAsAsync<IEnumerable<Cart>>();
+                    var cartResponse = await Res.Content.ReadAsAsync<IEnumerable<CartVM>>();
                     ViewBag.Total = total;
                     return View(cartResponse);
                 }
-                return null;
+                else
+                {
+                    return View();
+                }
+               
 
             }
 
@@ -71,15 +78,28 @@ namespace Rookie.CustomerSite.Controllers
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
                 client.SetBearerToken(accessToken);
-                string endpoit = "/api/Cart/" + id.ToString();
-                HttpResponseMessage Res = await client.GetAsync(endpoit);
-         
-                return RedirectToAction("Index", "Cart");
+                string endpoint = "/add/" + id.ToString();
+                HttpResponseMessage Res = await client.GetAsync(endpoint);
+                if (Res.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index", "Cart");
+                }
+                else
+                {
+                    return View();
+                }
+
+               
             }
         }
-        [HttpPost("/cart/add")]
+        
+     
         public async Task<ActionResult> Add(IFormCollection form)
         {
+
+            int Id = Convert.ToInt32(form["id"]);
+            int quantity = Convert.ToInt32(form["quantity"]);
+
             using (var client = new HttpClient())
             {
 
@@ -96,14 +116,17 @@ namespace Rookie.CustomerSite.Controllers
                     id = int.Parse(form["id"]),
                     quantity = int.Parse(form["quantity"]),
                 };
-                //addquantity/{product}/number/{quan}
-                JsonContent content = JsonContent.Create(item);
 
-        
-                string endpoit = "/api/Cart/addquantity/" + item.id.ToString() +"/number/" +item.quantity.ToString();
-                HttpResponseMessage Res = await client.GetAsync(endpoit);
-
-                return RedirectToAction("Index", "Cart");
+                string endpoint = "/api/Cart/addquantity/" + item.id.ToString() + "/number/" + item.quantity.ToString();
+                HttpResponseMessage Res = await client.GetAsync(endpoint);
+                if (Res.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index", "Cart");
+                }
+                else
+                {
+                    return View();
+                }
             }
         }
         [HttpGet("/cart/remove/{id}")]
@@ -119,13 +142,16 @@ namespace Rookie.CustomerSite.Controllers
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
                 client.SetBearerToken(accessToken);
-                string endpoit = "/remove/" + id.ToString();
-                HttpResponseMessage Res = await client.GetAsync(endpoit);
+                string endpoint = "/remove/" + id.ToString();
+                HttpResponseMessage Res = await client.GetAsync(endpoint);
                 if (Res.IsSuccessStatusCode)
                 {
-
+                    return RedirectToAction("Index", "Cart");
                 }
-                return RedirectToAction("Index", "Cart");
+                else
+                {
+                    return View();
+                }
             }
         }
 
@@ -143,8 +169,8 @@ namespace Rookie.CustomerSite.Controllers
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
                 client.SetBearerToken(accessToken);
-                string endpoit = "/api/Cart/total/";
-                HttpResponseMessage Res = await client.GetAsync(endpoit);
+                string endpoint = "/api/Cart/total/";
+                HttpResponseMessage Res = await client.GetAsync(endpoint);
                 if (Res.IsSuccessStatusCode)
                 {
 
@@ -152,6 +178,32 @@ namespace Rookie.CustomerSite.Controllers
 
                 }
                 return total;
+            }
+        }
+
+        public async Task<IActionResult> Checkout()
+        {
+
+            decimal total = 0;
+            using (var client = new HttpClient())
+            {
+
+                client.BaseAddress = new Uri(Baseurl);
+
+                client.DefaultRequestHeaders.Clear();
+
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
+                client.SetBearerToken(accessToken);
+                string endpoint = "/api/Cart/checkout";
+                HttpResponseMessage Res = await client.GetAsync(endpoint);
+                if (Res.IsSuccessStatusCode)
+                {
+
+                    return RedirectToAction("Index", "Order");
+
+                }
+                return RedirectToAction("Index", "Cart");
             }
         }
     }

@@ -46,9 +46,9 @@ namespace RookieShop.Backend.Services.Implement
 
                 foreach (var formFile in product.FormFiles)
                 {
-                    Guid getrandom = new Guid();
-
-                    string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", getrandom + formFile.FileName);
+                    Random getrandom = new Random();
+                    int random = getrandom.Next(1, 99999);
+                    string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", random.ToString()+formFile.FileName);
                     if (formFile.Length > 0)
                     {
                         using (var stream = new FileStream(path, FileMode.Create))
@@ -61,7 +61,7 @@ namespace RookieShop.Backend.Services.Implement
                     {
                         ProductID = productId,
 
-                        pathName = Path.Combine("/images/" + getrandom + formFile.FileName),
+                        pathName = Path.Combine("/images/" + random.ToString()+ formFile.FileName),
 
                         isDefault = false,
                         captionImage = "Hình ảnh minh họa cho sản phẩm " + product.productName,
@@ -84,10 +84,17 @@ namespace RookieShop.Backend.Services.Implement
 
         }
 
-        public async Task<List<Product>> getListProductAsync()
+        public async Task<List<ProductListVM>> getListProductAsync()
         {
-            var productList = await _context.Products.Include(p => p.ProductImages).ToListAsync();
-            //.Select(x => new ProductListVM { productId = x.productId, productName = x.productName, unitPrice =x.unitPrice, isNew = x.isNew})
+            var productList =await _context.Products.Include(p => p.ProductImages)
+            .Select(x => new ProductListVM
+            {
+                productID = x.Id,
+                productName = x.productName,
+                unitPrice = x.unitPrice,
+                isNew = x.isNew,
+                imgDefault = x.ProductImages.Where(img => img.isDefault == true).Select(img => "https://localhost:44341" + img.pathName).FirstOrDefault(),
+            }).ToListAsync();
 
             return productList;
         }
@@ -100,33 +107,38 @@ namespace RookieShop.Backend.Services.Implement
 
         public async Task<ProductDetailsVM> getProductAsync(int? id)
         {
-            var product = _context.Products.Include(p => p.ProductImages).Include(p => p.Category).Include(p => p.RattingProduct).Where(p => p.Id == id).FirstOrDefault();
+            var product = _context.Products.Include(p => p.ProductImages).Include(p => p.Category).Include(p => p.RattingProduct).Select(p=>new ProductDetailsVM() 
+            { 
+                Id = p.Id,
+                productName = p.productName,
+
+                categoryName = p.Category.categoryName,
+                providerId = p.providerId,
+                categoryId = p.categoryId,
+                stock = p.stock,
+                unitPrice = p.unitPrice,
+                description = p.description,
+                DateCreated = p.DateCreated,
+                isNew = p.isNew,
+                status = p.status,
+                pathName = p.ProductImages.Select(img=>img.pathName).ToList(),
+                userId = p.RattingProduct.Select(r=>r.User.customerName).ToList(),
+                numberRating = p.RattingProduct.Select(r => r.numberRating).ToList(),
+                dateRated = p.RattingProduct.Select(r => r.date).ToList(),
+
+
+                rating = p.rating,
+
+            }).Where(p => p.Id == id).FirstOrDefault();
 
             if (product == null)
             {
                 return null;
-            }
-            int totalStar = product.RattingProduct.Sum(r => r.numberRating);
-            int number = product.RattingProduct.Count();
-            double avg = totalStar / number;
-            var details = new ProductDetailsVM()
-            {
-                Id = product.Id,
-                productName = product.productName,
                 
-                categoryName = product.Category.categoryName,
-                providerId = product.providerId,
-                categoryId = product.categoryId,
-                stock = product.stock,
-                unitPrice = product.unitPrice,
-                description = product.description,
-                DateCreated = product.DateCreated,
-                isNew = product.isNew,
-                status = product.status,
-                ProductImages = (ICollection<ProductImagesVM>)product.ProductImages,
-                rating = avg,
-            };
-            return details;
+            }
+
+            
+            return product;
 
         }
 
@@ -189,7 +201,7 @@ namespace RookieShop.Backend.Services.Implement
                     foreach (var formFile in product.FormFiles)
                     {
                         Random getrandom = new Random();
-                        int random = getrandom.Next(1, 99);
+                        int random = getrandom.Next(1, 99999);
                         string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", random.ToString() + formFile.FileName);
                         if (formFile.Length > 0)
                         {
@@ -268,13 +280,12 @@ namespace RookieShop.Backend.Services.Implement
                                join o in _context.Order on od.orderId equals o.Id
                                join p in _context.Products on od.productId equals p.Id
                                join pm in _context.ProductImages on p.Id equals pm.ProductID
-                               //        join pr in _context.RattingProduct on p.Id equals pr.productID
                                where (o.status == 2 && pm.isDefault == true && o.userId.Equals(userId))
                                select new ProductListVM
                                {
                                    productID = p.Id,
                                    productName = p.productName,
-                                   imgDefault = pm.pathName,
+                                   imgDefault = "https://localhost:44341" + pm.pathName,
                                }).ToListAsync();
             var productberated = await (
                          from p in _context.Products
@@ -285,7 +296,7 @@ namespace RookieShop.Backend.Services.Implement
                          {
                              productID = p.Id,
                              productName = p.productName,
-                             imgDefault = pm.pathName,
+                             imgDefault = "https://localhost:44341"+pm.pathName,
                          }).ToListAsync();
             var NotInRecord = query.Where(p => !productberated.Any(p2 => p2.productID == p.productID)).ToList();
 

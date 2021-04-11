@@ -485,7 +485,6 @@ jQuery(function ($) {
     ======================================*/
 
 
-    $('.count').prop('disabled', true);
     $(document).on('click', '.plus', function () {
         $('.count').val(parseInt($('.count').val()) + 1);
 
@@ -493,6 +492,17 @@ jQuery(function ($) {
     $(document).on('click', '.minus', function () {
         $('.count').val(parseInt($('.count').val()) - 1);
         if ($('.count').val() == 0) {
+            $('.count').val(1);
+
+        }
+    });
+    $(document).on('click', '.plus', function () {
+        $('.count1').val(parseInt($('.count1').val()) + 1);
+
+    });
+    $(document).on('click', '.minus', function () {
+        $('.count1').val(parseInt($('.count1').val()) - 1);
+        if ($('.count1').val() == 0) {
             $('.count').val(1);
 
         }

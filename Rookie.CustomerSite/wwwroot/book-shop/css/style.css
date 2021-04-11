@@ -2385,6 +2385,7 @@ textarea:focus{
 }
 
 /*Cart Number*/
+
 .input_plus_mins .qty .count {
     color: #000;
     display: inline-block;
@@ -2392,7 +2393,7 @@ textarea:focus{
     font-size: 24px;
     font-weight: 700;
     line-height: 30px;
-    padding: 0 2px ;
+    padding: 0 2px;
     min-width: 35px;
     text-align: center;
     margin-bottom: 0px;
@@ -2468,7 +2469,7 @@ textarea:focus{
     -webkit-appearance: none;
     margin: 0;
 }
-.input_plus_mins input:disabled{
+.input_plus_mins {
     background-color:white;
 }
 

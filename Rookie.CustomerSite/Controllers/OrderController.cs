@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Newtonsoft.Json;
 using RookieShop.Backend.Models;
+using RookieShop.Shared.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,18 +33,50 @@ namespace Rookie.CustomerSite.Controllers
                 client.SetBearerToken(accessToken);
 
 
-                string endpoit = "/api/Order";
+                string endpoint = "/api/Order";
 
-                HttpResponseMessage Res = await client.GetAsync(endpoit);
-                Res.EnsureSuccessStatusCode();
+                HttpResponseMessage Res = await client.GetAsync(endpoint);
+             
 
                 if (Res.IsSuccessStatusCode)
                 {
-                    var listOrder = await Res.Content.ReadAsAsync<IEnumerable<Order>>();
+                    var listOrder = await Res.Content.ReadAsAsync<IEnumerable<OrderVm>>();
                     return View(listOrder);
 
                 }
-                return null;
+                else
+                {
+                    return View();
+                }
+             
+            }
+        }
+        [HttpGet("/updateorder/{id:int}")]
+        public async Task<IActionResult> updateStatusOrder(int id)
+        {
+            Product EmpInfo = new Product();
+
+            using (var client = new HttpClient())
+            {
+
+                client.BaseAddress = new Uri(Baseurl);
+
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
+                client.SetBearerToken(accessToken);
+
+
+
+                string endpoint = "/api/Order/updateSttOrder/" + id.ToString();
+                HttpResponseMessage Res = await client.GetAsync(endpoint);
+                if (Res.IsSuccessStatusCode)
+                {
+
+                    return RedirectToAction("Index","Order");
+                }
+
+                return RedirectToAction("Index", "Order");
             }
         }
     }

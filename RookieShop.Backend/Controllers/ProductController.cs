@@ -42,7 +42,7 @@ namespace RookieShop.Backend.Controllers
         // GET: api/<Product>
         [HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult<Product>> GetAsync()
+        public async Task<ActionResult<ProductListVM>> GetAsync()
         {
             try
             {
@@ -62,7 +62,7 @@ namespace RookieShop.Backend.Controllers
         // GET api/<Product>/5
         [HttpGet("{id}")]
         [AllowAnonymous]
-        public async Task<ActionResult<Product>> Get(int id)
+        public async Task<ActionResult<ProductDetailsVM>> Get(int id)
         {
             try
             {
@@ -220,20 +220,20 @@ namespace RookieShop.Backend.Controllers
         }
         [HttpGet("/rating")]
         [Authorize(Roles ="user")]
-        public async Task<ActionResult<ProductListVM>> rating()
+        public async Task<List<ProductListVM>> rating()
         {
             try
             {
 
                 var userId = _repoUser.getUserID();
                 var product = await _repo.getlistProductNeedRating(userId);
-                return Ok(product);
+                return product;
 
 
             }
             catch (Exception ex)
             {
-                return Ok(ex);
+                return null;
             }
 
         }

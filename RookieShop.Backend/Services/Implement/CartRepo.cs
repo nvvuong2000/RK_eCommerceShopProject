@@ -2,6 +2,7 @@
 using RookieShop.Backend.Data;
 using RookieShop.Backend.Models;
 using RookieShop.Backend.Services.Interface;
+using RookieShop.Shared.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -75,13 +76,22 @@ namespace RookieShop.Backend.Services.Implement
             return true;
         }
 
-        public async Task<List<Cart>> myCart(string id)
+        public async Task<List<CartVM>> myCart()
         {
-            var list = await _context.Carts.Where(c => c.userId.Equals(id)).ToListAsync();
-            if (list.Count == 0)
+            var list = await _context.Carts.Include(c => c.Product).Include(c=>c.Product.ProductImages).Where(c => c.userId.Equals(_repoUser.getUserID())).Select(x => new CartVM
+
+
             {
-                return null;
-            }
+                Id = x.productId,
+                productName = x.Product.productName,
+                unitPrice = x.Product.unitPrice,
+                quantity = x.quantity,
+                pathName = x.Product.ProductImages.Where(x=>x.isDefault==true).Select(x => "https://localhost:44341"+ x.pathName).FirstOrDefault(),
+
+            }).ToListAsync();
+            
+           
+           
             return list;
         }
 

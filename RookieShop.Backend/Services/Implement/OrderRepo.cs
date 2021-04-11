@@ -3,6 +3,7 @@ using RookieShop.Backend.Data;
 using RookieShop.Backend.Models;
 using RookieShop.Backend.Services.Interface;
 using RookieShop.Shared.Repo;
+using RookieShop.Shared.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,9 +21,18 @@ namespace RookieShop.Backend.Services.Implement
             _context = context;
             _repoUser = repoUser;
         }
-        public async Task<List<Order>> myOrderList()
+        public async Task<List<OrderVm>> myOrderList()
         {
-            var listOrder = await _context.Order.Include(o => o.OrderDetails).Include(o => o.OrderDetails).Where(x => x.userId == _repoUser.getUserID()).ToListAsync();
+            var listOrder = await _context.Order.Include(o => o.OrderDetails).Include(o=>o.OrderDetails).Where(x => x.userId == _repoUser.getUserID()).Select(x=>new OrderVm {
+                Id = x.Id,
+                productName = x.OrderDetails.Select(o=>o.productName).ToList(),
+                quantity = x.OrderDetails.Select(o => o.quantity).ToList(),
+                total = x.Total,
+                status = x.status,
+                unitPrice = x.OrderDetails.Select(o=>o.unitPrice).ToList(),
+                date = x.dateOrdered,
+
+            }).ToListAsync();
             return listOrder;
         }
 

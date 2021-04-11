@@ -1,7 +1,8 @@
-﻿@model RookieShop.Backend.Models.Product
+﻿@model RookieShop.Shared.ViewModel.ProductDetailsVM
 @{
     ViewData["Title"] = "DetailsAsync";
 }
+
 <!-- START HEADING SECTION -->
 <div class="about_content">
     <div class="container">
@@ -29,7 +30,7 @@
                             <div class="wrapper">
                                 <div class="Gallery swiper-container img-magnifier-container" id="gallery">
                                     <div class="swiper-wrapper myimgs">
-                                        <div class="swiper-slide"> <a href="~/book-shop/img/book-1-1.jpg" data-fancybox="1" title="Zoom In"><img class="myimage" src="~/book-shop/img/book-1-1.jpg" alt="gallery"></a></div>
+                                        <div class="swiper-slide"> <a href="@Model.pathName[0]" data-fancybox="1" title="Zoom In"><img class="myimage" src="@Model.pathName[0]" alt="gallery"></a></div>
                                         <div class="swiper-slide"> <a href="~/book-shop/img/book-1.jpg" data-fancybox="2" title="Zoom In"><img class="myimage" src="~/book-shop/img/book-1.jpg" alt="thumnails"></a></div>
                                         <div class="swiper-slide"> <a href="~/book-shop/img/book-1-2.jpg" data-fancybox="3" title="Zoom In"><img class="myimage" src="~/book-shop/img/book-1-2.jpg" alt="thumnails"></a></div>
                                     </div>
@@ -45,9 +46,35 @@
                         </div>
 
                         <div class="col-12 col-lg-6 text-center text-lg-left">
+                            <div class="share-product-details">
+                                <ul class="user-rating">
+                                    @for (var i = 1; i <= 5; i++)
+                                    {
+                                        if (Model.rating < i)
+                                        {
+                                            if ((Math.Round(Model.rating, 1) == i))
+                                            {
+                                                <li><a href="#"><i class="lni lni-star-half"></i></a></li>
+
+
+                                            }
+                                            else
+                                            {
+                                                <li><a href="#"><i class="lni lni-star"></i></a></li>
+                                                
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <li><a href="#"><i class="lni-star-filled"></i></a></li>
+                                        }
+                                    }
+                                    
+                                </ul>
+                            </div>
                             <div class="product-single-price">
-                                <h4><span class="real-price">$249</span> <span><del>$450</del></span></h4>
-                                <p class="pro-description">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.</p>
+                                <h4><span class="real-price">@Model.unitPrice</span> <span><del>$450</del></span></h4>
+                                <p class="pro-description">@Model.description</p>
                             </div>
 
                             <div class="product-checklist">
@@ -59,26 +86,29 @@
                             </div>
 
                             <div class="row product-quantity input_plus_mins no-gutters">
+                                @using (Html.BeginForm("Add", "Cart", FormMethod.Post))
+                                {
+                                    <input type="hidden" name="id" value="@Model.Id" />
+                                    <div class="qty col-12 col-lg-3 d-lg-flex  align-items-lg-center d-inline-block">
+                                        <span class="minus bg-dark"><i class="lni-minus"></i></span>
+                                        <input type="number" class="count" name="quantity" value="1"  >
+                                        <span class="plus bg-dark"><i class="lni-plus"></i></span>
+                                    </div>
+                                    <div class="col-12 col-lg-9">
+                                        <button type="submit" class="btn green-color-yellow-gradient-btn">ADD TO CART</button>
+                                    </div>
 
-                                <div class="qty col-12 col-lg-3 d-lg-flex  align-items-lg-center d-inline-block">
-                                    <span class="minus bg-dark"><i class="lni-minus"></i></span>
-                                    <input type="number" class="count" name="qty" value="1">
-                                    <span class="plus bg-dark"><i class="lni-plus"></i></span>
-                                </div>
-                                <div class="col-12 col-lg-9">
-                                    <button class="btn green-color-yellow-gradient-btn">ADD TO CART</button>
-                                </div>
+                                }
                             </div>
-
 
                             <div class="dropdown-divider"></div>
 
                             <div class="product-tags-list">
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
-                                        <li class="breadcrumb-item"><p class="d-inline">SKU: <span>00012</span></p></li>
-                                        <li class="breadcrumb-item"><span class="d-inline">Categories: <a href="javascript:void(0)">Classic</a><span class="comma-separtor">,</span><a href="javascript:void(0)">Fantasy</a></span></li>
-                                        <li class="breadcrumb-item" aria-current="page"><p class="d-inline">Tags: <a href="javascript:void(0)">Fantasy</a><span class="comma-separtor">,</span><a href="javascript:void(0)">Classic</a></p></li>
+                                        <li class="breadcrumb-item"><p class="d-inline">SKU: <span>@Model.Id</span></p></li>
+                                        <li class="breadcrumb-item"><span class="d-inline">Categories: <a href="javascript:void(0)">Classic</a><span class="comma-separtor">,</span><a href="javascript:void(0)">@Model.categoryName</a></span></li>
+                                        <li class="breadcrumb-item" aria-current="page"><p class="d-inline">Tags: <a href="javascript:void(0)">Fantasy</a><span class="comma-separtor">,</span><a href="javascript:void(0)">@Model.providerId</a></p></li>
                                     </ol>
                                 </nav>
                             </div>
@@ -110,121 +140,50 @@
 
                                         <div class="media">
                                             <div class="row no-gutter">
-                                                <div class="col-12 col-lg-2 p-0">
+                                                @for (int i = 0; i < Model.userId.Count; i++)
+                                                {
+                                                    <div class="col-12 col-lg-2 p-0">
 
-                                                    <div class="row no-gutters">
-                                                        <div class="col-12 d-flex  justify-content-center">
-                                                            <img src="img/user.jpg" alt="Generic placeholder image">
+                                                        <div class="row no-gutters">
+                                                            <div class="col-12 d-flex  justify-content-center">
+                                                                <img src="img/user.jpg">
+                                                            </div>
+
                                                         </div>
-                                                        <div class="col-12 d-flex mt-2 justify-content-center">
+
+                                                    </div>
+
+                                                    <div class="col-12 col-lg-10 p-0">
+                                                        <div class="media-body">
+                                                            <span class="text-center text-lg-left">@Model.dateRated[i]</span>
+                                                            <h5 class="mb-2 text-center text-lg-left">@Model.userId[i]</h5>
+                                                           
                                                             <ul class="user-rating">
-                                                                <li><a href="#"><i class="lni-star-filled"></i></a></li>
-                                                                <li><a href="#"><i class="lni-star-filled"></i></a></li>
-                                                                <li><a href="#"><i class="lni-star-filled"></i></a></li>
-                                                                <li><a href="#"><i class="lni-star-filled"></i></a></li>
-                                                                <li><a href="#"><i class="lni-star"></i></a></li>
+
+                                                                @for (int j = 0; j < 5; j++)
+                                                                {
+                                                                    if (Model.numberRating[i] > j)
+                                                                    {
+                                                                        <li><a href="#"><i class="lni-star-filled"></i></a></li>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <li><a href="#"><i class="lni lni-star"></i></a></li>
+                                                                    }
+
+
+                                                                }
                                                             </ul>
                                                         </div>
                                                     </div>
+                                                }
 
-                                                </div>
-
-                                                <div class="col-12 col-lg-10 p-0">
-                                                    <div class="media-body">
-                                                        <span class="text-center text-lg-left d-block">27 Aug 2017</span>
-                                                        <h5 class="mb-2 text-center text-lg-left">Media heading</h5>
-                                                        <p class="text-center text-lg-left">Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam.</p>
-                                                    </div>
-                                                </div>
 
                                             </div>
                                         </div>
-                                        <div class="media">
-                                            <div class="row no-gutter">
-                                                <div class="col-12 col-lg-2 p-0">
+                                      
 
-                                                    <div class="row no-gutters">
-                                                        <div class="col-12 d-flex  justify-content-center">
-                                                            <img src="img/user2.jpg" alt="Generic placeholder image">
-                                                        </div>
-                                                        <div class="col-12 d-flex mt-2 justify-content-center">
-                                                            <ul class="user-rating">
-                                                                <li><a href="#"><i class="lni-star-filled"></i></a></li>
-                                                                <li><a href="#"><i class="lni-star-filled"></i></a></li>
-                                                                <li><a href="#"><i class="lni-star-filled"></i></a></li>
-                                                                <li><a href="#"><i class="lni-star-filled"></i></a></li>
-                                                                <li><a href="#"><i class="lni-star"></i></a></li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-
-                                                <div class="col-12 col-lg-10 p-0">
-                                                    <div class="media-body ">
-                                                        <span class="text-center text-lg-left d-block">27 Aug 2017</span>
-                                                        <h5 class="mb-2 text-center text-lg-left">Media heading</h5>
-                                                        <p class="text-center text-lg-left">Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam.</p>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-
-                                        <div class="row pl-2 pr-2">
-                                            <div class="col-12 d-flex mb-4 mt-3">
-                                                <h5 class="text-nowrap">Add Review</h5>
-                                                <hr class="w-100 ml-5">
-                                            </div>
-                                            <div class="col-12">
-                                                <form class="getin_form border-form" id="register">
-                                                    <div class="row">
-                                                        <div class="col-md-6 col-sm-12">
-                                                            <div class="form-group bottom35">
-                                                                <input type="text" class="form-control"
-                                                                       placeholder="Name*" required="" id="registerName">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6 col-sm-12">
-                                                            <div class="form-group bottom35">
-                                                                <input type="email" class="form-control"
-                                                                       placeholder="Email*" required="" id="registerEmail">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12 col-lg-2 text-center text-lg-left">
-                                                            <h5 class="text-nowrap">Your Rating</h5>
-                                                        </div>
-                                                        <div class="col-12 col-lg-10 text-center text-lg-left">
-                                                            <ul class="user-rating">
-                                                                <li><a href="#"><i class="lni-star-filled"></i></a></li>
-                                                                <li><a href="#"><i class="lni-star-filled"></i></a></li>
-                                                                <li><a href="#"><i class="lni-star-filled"></i></a></li>
-                                                                <li><a href="#"><i class="lni-star-filled"></i></a></li>
-                                                                <li><a href="#"><i class="lni-star"></i></a></li>
-                                                            </ul>
-                                                        </div>
-                                                        <div class="col-12">
-                                                            <div class="form-group">
-                                                                <!--                                                                            <label for="comment">Your Rating:</label>-->
-                                                                <textarea class="form-control textareaclass" rows="5"
-                                                                          id="comment" placeholder="Your Review"></textarea>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-12 mt-3">
-                                                            <div class="form-group d-flex justify-content-center d-lg-block">
-                                                                <button class="text-center btn green-color-yellow-gradient-btn">
-                                                                    Add
-                                                                    Review
-                                                                </button>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-
+                                    
                                     </div>
                                 </div>
 

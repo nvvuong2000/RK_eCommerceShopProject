@@ -11,6 +11,7 @@ namespace RookieShop.Shared.ViewModel
         public decimal unitPrice { get; set; }
         public bool isNew { get; set; }
         public string imgDefault { get; set; }
+
         //public ICollection<ProductImages> ProductImages { get; set; }
     }
 }

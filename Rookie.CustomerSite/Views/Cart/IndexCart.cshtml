@@ -1,0 +1,124 @@
+﻿@model IEnumerable<RookieShop.Shared.ViewModel.CartVM>
+@{
+    ViewData["Title"] = "Index";
+}<!-- START HEADING SECTION -->
+<div class="about_content">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-10  text-center text-lg-left wow slideInUp" data-wow-duration="2s">
+                <h1 class="heading">Get Ready For Checkout?</h1>
+                
+            </div>
+        </div>
+    </div>
+
+
+    <!-- START SHOP CART SECTION -->
+    <div class="shop-cart wow slideInUp" data-wow-duration="2s">
+        <div class="container">
+            <!-- START SHOP CART TABLE -->
+            <div class="row pt-5">
+                <div class="col-12 col-md-12  cart_table wow fadeInUp animated" data-wow-delay="300ms" style="visibility: visible; animation-delay: 300ms; animation-name: fadeInUp;">
+                    <div class="table-responsive">
+                        <table class="table table-bordered border-radius">
+                            <thead>
+                                <tr>
+                                    <th class="darkcolor">Product</th>
+                                    <th class="darkcolor">Price</th>
+                                    <th class="darkcolor">Quantity</th>
+                                    <th class="darkcolor">Total</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach(var item in Model)
+                                {
+
+                                <tr>
+                                    <td>
+                                        <div class="d-table product-detail-cart">
+
+                                            <div class="media">
+                                                <div class="row no-gutters">
+
+                                                    <div class="col-12 col-lg-2 product-detail-cart-image">
+                                                        <a class="shopping-product"><img src="@item.pathName" alt="Generic placeholder image"></a>
+                                                    </div>
+
+                                                    <div class="col-12 col-lg-10 mt-auto product-detail-cart-data">
+                                                        <div class="media-body ml-lg-3">
+                                                            <h4 class="product-name"><a href="@Url.Action("Details","Product",new {id=item.Id})"> @item.productName</a></h4>
+                                                           
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <h4 class="text-center amount">@item.unitPrice</h4>
+                                    </td>
+                                    @using (Html.BeginForm("Add", "Cart", FormMethod.Post))
+                                    {
+                                <td class="text-center">
+                                    <input type="hidden" placeholder="1" value="@item.Id" class="quote" min="1" max="100" name="id">
+                                    <div class="quote text-center mt-1">
+                                        <input type="number" placeholder="1" name="quantity" value="@item.quantity" class="quote" min="1" max="100">
+                                    </div>
+                                </td>
+                                        <td>
+
+                                            <h4 class="text-center amount">@Convert.ToDecimal(Convert.ToInt32(item.quantity) * @Convert.ToDecimal(item.unitPrice))</h4>
+                                        </td>
+                                        <td class="text-center"><a href="@Url.ActionLink("RemoveItem", "Cart", new { id = item.Id })" class="btn-close"><i class="lni-trash"></i></a></td>
+                                        <td class="text-center"><a type="submit" class="btn-close"><i class="lni lni-reload"></i></a></td>
+                                        }
+                                    </tr>
+
+
+
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="apply_coupon">
+                        <div class="row">
+                            <div class="col-12 text-left">
+                        
+                                <a href="@Url.Action("Checkout","Cart")" class="btn green-color-yellow-gradient-btn ">CHECKOUT</a>
+                            </div>
+                 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END SHOP CART TABLE -->
+            <!-- START SHOP CART CHECKOUT FORM -->
+            <div class="row pt-5">
+                <div class="col-12 col-lg-6 wow slideInLeft" data-wow-duration="2s">
+                    
+                </div>
+                <div class="col-12 col-lg-6 wow slideInRight" data-wow-duration="2s">
+                    <div class="card-total">
+                        <h4 class="heading">Card Total</h4>
+                        <table>
+                          
+                          
+                            <tr>
+                                <td>Total</td>
+                                <td>@ViewBag.Total</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- END SHOP CART CHECKOUT FORM -->
+
+        </div>
+    </div>
+    <!-- END SHOP CART SECTION-->
+
+</div>
+<!-- END HEADING SECTION -->

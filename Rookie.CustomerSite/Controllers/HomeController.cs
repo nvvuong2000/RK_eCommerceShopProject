@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using Rookie.CustomerSite.Models;
 using RookieShop.Backend.Models;
 using RookieShop.Shared;
+using RookieShop.Shared.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -28,8 +29,8 @@ namespace Rookie.CustomerSite.Controllers
         }
         [HttpGet("/")]
         public async Task<ActionResult> Index()
-        {
-            List<Product> ListProduct = new List<Product>();
+      {
+            List<ProductListVM> ListProduct = new List<ProductListVM>();
 
             using (var client = new HttpClient())
             {
@@ -37,23 +38,16 @@ namespace Rookie.CustomerSite.Controllers
                 client.BaseAddress = new Uri(Baseurl);
 
                 client.DefaultRequestHeaders.Clear();
-                //Define request data format  
+               
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                //Sending request to find web api REST service resource GetAllEmployees using HttpClient  
                 HttpResponseMessage Res = await client.GetAsync("/api/Product");
 
-                //Checking the response is successful or not which is sent using HttpClient  
                 if (Res.IsSuccessStatusCode)
                 {
-                    //Storing the response details recieved from web api   
                     var ProductsResponse = Res.Content.ReadAsStringAsync().Result;
-
-                    //Deserializing the response recieved from web api and storing into the Product list  
-                    ListProduct = JsonConvert.DeserializeObject<List<Product>>(ProductsResponse);
+                    ListProduct = JsonConvert.DeserializeObject<List<ProductListVM>>(ProductsResponse);
 
                 }
-                //returning the product list to view  
                 return View(ListProduct);
             }
         }

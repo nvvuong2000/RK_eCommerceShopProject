@@ -1,4 +1,5 @@
 ﻿using RookieShop.Backend.Models;
+using RookieShop.Shared.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ namespace RookieShop.Backend.Services.Interface
 {
     public interface ICart
     {
-        public Task<List<Cart>> myCart(string id);
+        public Task<List<CartVM>> myCart();
         public Task<bool> AddProductIntoCart(int id);
         public Task<bool> RemoveItem(int id);
         public Task<decimal> TotalBill();

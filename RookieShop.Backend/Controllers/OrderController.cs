@@ -7,6 +7,7 @@ using RookieShop.Backend.Data;
 using RookieShop.Backend.Models;
 using RookieShop.Backend.Services.Interface;
 using RookieShop.Shared.Repo;
+using RookieShop.Shared.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace RookieShop.Backend.Controllers
         }
         [HttpGet]
         [Authorize(Roles = "user")]
-        public async Task<ActionResult<IEnumerable<Order>>> GetListOrder()
+        public async Task<ActionResult<IEnumerable<OrderVm>>> GetListOrder()
         {
 
             var userId = _repoUser.getUserID();
@@ -74,7 +75,7 @@ namespace RookieShop.Backend.Controllers
 
             }
         }
-        [HttpGet("updateSttOrder")]
+        [HttpGet("updateSttOrder/{id}")]
         [Authorize(Roles = "user")]
         public bool UpdateSttOdCs(int id)
         {

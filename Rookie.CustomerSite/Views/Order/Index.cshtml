@@ -1,4 +1,4 @@
-﻿@model IEnumerable<RookieShop.Backend.Models.Order>
+﻿@model IEnumerable<RookieShop.Shared.ViewModel.OrderVm>
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
@@ -30,25 +30,36 @@
                                 <th class="darkcolor">Status</th>
                                 <th class="darkcolor">Total</th>
                                 <th></th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach (var item in Model)
+                            {
                             <tr>
-                                <td>1</td>
+                                <td>@item.Id</td>
                                 <td>
                                     <div class="d-table product-detail-cart">
 
                                         <div class="media">
                                             <div class="row no-gutters">
-
-                                                <div class="col-12 col-lg-2 product-detail-cart-image">
-                                                    <a class="shopping-product" href="javascript:void(0)"><img src="img\shopcart-1.jpg" alt="Generic placeholder image"></a>
-                                                </div>
-
                                                 <div class="col-12 col-lg-10 mt-auto product-detail-cart-data">
                                                     <div class="media-body ml-lg-3">
-                                                        <h4 class="product-name"><a href="product-detail.html">Love Does</a></h4>
-                                                        <p class="product-des">We offer the most complete in the country</p>
+
+                                                        @if (item.productName.Count == 1)
+                                                        {
+                                                            <p class="product-des">
+                                                                <br>@item.quantity[0] <br><span>x @item.productName[0] </span>
+                                                            </p>
+                                                        }
+                                                        else
+                                                        {
+                                                            <p class="product-des">
+                                                                <strong>@item.quantity[0] </strong>x<span> @item.productName[0] </span>
+                                                                <span>....</span>
+                                                            </p>
+                                                        }
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -56,16 +67,33 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <h4 class="text-center amount">Proccessing</h4>
+                                    @if (item.status == 0)
+                                    {
+                                        <h4 class="text-center amount">PROCCESSING</h4>
+                                    }
+                                    @if (item.status == 1)
+                                    {
+                                        <h4 class="text-center amount">TRANSPORTING</h4>
+                                    }
+                                    @if (item.status == 2)
+                                    {
+                                        <h4 class="text-center amount">RECEVIED</h4>
+                                    }
+
                                 </td>
                                 <td>
-                                    <h4 class="text-center amount">$130.00</h4>
+                                    <h4 class="text-center amount">@item.total</h4>
                                 </td>
 
 
-                                <td class="text-center"><a class="btn-close" href="javascript:void(0)"><i class="lni-eye"></i></a></td>
+                                <td class="text-center"><a href="/Order/Details/@item.Id"><i class="lni-eye"></i></a></td>
+                                @if (item.status == 1)
+                                {
+                                    <td class="text-center"><a href="@Url.Action("updateStatusOrder","Order",new { id =item.Id})" class="btn btn-outline-danger"> Đã nhận được hàng</a></td>
+                                }
+                                
                             </tr>
-
+                            }
                         </tbody>
                     </table>
                 </div>

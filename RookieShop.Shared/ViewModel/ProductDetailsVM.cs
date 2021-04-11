@@ -20,8 +20,10 @@ namespace RookieShop.Shared.ViewModel
         public bool isNew { get; set; }
         public bool status { get; set; }
         public double rating { get; set; }
-
-        public ICollection<ProductImagesVM> ProductImages { get; set; }
+        public List<int> numberRating { get; set; }
+        public List<string> userId { get; set; }
+        public List<DateTime> dateRated { get; set; }
+        public List<string> pathName { get; set; }
 
     }
 }

@@ -7,10 +7,13 @@ using RookieShop.Backend.Data;
 using RookieShop.Backend.Models;
 using RookieShop.Backend.Services.Interface;
 using RookieShop.Shared;
+using RookieShop.Shared.Repo;
+using RookieShop.Shared.ViewModel;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -34,15 +37,15 @@ namespace RookieShop.Backend.Controllers
         }
         [HttpGet]
         [Authorize(Roles = "user")]
-        public async Task<List<Cart>> Index()
+        public async Task<List<CartVM>> Index()
         {
 
 
-            var userId = _repoUser.getUserID();
+          
             try
             {
 
-                var list = await _repo.myCart(userId);
+                var list = await _repo.myCart();
 
 
                 return list;
@@ -62,8 +65,8 @@ namespace RookieShop.Backend.Controllers
             var Userid = _repoUser.getUserID();
 
             // Lấy danh sách sản phẩm trong giỏ hàng
-            var listItem = await _repo.myCart(Userid);
-            
+            var listItem = await _context.Carts.Where(x => x.userId.Equals(_repoUser.getUserID())).ToListAsync();
+
             // Lấy product theo Id
             var result = _context.Products.FirstOrDefault(x => x.Id == id);
 
@@ -82,6 +85,7 @@ namespace RookieShop.Backend.Controllers
                     
                     // Nếu có sản phẩm thì tăng số lượng lên 1
                     listItem[index].quantity = listItem[index].quantity + 1;
+                    _context.Carts.Update(listItem[index]);
                 }
                 else
                 {
@@ -100,33 +104,47 @@ namespace RookieShop.Backend.Controllers
 
 
         }
-        [HttpGet("addquantity/{product}/number/{quan}")]
+        [HttpGet("addquantity/{Id}/number/{quan}")]
         [Authorize(Roles = "user")]
-        public async Task<IActionResult> AddQuantity(int product, int quan)
+        public async Task<IActionResult> AddQuantity(int Id, int quan)
         {
-            var Userid = _repoUser.getUserID();
-            var listItem = await _repo.myCart(Userid);
+          //  var Userid = _repoUser.getUserID();
 
-            var result = _context.Products.FirstOrDefault(x => x.Id == product);
+            var listItem = await _context.Carts.Where(x => x.userId.Equals(_repoUser.getUserID())).ToListAsync();
 
-            var index = await _repo.FindId(product);
-            if (index != -1)
+            var result = _context.Products.FirstOrDefault(x => x.Id == Id);
+
+            var index = await _repo.FindId(Id);
+
+
+            if (result.stock <= 0)
             {
-                if (result.stock < quan)
-                {
-                    throw new Exception("Số lượng vượt quá số lượng tồn");
-                }
-                listItem[index].quantity = quan;
+                throw new Exception("Số lượng vượt quá số lượng tồn");
             }
             else
             {
-                return Ok(StatusCodes.Status404NotFound);
+                if (index != -1)
+                {
+
+                    listItem[index].quantity = listItem[index].quantity + quan;
+                    _context.Carts.Update(listItem[index]);
+                }
+                else
+                {
+
+                    if (result == null)
+                    {
+                        return NotFound();
+                    }
+                    // Tạo mới 1 đối tượng cart
+                    var newItem = new Cart { productId = Id, quantity = quan, unitPrice = result.unitPrice, userId = _repoUser.getUserID() };
+                    _context.Carts.Add(newItem);
+                }
+                await _context.SaveChangesAsync();
+                return Ok(StatusCodes.Status200OK);
+                // }
             }
-            await _context.SaveChangesAsync();
-            return Ok(StatusCodes.Status200OK);
-
         }
-
 
         [HttpGet("total")]
         [Authorize(Roles = "user")]
