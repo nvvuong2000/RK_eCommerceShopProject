@@ -104,11 +104,11 @@ namespace RookieShop.Backend.Controllers
 
 
         }
-        [HttpGet("addquantity/{Id}/number/{quan}")]
+        [HttpGet("addquantity/{Id}/number/{quan}/isUpdate/{isUpdate}")]
         [Authorize(Roles = "user")]
-        public async Task<IActionResult> AddQuantity(int Id, int quan)
+        public async Task<IActionResult> AddQuantity(int Id, int quan, bool isUpdate)
         {
-          //  var Userid = _repoUser.getUserID();
+
 
             var listItem = await _context.Carts.Where(x => x.userId.Equals(_repoUser.getUserID())).ToListAsync();
 
@@ -125,9 +125,18 @@ namespace RookieShop.Backend.Controllers
             {
                 if (index != -1)
                 {
-
-                    listItem[index].quantity = listItem[index].quantity + quan;
+                    if(isUpdate == true)
+                    {
+                        listItem[index].quantity = quan;
+     
+                    }
+                    else
+                    {
+                        listItem[index].quantity = listItem[index].quantity + quan;
+                     
+                    }
                     _context.Carts.Update(listItem[index]);
+
                 }
                 else
                 {
@@ -136,13 +145,13 @@ namespace RookieShop.Backend.Controllers
                     {
                         return NotFound();
                     }
-                    // Tạo mới 1 đối tượng cart
+
                     var newItem = new Cart { productId = Id, quantity = quan, unitPrice = result.unitPrice, userId = _repoUser.getUserID() };
                     _context.Carts.Add(newItem);
                 }
                 await _context.SaveChangesAsync();
                 return Ok(StatusCodes.Status200OK);
-                // }
+
             }
         }
 

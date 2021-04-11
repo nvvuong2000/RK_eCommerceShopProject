@@ -95,10 +95,13 @@ namespace Rookie.CustomerSite.Controllers
         
      
         public async Task<ActionResult> Add(IFormCollection form)
+        
         {
 
             int Id = Convert.ToInt32(form["id"]);
             int quantity = Convert.ToInt32(form["quantity"]);
+            bool isUpdate = Convert.ToBoolean(form["isUpdate"]);
+            
 
             using (var client = new HttpClient())
             {
@@ -111,13 +114,22 @@ namespace Rookie.CustomerSite.Controllers
                 var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
                 client.SetBearerToken(accessToken);
 
-                var item = new
+                //var item = new
+                //{
+                //    id = int.Parse(form["id"]),
+                //    quantity = int.Parse(form["quantity"]),
+                //    isUpdate  = true,
+                //};
+                string endpoint = "";
+                if (isUpdate == true)
                 {
-                    id = int.Parse(form["id"]),
-                    quantity = int.Parse(form["quantity"]),
-                };
-
-                string endpoint = "/api/Cart/addquantity/" + item.id.ToString() + "/number/" + item.quantity.ToString();
+                    endpoint = "/api/Cart/addquantity/" + Id.ToString() + "/number/" + quantity.ToString() + "/isUpdate/true";
+                }
+                else
+                {
+                    endpoint = "/api/Cart/addquantity/" + Id.ToString() + "/number/" + quantity.ToString() + "/isUpdate/false";
+                }
+               
                 HttpResponseMessage Res = await client.GetAsync(endpoint);
                 if (Res.IsSuccessStatusCode)
                 {
@@ -129,6 +141,7 @@ namespace Rookie.CustomerSite.Controllers
                 }
             }
         }
+
         [HttpGet("/cart/remove/{id}")]
         public async Task<ActionResult> RemoveItem(int id)
         {

@@ -85,13 +85,14 @@
                                 </ul>
                             </div>
 
-                            <div class="row product-quantity input_plus_mins no-gutters">
+                            <div class="row product-quantity input_plus_mins no-gutters" style="background-color:#dddddd">
                                 @using (Html.BeginForm("Add", "Cart", FormMethod.Post))
                                 {
                                     <input type="hidden" name="id" value="@Model.Id" />
+                                    <input type="hidden" placeholder="1" value="false" name="isUpdate">
                                     <div class="qty col-12 col-lg-3 d-lg-flex  align-items-lg-center d-inline-block">
                                         <span class="minus bg-dark"><i class="lni-minus"></i></span>
-                                        <input type="number" class="count" name="quantity" value="1"  >
+                                        <input type="number" class="count" name="quantity" value="1">
                                         <span class="plus bg-dark"><i class="lni-plus"></i></span>
                                     </div>
                                     <div class="col-12 col-lg-9">
@@ -199,199 +200,7 @@
         </div>
     </div>
 
-    <!--START LATEST ARRIVALS-->
-    <div class="lastest_arrivals">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 mb-4">
-                    <h1>Published Books</h1>
-                </div>
 
-                <div class="col-12">
-                    <div class="lastest_featured_products owl-carousel owl-theme">
-
-                        <div class="lastest_arrival_items item">
-                            <a href="product-detail.html" class="lastest-addto-cart"><i class="fa fa-shopping-cart"></i></a>
-                            <div class="card">
-                                <span class="product-type">NEW</span>
-                                <div class="image-holder">
-                                    <a href="img/l1.jpg" data-fancybox="lastest_product" data-title="Shirt Name">
-                                        <img src="img/l1.jpg" class="card-img-top" alt="Lastest Arrivals 1">
-                                    </a>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-12 text-center">
-                                            <h5 class="card-title">Love In The Time</h5>
-                                        </div>
-                                        <div class="col-12 text-center">
-                                            <p class="card-text"> $750.00</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="lastest_arrival_items item">
-                            <a href="product-detail.html" class="lastest-addto-cart"><i class="fa fa-shopping-cart"></i></a>
-                            <div class="card">
-                                <span class="product-type">NEW</span>
-                                <div class="image-holder">
-                                    <a href="img/l7.jpg" data-fancybox="lastest_product" data-title="Lastest Arrivals 1">
-                                        <img src="img/l7.jpg" class="card-img-top" alt="Lastest Arrivals 1">
-                                    </a>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-12 text-center">
-                                            <h5 class="card-title">The Joke</h5>
-                                        </div>
-                                        <div class="col-12 text-center">
-                                            <p class="card-text text-center"> $850.00</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="lastest_arrival_items item">
-                            <a href="product-detail.html" class="lastest-addto-cart"><i class="fa fa-shopping-cart"></i></a>
-                            <div class="card">
-                                <span class="product-type">NEW</span>
-                                <div class="image-holder">
-                                    <a href="img/l8.jpg" data-fancybox="lastest_product" data-title="Lastest Arrivals 1">
-                                        <img src="img/l8.jpg" class="card-img-top" alt="Lastest Arrivals 1">
-                                    </a>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-12 text-center">
-                                            <h5 class="card-title">Never Let Me Go </h5>
-                                        </div>
-                                        <div class="col-12 text-center">
-                                            <p class="card-text text-center"> $650.00</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="lastest_arrival_items item">
-                            <a href="product-detail.html" class="lastest-addto-cart"><i class="fa fa-shopping-cart"></i></a>
-                            <div class="card">
-                                <span class="product-type">NEW</span>
-                                <div class="image-holder">
-                                    <a href="img/l9.jpg" data-fancybox="lastest_product" data-title="Lastest Arrivals 1">
-                                        <img src="img/l9.jpg" class="card-img-top" alt="Lastest Arrivals 1">
-                                    </a>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-12 text-center">
-                                            <h5 class="card-title"> The Last World</h5>
-                                        </div>
-                                        <div class="col-12 text-center">
-                                            <p class="card-text text-center"> $680.00</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="lastest_arrival_items item">
-                            <a href="product-detail.html" class="lastest-addto-cart"><i class="fa fa-shopping-cart"></i></a>
-                            <div class="card">
-                                <span class="product-type">NEW</span>
-                                <div class="image-holder">
-                                    <a href="img/l10.jpg" data-fancybox="lastest_product" data-title="Lastest Arrivals 1">
-                                        <img src="img/l10.jpg" class="card-img-top" alt="Lastest Arrivals 1">
-                                    </a>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-12 text-center">
-                                            <h5 class="card-title">Brave New World</h5>
-                                        </div>
-                                        <div class="col-12 text-center">
-                                            <p class="card-text text-center"> $250.00</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="lastest_arrival_items item">
-                            <a href="product-detail.html" class="lastest-addto-cart"><i class="fa fa-shopping-cart"></i></a>
-                            <div class="card">
-                                <span class="product-type">NEW</span>
-                                <div class="image-holder">
-                                    <a href="img/l11.jpg" data-fancybox="lastest_product" data-title="Lastest Arrivals 1">
-                                        <img src="img/l11.jpg" class="card-img-top" alt="Lastest Arrivals 1">
-                                    </a>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-12 text-center">
-                                            <h5 class="card-title">Life Without Money</h5>
-                                        </div>
-                                        <div class="col-12 text-center">
-                                            <p class="card-text text-center"> $850.00</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="lastest_arrival_items item">
-                            <a href="product-detail.html" class="lastest-addto-cart"><i class="fa fa-shopping-cart"></i></a>
-                            <div class="card">
-                                <span class="product-type">NEW</span>
-                                <div class="image-holder">
-                                    <a href="img/l12.jpg" data-fancybox="lastest_product" data-title="Lastest Arrivals 1">
-                                        <img src="img/l12.jpg" class="card-img-top" alt="Lastest Arrivals 1">
-                                    </a>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-12 text-center">
-                                            <h5 class="card-title">Life Is Elsewhere</h5>
-                                        </div>
-                                        <div class="col-12 text-center">
-                                            <p class="card-text text-center"> $950.00</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="lastest_arrival_items item">
-                            <a href="product-detail.html" class="lastest-addto-cart"><i class="fa fa-shopping-cart"></i></a>
-                            <div class="card">
-                                <span class="product-type">NEW</span>
-                                <div class="image-holder">
-                                    <a href="img/l7.jpg" data-fancybox="lastest_product" data-title="Lastest Arrivals 1">
-                                        <img src="img/l13.jpg" class="card-img-top" alt="Lastest Arrivals 1">
-                                    </a>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-12 text-center">
-                                            <h5 class="card-title">The Road</h5>
-                                        </div>
-                                        <div class="col-12 text-center">
-                                            <p class="card-text text-center"> $550.00</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--END LATEST ARRIVALS-->
 
 </div>
 
