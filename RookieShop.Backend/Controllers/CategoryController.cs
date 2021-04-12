@@ -39,6 +39,7 @@ namespace RookieShop.Backend.Controllers
                 return false;
             }
         }
+        
         // POST: CategoryController/Create
         [HttpPut]
 
@@ -52,6 +53,20 @@ namespace RookieShop.Backend.Controllers
             catch (Exception ex)
             {
                 return false;
+            }
+        }
+
+        [HttpGet]
+        public async Task<List<Category>> Get()
+        {
+            try
+            {
+
+                return await _repo.getListCategory();
+            }
+            catch (Exception ex)
+            {
+                 throw new Exception(ex.Message);
             }
         }
 

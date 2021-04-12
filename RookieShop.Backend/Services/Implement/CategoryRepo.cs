@@ -44,6 +44,10 @@ namespace RookieShop.Backend.Services.Implement
            
         }
 
-        
+        public async  Task<List<Category>> getListCategory()
+        {
+            var categoriesList =await _context.Categories.ToListAsync();
+            return categoriesList;
+        }
     }
 }

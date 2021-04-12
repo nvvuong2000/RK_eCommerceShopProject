@@ -183,7 +183,7 @@ namespace RookieShop.Backend.Controllers
             }
 
             }
-            [HttpGet("sortAscbyName")]
+        [HttpGet("sortAscbyName")]
         [AllowAnonymous]
         public async Task<ActionResult<Product>> sortAscbyName()
             {
@@ -201,14 +201,33 @@ namespace RookieShop.Backend.Controllers
             }
 
             }
-        [HttpGet("search/{name}")]
-        public async Task<ActionResult<Product>> search(string name)
+        [HttpPost("search")]
+        [AllowAnonymous]
+        public async Task<ActionResult<Product>> search(string keyword)
         {
             try
             {
-                var product = await _repo.searchbyName(name);
+                var product = await _repo.searchbyName(keyword);
 
                 return Ok(product);
+
+
+            }
+            catch (Exception ex)
+            {
+                return Ok(ex);
+            }
+
+        }
+        [HttpGet("/getID/{id}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<ProductListVM>> getProductsbyCategoryId(int id)
+        {
+            try
+            {
+                var productslist= await _repo.getListProductbyCategoryID(id);
+
+                return Ok(productslist);
 
 
             }

@@ -15,6 +15,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Rookie.CustomerSite.Controllers
 {
@@ -23,11 +24,11 @@ namespace Rookie.CustomerSite.Controllers
     {
         // GET: ProductController
        
-        string Baseurl = "https://localhost:44341/";
+        string Baseurl = "https://localhost:44341";
        [HttpGet("/product/{id:int}")]
         public async Task<ActionResult> Details(int id)
         {
-            ProductDetailsVM EmpInfo = new ProductDetailsVM();
+            ProductDetailsVM productInfo = new ProductDetailsVM();
 
             using (var client = new HttpClient())
             {
@@ -43,9 +44,9 @@ namespace Rookie.CustomerSite.Controllers
                 if (Res.IsSuccessStatusCode)
                 {
                    
-                    var EmpResponse = Res.Content.ReadAsStringAsync().Result;
-                    EmpInfo = JsonConvert.DeserializeObject<ProductDetailsVM>(EmpResponse);
-                    return View(EmpInfo);
+                    var product = Res.Content.ReadAsStringAsync().Result;
+                    productInfo = JsonConvert.DeserializeObject<ProductDetailsVM>(product);
+                    return View(productInfo );
                 }
                 return View();
                 
@@ -115,6 +116,129 @@ namespace Rookie.CustomerSite.Controllers
             }
 
             return View();
+        }
+       
+  
+       
+
+        public async Task<IActionResult> ProductFilter(int? id, string? flag, string? keyword)
+        {
+            List<ProductListVM> ListProduct = new List<ProductListVM>();
+            ViewBag.ListCategory = await getListCategory();
+            using (var client = new HttpClient())
+            {
+
+                client.BaseAddress = new Uri(Baseurl);
+
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
+                client.SetBearerToken(accessToken);
+
+
+
+                HttpResponseMessage Res = await client.GetAsync("/api/Product");
+
+                if (Res.IsSuccessStatusCode)
+                {
+                    var ProductsResponse = Res.Content.ReadAsStringAsync().Result;
+                    ListProduct = JsonConvert.DeserializeObject<List<ProductListVM>>(ProductsResponse);
+
+                }
+                if (!string.IsNullOrEmpty(id.ToString()))
+                {
+                    List<ProductListVM> productsListbyCategoryId = ListProduct.Where(x => x.categoryId == id).ToList();
+                    return View(productsListbyCategoryId);
+                }
+                if (!string.IsNullOrEmpty(keyword))
+                {
+                    var productsListbyNameProduct = ListProduct.Where(x => x.productName.ToUpper().Contains(keyword.ToUpper()));
+                    return View(productsListbyNameProduct);
+                }
+                if (!string.IsNullOrEmpty(flag))
+                {
+                    switch (flag)
+                    {
+                        case "Desc-Name":
+                            var productsListbyDescNameProduct = ListProduct.OrderByDescending(x => x.productName).ToList();
+                            return View(productsListbyDescNameProduct);
+                            break;
+                        case "Asc-Name":
+                            var productsListbyAscNameProduct = ListProduct.OrderBy(x => x.productName).ToList();
+                            return View(productsListbyAscNameProduct);
+                            break;
+                        case "Desc-Price":
+                            var productsListbyDescPrice = ListProduct.OrderByDescending(x => x.unitPrice).ToList();
+                            return View(productsListbyDescPrice);
+                            break;
+                        case "Asc-Price":
+                            var productsListbyAscPrice = ListProduct.OrderBy(x => x.unitPrice).ToList();
+                            return View(productsListbyAscPrice);
+                            break;
+                        default:
+                            var list = ListProduct.ToList();
+                            return View(list);
+                            break;
+                    }
+
+
+                }
+
+            }
+
+            return View(null);
+        }
+        [HttpGet("/getAllProducts")]
+        public async Task<ActionResult> GetAllProduct()
+        {
+            List<ProductListVM> ListProduct = new List<ProductListVM>();
+
+            using (var client = new HttpClient())
+            {
+
+                client.BaseAddress = new Uri(Baseurl);
+
+                client.DefaultRequestHeaders.Clear();
+
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage Res = await client.GetAsync("/api/Product");
+
+                if (Res.IsSuccessStatusCode)
+                {
+                    var ProductsResponse = Res.Content.ReadAsStringAsync().Result;
+                    ListProduct = JsonConvert.DeserializeObject<List<ProductListVM>>(ProductsResponse);
+
+                }
+                ViewBag.ListCategory = await getListCategory();
+                return View(ListProduct);
+            }
+        }
+        [HttpGet("/getListCategory")]
+        public async Task<List<Category>> getListCategory()
+        {
+            Category cateInfo = new Category();
+
+            using (var client = new HttpClient())
+            {
+
+                client.BaseAddress = new Uri(Baseurl);
+
+                client.DefaultRequestHeaders.Clear();
+
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                string endpoint = "/api/Category";
+                HttpResponseMessage Res = await client.GetAsync(endpoint);
+                if (Res.IsSuccessStatusCode)
+                {
+
+                    var list = await Res.Content.ReadAsAsync<IEnumerable<Category>>();
+
+                    return list.ToList();
+                }
+                return null;
+
+            }
         }
 
 

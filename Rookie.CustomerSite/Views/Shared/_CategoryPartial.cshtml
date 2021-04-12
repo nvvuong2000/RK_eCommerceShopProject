@@ -1,0 +1,14 @@
+﻿@model IEnumerable<RookieShop.Backend.Models.Category>
+    <div class="col-12">
+        <div class="clearfix d-flex justify-content-center">
+            <div id="js-filters-blog-posts" class="cbp-l-filters-button cbp-1-filters-alignCenter">
+                <div data-filter="*" class="cbp-filter-item-active cbp-filter-item">All </div>
+                @foreach (var i in Model)
+                {
+                    <div data-filter="*" class="cbp-filter-item-active cbp-filter-item">@i.categoryName </div>
+
+                }
+
+            </div>
+        </div>
+    </div>

@@ -19,39 +19,14 @@ namespace Rookie.CustomerSite.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        //Hosted web API REST Service base url  
-        string Baseurl = "https://localhost:44341/";
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
+        
         [HttpGet("/")]
         public async Task<ActionResult> Index()
       {
-            List<ProductListVM> ListProduct = new List<ProductListVM>();
-
-            using (var client = new HttpClient())
-            {
-                
-                client.BaseAddress = new Uri(Baseurl);
-
-                client.DefaultRequestHeaders.Clear();
-               
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage Res = await client.GetAsync("/api/Product");
-
-                if (Res.IsSuccessStatusCode)
-                {
-                    var ProductsResponse = Res.Content.ReadAsStringAsync().Result;
-                    ListProduct = JsonConvert.DeserializeObject<List<ProductListVM>>(ProductsResponse);
-
-                }
-                return View(ListProduct);
-            }
+            return RedirectToAction("GetAllProduct", "Product");
         }
-            public IActionResult Privacy()
+       
+        public IActionResult Privacy()
         {
             return View();
         }

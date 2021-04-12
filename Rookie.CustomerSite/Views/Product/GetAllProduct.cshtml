@@ -18,54 +18,54 @@
             </div>
             <!-- END PORTFOLIO HEADING -->
             <!-- START FILTERS -->
-         @*   @Html.Partial("~/Views/Shared/_CategoryPartial.cshtml", ViewBag.ListCategory)*@
+            @*   @Html.Partial("~/Views/Shared/_CategoryPartial.cshtml", ViewBag.ListCategory)*@
             <div class="col-12">
                 <div class="clearfix d-flex justify-content-center">
                     <div id="js-filters-blog-posts" class="cbp-l-filters-button cbp-1-filters-alignCenter">
                         <div data-filter="*" class="cbp-filter-item-active cbp-filter-item">All </div>
                         @foreach (var i in ViewBag.ListCategory)
                         {
-                            <a href="@Url.Action("ProductFilter","Product", new { id = i.Id } )" data-filter=".Classic" class="cbp-filter-item">@i.categoryName </a> 
+                            <a href="@Url.Action("ProductFilter","Product", new { id = i.Id } )" data-filter=".Classic" class="cbp-filter-item">@i.categoryName </a>
                         }
-                
-                        </div>
+
                     </div>
                 </div>
             </div>
-            <!-- END FILTERS -->
-            <!-- START PORTFOLIO IMAGES -->
-            <div class="col-12">
-                <div id="js-grid-blog-posts" class="cbp">
-                    @foreach (var item in Model)
-                    {
-                        <div class="cbp-item Classic Fantasy">
-                            <a class="portfolio-circle-cart" href="@Url.Action("AddProduct","Cart", new { id = item.productID})">
-                                <i class="fa fa-shopping-cart"></i>
-                            </a>
-                            <div class="cbp-caption-defaultWrap  owl-theme sync-portfolio-carousel owl-carousel">
-                                <div class="item"> <a href="book-shop\img\book-1.jpg" class="cbp-caption" data-fancybox="gallery1" data-title="Book 1"><img src="@item.imgDefault" alt="Book 1"></a></div>
+        </div>
+        <!-- END FILTERS -->
+        <!-- START PORTFOLIO IMAGES -->
+        <div class="col-12">
+            <div id="js-grid-blog-posts" class="cbp">
+                @foreach (var item in Model)
+                {
+                    <div class="cbp-item Classic Fantasy">
+                        <a class="portfolio-circle-cart" href="@Url.Action("AddProduct","Cart", new { id = item.productID})">
+                            <i class="fa fa-shopping-cart"></i>
+                        </a>
+                        <div class="cbp-caption-defaultWrap  owl-theme sync-portfolio-carousel owl-carousel">
+                            <div class="item"> <a href="book-shop\img\book-1.jpg" class="cbp-caption" data-fancybox="gallery1" data-title="Book 1"><img src="@item.imgDefault" alt="Book 1"></a></div>
 
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <div class="cbp-l-grid-blog-title"><a href="@Url.Action("Details","Product",new { id = item.productID })" target="_blank" class="portfolio-title">@item.productName</a></div>
                             </div>
-                            <div class="row">
-                                <div class="col-12 text-center">
-                                    <div class="cbp-l-grid-blog-title"><a href="@Url.Action("Details","Product",new { id = item.productID })" target="_blank" class="portfolio-title">@item.productName</a></div>
-                                </div>
-                                <div class="col-12 text-center">
-                                    <div class="cbp-l-grid-blog-desc portfolio-des">$ @item.unitPrice</div>
-                                </div>
+                            <div class="col-12 text-center">
+                                <div class="cbp-l-grid-blog-desc portfolio-des">$ @item.unitPrice</div>
                             </div>
                         </div>
-                    }
+                    </div>
+                }
 
 
 
 
-                </div>
             </div>
-            <!-- END PORTFOLIO IMAGES -->
-
         </div>
+        <!-- END PORTFOLIO IMAGES -->
+
     </div>
+</div>
 </div>
 <!--START BANNER SECTION-->
 <div class="banner-section parallax-slide">
@@ -83,8 +83,6 @@
     </div>
 </div>
 <!--END BANNER SECTION-->
-
-
 
 <!--START SEARCH AREA-->
 <div class="search-box-overlay">

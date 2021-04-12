@@ -1,0 +1,102 @@
+﻿@model IEnumerable<RookieShop.Shared.ViewModel.ProductListVM>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<!--Product Line Up Start -->
+<div class="product-listing">
+    <div class="container">
+        <div class="row no-gutters">
+
+            <!-- START STICKY NAV -->
+            <div class="col-12 col-lg-4 order-2 order-lg-1 sticky">
+                <div id="product-filter-nav" class="product-filter-nav mb-3">
+                    <div class="product-category">
+                        <h5 class="filter-heading  text-center text-lg-left">Category</h5>
+                        <ul>
+                            @foreach (var i in ViewBag.ListCategory)
+                            {
+                                
+                                    <li><a href="@Url.Action("ProductFilter","Product", new { id = i.Id } )"> @i.categoryName </a><span></span></li>
+                                }
+
+                               
+                            </ul>
+                    </div>
+            
+                </div>
+            </div>
+            <!-- END STICKY NAV -->
+            <!-- START PRODUCT COL 8 -->
+            <div class="col-md-12 col-lg-8 order-1 order-lg-2">
+
+                <div class="row">
+
+                    <!-- START LISTING HEADING -->
+                    <div class="col-12 product-listing-heading">
+                        <div class="sort-select-list d-flex ">
+                            <label class="mr-2">Sort By:</label>
+                          
+                            @using (Html.BeginForm("ProductFilter", "Product", FormMethod.Post))
+                                {
+                                    <fieldset>
+                                        <select name="flag" id="flag" onchange="this.form.submit()">
+                                           
+                                 
+                                            <option value="Asc-Price" >Sort by price: low to high</option>
+                                            <option value="Desc-Price">Sort by price: high to low</option>
+
+                                        </select>
+                                    </fieldset>
+                                }
+                        </div>
+
+                    </div>
+                    <!-- END LISTING HEADING -->
+                    <!-- START PRODUCT LISTING SECTION -->
+                    <div class="col-12 product-listing-products">
+
+                        <!-- START DISPLAY PRODUCT -->
+                        <div class="product-list row">
+
+                            @foreach (var item in Model)
+                            {
+                                <div class="col-12 col-md-6 col-lg-4 manage-color-hover wow slideInUp" data-wow-delay=".2s">
+                                    <div class="product-item owl-theme product-listing-carousel owl-carousel">
+                                        <div class="item p-item-img">
+                                            <img src="@item.imgDefault" alt="images">
+                                            <div class="text-center d-flex justify-content-center align-items-center">
+                                                <a class="listing-cart-icon" href="@Url.Action("AddProduct","Cart", new { id = item.productID})">
+                                                    <i class="fa fa-shopping-cart"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="p-item-detail" style="margin-top:20px">
+                                        <h4 class="text-center p-item-name"><a href="product-detail.html">@item.productName</a></h4>
+                                        <p class="text-center p-item-price">$ @item.unitPrice</p>
+                                    </div>
+                                </div>
+
+                            }
+
+
+
+
+
+                        </div>
+                        <!-- END DISPLAY PRODUCT -->
+
+
+                    </div>
+                    <!-- END PRODUCT LISTING SECTION -->
+                </div>
+            </div>
+            <!-- END PRODUCT COL 8 -->
+
+        </div>
+    </div>
+</div>
+<!--Product Line Up End-->

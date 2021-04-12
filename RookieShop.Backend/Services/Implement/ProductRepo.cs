@@ -93,15 +93,25 @@ namespace RookieShop.Backend.Services.Implement
                 productName = x.productName,
                 unitPrice = x.unitPrice,
                 isNew = x.isNew,
+                categoryId = x.categoryId,
+                
                 imgDefault = x.ProductImages.Where(img => img.isDefault == true).Select(img => "https://localhost:44341" + img.pathName).FirstOrDefault(),
             }).ToListAsync();
 
             return productList;
         }
 
-        public async Task<List<Product>> getListProductbyCategoryID(int? id)
+        public async Task<List<ProductListVM>> getListProductbyCategoryID(int? id)
         {
-            var productList = await _context.Products.Include(p => p.ProductImages).Where(p => p.categoryId == id).ToListAsync();
+            var productList = await _context.Products.Include(p => p.ProductImages).Select(x => new ProductListVM
+            {
+                categoryId = x.categoryId,
+                productID = x.Id,
+                productName = x.productName,
+                unitPrice = x.unitPrice,
+                isNew = x.isNew,
+                imgDefault = x.ProductImages.Where(img => img.isDefault == true).Select(img => "https://localhost:44341" + img.pathName).FirstOrDefault()
+            }).Where(p => p.categoryId == id).ToListAsync();
             return productList;
         }
 

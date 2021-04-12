@@ -113,13 +113,6 @@ namespace Rookie.CustomerSite.Controllers
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
                 client.SetBearerToken(accessToken);
-
-                //var item = new
-                //{
-                //    id = int.Parse(form["id"]),
-                //    quantity = int.Parse(form["quantity"]),
-                //    isUpdate  = true,
-                //};
                 string endpoint = "";
                 if (isUpdate == true)
                 {
