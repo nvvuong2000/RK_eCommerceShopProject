@@ -22,7 +22,7 @@ namespace Rookie.CustomerSite.Controllers
         
         [HttpGet("/")]
         public async Task<ActionResult> Index()
-      {
+        {
             return RedirectToAction("GetAllProduct", "Product");
         }
        

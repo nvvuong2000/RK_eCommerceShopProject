@@ -1,9 +1,9 @@
-﻿@model List<RookieShop.Shared.ViewModel.ProductListVM>
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿
+
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Web.Common
+@using X.PagedList.Mvc.Bootstrap4
 
 <div class="portfolio-section">
     <div class="container">
@@ -18,7 +18,6 @@
             </div>
             <!-- END PORTFOLIO HEADING -->
             <!-- START FILTERS -->
-            @*   @Html.Partial("~/Views/Shared/_CategoryPartial.cshtml", ViewBag.ListCategory)*@
             <div class="col-12">
                 <div class="clearfix d-flex justify-content-center">
                     <div id="js-filters-blog-posts" class="cbp-l-filters-button cbp-1-filters-alignCenter">
@@ -36,7 +35,7 @@
         <!-- START PORTFOLIO IMAGES -->
         <div class="col-12">
             <div id="js-grid-blog-posts" class="cbp">
-                @foreach (var item in Model)
+                @foreach (var item in ViewBag.OnePageOfProducts)
                 {
                     <div class="cbp-item Classic Fantasy">
                         <a class="portfolio-circle-cart" href="@Url.Action("AddProduct","Cart", new { id = item.productID})">
@@ -56,17 +55,19 @@
                         </div>
                     </div>
                 }
-
-
-
-
             </div>
+            @Html.PagedListPager((IPagedList)ViewBag.OnePageOfProducts, page => Url.Action("GetAllProduct", new { page }), new X.PagedList.Web.Common.PagedListRenderOptionsBase
+       {
+           LiElementClasses = new string[] { "page-item justify-content-center" },
+           PageClasses = new string[] { "page-link" },
+
+       })
         </div>
         <!-- END PORTFOLIO IMAGES -->
 
     </div>
 </div>
-</div>
+    </div>
 <!--START BANNER SECTION-->
 <div class="banner-section parallax-slide">
     <div class="container">
@@ -83,7 +84,6 @@
     </div>
 </div>
 <!--END BANNER SECTION-->
-
 <!--START SEARCH AREA-->
 <div class="search-box-overlay">
     <a><i class="fas fa-times cross-sign" id="close-window"></i></a>
@@ -115,4 +115,3 @@
 
 </div>
 <!--END SEARCH AREA -->
-

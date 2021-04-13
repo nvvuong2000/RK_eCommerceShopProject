@@ -17,6 +17,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
+using X.PagedList;
+
 namespace Rookie.CustomerSite.Controllers
 {
     [Route("[controller]")]
@@ -189,7 +191,7 @@ namespace Rookie.CustomerSite.Controllers
             return View(null);
         }
         [HttpGet("/getAllProducts")]
-        public async Task<ActionResult> GetAllProduct()
+        public async Task<ActionResult> GetAllProduct(int? page)
         {
             List<ProductListVM> ListProduct = new List<ProductListVM>();
 
@@ -210,7 +212,13 @@ namespace Rookie.CustomerSite.Controllers
 
                 }
                 ViewBag.ListCategory = await getListCategory();
-                return View(ListProduct);
+                int pageSize = 1;
+                int pageNumber = (page ?? 1);
+                var onePageOfProducts = ListProduct.ToPagedList(pageNumber, 1); // will only contain 10 products max because of the pageSize
+                ViewBag.OnePageOfProducts = onePageOfProducts;
+                return View();
+
+
             }
         }
         [HttpGet("/getListCategory")]
