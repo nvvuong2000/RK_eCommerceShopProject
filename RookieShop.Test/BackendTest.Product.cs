@@ -67,7 +67,33 @@ namespace RookieShop.Test
             var listProduct = actionResult.Value as List<ProductListVM>;
             Assert.Equal(listProduct.Count(), expectCount);
         }
-       
+        [Fact]
+        public async Task ProductPost_AddProduct_retrunStatusCode201_whenProductValid()
+        {
+            // Arrange
+            var product = new ProductCreateRequest
+            {
+                providerID = 5,
+                productName = "Sad Story 5",
+                unitPrice = 1000,
+                categoryID = 4,
+                isNew = false,
+                status = true,
+                stock = 1000,
+            };
+            var mockUser = new Mock<IUserDF>();
+            var mockHosting = new Mock<IHostingEnvironment>();
+            var mockProduct = new Mock<IProduct>();
+            var controller = new ProductController(mockUser.Object, mockProduct.Object, mockHosting.Object);
+            // Act
+            var result = await controller.addProduct(product);
+            // Assert
+            Assert.IsType<OkObjectResult>(result);
+            var okObjectResult = result as OkObjectResult;
+            var statusCode = okObjectResult.Value;
+            Assert.Equal(201, statusCode);
 
+        }
+
+        }
     }
-}
