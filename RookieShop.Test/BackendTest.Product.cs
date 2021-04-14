@@ -19,7 +19,7 @@ namespace RookieShop.Test
 {
     public class UnitTest1
     {
-       
+
         private List<ProductListVM> GetListProductTest()
         {
             var sessions = new List<ProductListVM>();
@@ -32,7 +32,7 @@ namespace RookieShop.Test
                 unitPrice = 1000,
                 categoryId = 4,
                 isNew = false,
-                
+
 
             });
             sessions.Add(new ProductListVM()
@@ -52,13 +52,13 @@ namespace RookieShop.Test
         public async Task ProductGet_ReturnCountWithAListProduct()
         {
             // Arrange
-           
+
             var mockUser = new Mock<IUserDF>();
             var mockHosting = new Mock<IHostingEnvironment>();
             var mockProduct = new Mock<IProduct>();
             int expectCount = 2;
             mockProduct.Setup(repo => repo.getListProductAsync()).Returns(Task.FromResult(GetListProductTest()));
-            var controller = new ProductController(mockUser.Object,mockProduct.Object,mockHosting.Object);
+            var controller = new ProductController(mockUser.Object, mockProduct.Object, mockHosting.Object);
             // Act
             var result = await controller.GetAsync();
             // Assert
@@ -95,5 +95,31 @@ namespace RookieShop.Test
 
         }
 
+
+
+
+        [Theory]
+        [InlineData(3)]
+        [InlineData(4)]
+        public async Task ProductsGet_ReturnsProductDetailsWhenGetIdproductExits(int id)
+        {
+            // Arrange
+            var mockUser = new Mock<IUserDF>();
+            var mockHosting = new Mock<IHostingEnvironment>();
+            var mockProduct = new Mock<IProduct>();
+            
+            mockProduct.Setup(repo => repo.getProductAsync(id)).ReturnsAsync(GetListProductTest().Select(p => new ProductDetailsVM { Id = p.productID, productName = p.productName }).FirstOrDefault(s => s.Id == id));
+            var controller = new ProductController(mockUser.Object, mockProduct.Object, mockHosting.Object);
+            // Act
+           var result = await controller.Get(id);
+            // Assert
+            var okObjectResult = Assert.IsType<OkObjectResult>(result.Result);
+            var model = okObjectResult.Value as ProductDetailsVM;
+            Assert.Equal(id, model.Id);
+
+
         }
+      
+
     }
+}
