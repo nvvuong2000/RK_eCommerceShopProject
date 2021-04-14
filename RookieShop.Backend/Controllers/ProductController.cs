@@ -14,8 +14,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Web;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using System.Net.Http;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -32,9 +35,9 @@ namespace RookieShop.Backend.Controllers
         private readonly IUserDF _repoUser;
         private IHostingEnvironment _hostingEnv;
 
-        public ProductController(ApplicationDbContext context, IUserDF repoUser,IProduct repo, IHostingEnvironment hostingEnv)
+        public ProductController( IUserDF repoUser,IProduct repo, IHostingEnvironment hostingEnv)
         {
-            _context = context;
+            
             _repoUser = repoUser;
             _repo = repo;
             _hostingEnv = hostingEnv;
@@ -67,8 +70,14 @@ namespace RookieShop.Backend.Controllers
             try
             {
                 var list = await _repo.getProductAsync(id);
+                if (list == null)
+                {
+                    HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.NotFound);
+                    return Ok(result);
+                }
 
                 return Ok(list);
+              
 
 
             }
