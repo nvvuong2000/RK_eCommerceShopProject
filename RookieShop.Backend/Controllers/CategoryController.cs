@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RookieShop.Backend.Models;
 using RookieShop.Backend.Services.Interface;
@@ -12,6 +13,8 @@ namespace RookieShop.Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize("Bearer")]
+    [Microsoft.AspNetCore.Authorization.Authorize]
     public class CategoryController : Controller
     {
         private readonly ICategory _repo;
@@ -23,7 +26,7 @@ namespace RookieShop.Backend.Controllers
 
         // POST: CategoryController/Create
         [HttpPost]
-
+        [Authorize(Roles = "admin")]
         public async Task<bool> Create(CategoryRequest category)
         {
             try
@@ -42,6 +45,7 @@ namespace RookieShop.Backend.Controllers
         
         // POST: CategoryController/Create
         [HttpPut]
+        [Authorize(Roles = "admin")]
 
         public async Task<bool> Edit(int? id, CategoryRequest category)
         {
@@ -57,6 +61,7 @@ namespace RookieShop.Backend.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<List<Category>> Get()
         {
             try

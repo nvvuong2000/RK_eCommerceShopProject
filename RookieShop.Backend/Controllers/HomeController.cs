@@ -22,9 +22,7 @@ namespace RookieShop.Backend.Controllers
         public HomeController(ILogger<HomeController> logger)
 
         {
-            // UserServices user
             _logger = logger;
-          // _user = user;
         }
 
         public async Task<IActionResult> IndexAsync()
@@ -34,25 +32,6 @@ namespace RookieShop.Backend.Controllers
             return View();
           
         }
-        public IActionResult GetUserID()
-        {
-
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            var id = claims.FirstOrDefault(s => s.Type == "sub")?.Value;
-            return View();
-
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-        protected int GetUserId()
-        {
-            return int.Parse(this.User.Claims.First(i => i.Type == "UserId").Value);
-        }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

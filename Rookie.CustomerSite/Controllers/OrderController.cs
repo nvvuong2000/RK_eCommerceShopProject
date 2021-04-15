@@ -1,5 +1,6 @@
 ﻿using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Newtonsoft.Json;
@@ -14,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace Rookie.CustomerSite.Controllers
 {
+    [Authorize]
     public class OrderController : Controller
     {
         string Baseurl = "https://localhost:44341/";
@@ -21,7 +23,7 @@ namespace Rookie.CustomerSite.Controllers
         public async Task<ActionResult> Index()
         {
 
-           
+
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(Baseurl);
@@ -36,7 +38,7 @@ namespace Rookie.CustomerSite.Controllers
                 string endpoint = "/api/Order";
 
                 HttpResponseMessage Res = await client.GetAsync(endpoint);
-             
+
 
                 if (Res.IsSuccessStatusCode)
                 {
@@ -48,7 +50,7 @@ namespace Rookie.CustomerSite.Controllers
                 {
                     return View();
                 }
-             
+
             }
         }
         [HttpGet("/order/{id:int}")]
@@ -67,7 +69,7 @@ namespace Rookie.CustomerSite.Controllers
                 client.SetBearerToken(accessToken);
 
 
-                string endpoint = "/api/Order/" +id.ToString();
+                string endpoint = "/api/Order/" + id.ToString();
 
                 HttpResponseMessage Res = await client.GetAsync(endpoint);
 
@@ -75,9 +77,9 @@ namespace Rookie.CustomerSite.Controllers
                 if (Res.IsSuccessStatusCode)
                 {
                     var listOrderDetails = await Res.Content.ReadAsAsync<OrderVm>();
-                 
 
-                    
+
+
                     return View(listOrderDetails);
 
                 }
@@ -110,7 +112,7 @@ namespace Rookie.CustomerSite.Controllers
                 if (Res.IsSuccessStatusCode)
                 {
 
-                    return RedirectToAction("Index","Order");
+                    return RedirectToAction("Index", "Order");
                 }
 
                 return RedirectToAction("Index", "Order");

@@ -15,6 +15,7 @@ namespace RookieShop.Backend.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize("Bearer")]
+ 
     public class UserController : ControllerBase
     {
         private readonly IUserDF _repo;

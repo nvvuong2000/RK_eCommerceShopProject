@@ -27,8 +27,6 @@ namespace RookieShop.Backend.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IUserDF _repoUser;
         private readonly ICart _repo;
-
-
         public CartController(ApplicationDbContext context, IUserDF repoUser, ICart repo)
         {
             _context = context;
@@ -36,12 +34,9 @@ namespace RookieShop.Backend.Controllers
             _repo = repo;
         }
         [HttpGet]
-        [Authorize(Roles = "user")]
+   
         public async Task<List<CartVM>> Index()
         {
-
-
-          
             try
             {
 
@@ -56,10 +51,9 @@ namespace RookieShop.Backend.Controllers
                 return null;
             }
         }
-        [HttpGet("/add/{id}")]
-        [Authorize(Roles = "user")]
+        [HttpGet("/add/{id}")]  
         public async Task<IActionResult> Buy(int id)
-        
+
         {
             // Kiểm tra UserId hiện tại
             var Userid = _repoUser.getUserID();
@@ -82,7 +76,7 @@ namespace RookieShop.Backend.Controllers
             {
                 if (index != -1)
                 {
-                    
+
                     // Nếu có sản phẩm thì tăng số lượng lên 1
                     listItem[index].quantity = listItem[index].quantity + 1;
                     _context.Carts.Update(listItem[index]);
@@ -104,8 +98,7 @@ namespace RookieShop.Backend.Controllers
 
 
         }
-        [HttpGet("addquantity/{Id}/number/{quan}/isUpdate/{isUpdate}")]
-        [Authorize(Roles = "user")]
+        [HttpGet("addquantity/{Id}/number/{quan}/isUpdate/{isUpdate}")]  
         public async Task<IActionResult> AddQuantity(int Id, int quan, bool isUpdate)
         {
 
@@ -125,15 +118,15 @@ namespace RookieShop.Backend.Controllers
             {
                 if (index != -1)
                 {
-                    if(isUpdate == true)
+                    if (isUpdate == true)
                     {
                         listItem[index].quantity = quan;
-     
+
                     }
                     else
                     {
                         listItem[index].quantity = listItem[index].quantity + quan;
-                     
+
                     }
                     _context.Carts.Update(listItem[index]);
 
@@ -156,7 +149,6 @@ namespace RookieShop.Backend.Controllers
         }
 
         [HttpGet("total")]
-        [Authorize(Roles = "user")]
         public async Task<decimal> TotalBill()
         {
             try
@@ -175,7 +167,6 @@ namespace RookieShop.Backend.Controllers
         }
 
         [HttpGet("/remove/{id}")]
-        [Authorize(Roles = "user")]
         public async Task<IActionResult> Remove(int id)
         {
 
@@ -196,13 +187,10 @@ namespace RookieShop.Backend.Controllers
 
         }
         [HttpGet("checkout")]
-        [Authorize(Roles = "user")]
         public async Task<IActionResult> Checkout()
         {
-
             try
             {
-
                 var result = await _repo.Checkout();
 
                 return Ok(StatusCodes.Status200OK);

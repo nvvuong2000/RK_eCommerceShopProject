@@ -35,9 +35,9 @@ namespace RookieShop.Backend.Controllers
         private readonly IUserDF _repoUser;
         private IHostingEnvironment _hostingEnv;
 
-        public ProductController( IUserDF repoUser,IProduct repo, IHostingEnvironment hostingEnv)
+        public ProductController(IUserDF repoUser, IProduct repo, IHostingEnvironment hostingEnv)
         {
-            
+
             _repoUser = repoUser;
             _repo = repo;
             _hostingEnv = hostingEnv;
@@ -50,10 +50,10 @@ namespace RookieShop.Backend.Controllers
             try
             {
                 var list = await _repo.getListProductAsync();
-                
+
                 return Ok(list);
 
-              
+
             }
             catch (Exception ex)
             {
@@ -77,7 +77,7 @@ namespace RookieShop.Backend.Controllers
                 }
 
                 return Ok(list);
-              
+
 
 
             }
@@ -86,18 +86,15 @@ namespace RookieShop.Backend.Controllers
                 return Ok(ex);
             }
         }
-        
 
-        
-      
         [HttpPost("addProduct")]
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> addProduct([FromForm] ProductCreateRequest  product)
+        public async Task<IActionResult> addProduct([FromForm] ProductCreateRequest product)
         {
             try
             {
                 var list = await _repo.addProduct(product);
-              
+
                 return Ok(StatusCodes.Status201Created);
 
 
@@ -106,7 +103,7 @@ namespace RookieShop.Backend.Controllers
             {
                 return null;
             }
-         
+
         }
         // PUT api/<Product>/5
         [HttpPut("{id}")]
@@ -115,7 +112,7 @@ namespace RookieShop.Backend.Controllers
         {
             try
             {
-                var list = await _repo.updateProduct(id,product);
+                var list = await _repo.updateProduct(id, product);
 
                 return Ok(StatusCodes.Status202Accepted);
 
@@ -125,20 +122,21 @@ namespace RookieShop.Backend.Controllers
             {
                 return null;
             }
-            
+
         }
         [HttpGet("deleteFile")]
+        [Authorize(Roles = "admin")]
         public bool DeleteFile(string file)
         {
 
-           string webRootPath = _hostingEnv.WebRootPath;
+            string webRootPath = _hostingEnv.WebRootPath;
             var fullPath = Path.Combine(webRootPath, file);
-           
+
 
             if (System.IO.File.Exists(fullPath))
             {
                 System.IO.File.Delete(fullPath);
-                
+
             }
             return true;
         }
@@ -177,41 +175,42 @@ namespace RookieShop.Backend.Controllers
                 return Ok(ex);
             }
         }
-            [HttpGet("sortDescbyName")]
-            public async Task<ActionResult<Product>> sortDescbyName()
+        [HttpGet("sortDescbyName")]
+        [AllowAnonymous]
+        public async Task<ActionResult<Product>> sortDescbyName()
+        {
+            try
             {
-                try
-                {
                 var list = await _repo.SortDescOrderByName();
 
-                    return Ok(list);
+                return Ok(list);
 
 
-                }
-                catch (Exception ex)
-                {
+            }
+            catch (Exception ex)
+            {
                 return Ok(ex);
             }
 
-            }
+        }
         [HttpGet("sortAscbyName")]
         [AllowAnonymous]
         public async Task<ActionResult<Product>> sortAscbyName()
+        {
+            try
             {
-                try
-                {
                 var list = await _repo.SortAscByName();
 
-                    return Ok(list);
+                return Ok(list);
 
 
-                }
-                catch (Exception ex)
-                {
+            }
+            catch (Exception ex)
+            {
                 return Ok(ex);
             }
 
-            }
+        }
         [HttpPost("search")]
         [AllowAnonymous]
         public async Task<ActionResult<Product>> search(string keyword)
@@ -236,7 +235,7 @@ namespace RookieShop.Backend.Controllers
         {
             try
             {
-                var productslist= await _repo.getListProductbyCategoryID(id);
+                var productslist = await _repo.getListProductbyCategoryID(id);
 
                 return Ok(productslist);
 
@@ -249,7 +248,7 @@ namespace RookieShop.Backend.Controllers
 
         }
         [HttpGet("/rating")]
-        [Authorize(Roles ="user")]
+        [Authorize(Roles = "user")]
         public async Task<List<ProductListVM>> rating()
         {
             try
@@ -282,7 +281,7 @@ namespace RookieShop.Backend.Controllers
             }
             catch (Exception ex)
             {
-                throw new (ex.Message);
+                throw new(ex.Message);
             }
 
         }

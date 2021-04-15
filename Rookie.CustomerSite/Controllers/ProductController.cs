@@ -1,5 +1,6 @@
 ﻿using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
@@ -22,36 +23,38 @@ using X.PagedList;
 namespace Rookie.CustomerSite.Controllers
 {
     [Route("[controller]")]
+    [Authorize]
     public class ProductController : Controller
     {
         // GET: ProductController
-       
         string Baseurl = "https://localhost:44341";
-       [HttpGet("/product/{id:int}")]
+
+        [HttpGet("/product/{id:int}")]
+        [AllowAnonymous]
         public async Task<ActionResult> Details(int id)
         {
             ProductDetailsVM productInfo = new ProductDetailsVM();
 
             using (var client = new HttpClient())
             {
-                
+
                 client.BaseAddress = new Uri(Baseurl);
 
                 client.DefaultRequestHeaders.Clear();
-   
+
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            
+
                 string endpoint = "/api/Product/" + id.ToString();
                 HttpResponseMessage Res = await client.GetAsync(endpoint);
                 if (Res.IsSuccessStatusCode)
                 {
-                   
+
                     var product = Res.Content.ReadAsStringAsync().Result;
                     productInfo = JsonConvert.DeserializeObject<ProductDetailsVM>(product);
-                    return View(productInfo );
+                    return View(productInfo);
                 }
                 return View();
-                
+
             }
         }
         [HttpGet("/ratingproductlist")]
@@ -69,7 +72,7 @@ namespace Rookie.CustomerSite.Controllers
                 var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
                 client.SetBearerToken(accessToken);
                 string endpoint = "/rating";
-               
+
                 HttpResponseMessage Res = await client.GetAsync(endpoint);
                 if (Res.IsSuccessStatusCode)
                 {
@@ -77,16 +80,17 @@ namespace Rookie.CustomerSite.Controllers
                     var cartResponse = await Res.Content.ReadAsAsync<IEnumerable<ProductListVM>>();
                     return View(cartResponse);
                 }
-              
+
             }
 
             return View();
         }
         // Post
         [HttpPost("/ratingproductlist")]
+
         public async Task<IActionResult> PostRatings(IFormCollection request)
         {
-          
+
             var id = Convert.ToInt32(request["id"]);
             var numberRate = Convert.ToInt32(request[$"stars-{id}"]);
             using (var client = new HttpClient())
@@ -107,22 +111,22 @@ namespace Rookie.CustomerSite.Controllers
 
                 string endpoint = "/rating";
 
-                HttpResponseMessage Res = await client.PostAsJsonAsync(endpoint,rating);
+                HttpResponseMessage Res = await client.PostAsJsonAsync(endpoint, rating);
                 if (Res.IsSuccessStatusCode)
                 {
 
                     var cartResponse = await Res.Content.ReadAsAsync<IEnumerable<ProductListVM>>();
                     return View(cartResponse);
                 }
-   
+
             }
 
             return View();
         }
-       
-  
-       
 
+
+
+        [AllowAnonymous]
         public async Task<IActionResult> ProductFilter(int? id, string? flag, string? keyword)
         {
             List<ProductListVM> ListProduct = new List<ProductListVM>();
@@ -190,7 +194,9 @@ namespace Rookie.CustomerSite.Controllers
 
             return View(null);
         }
+    
         [HttpGet("/getAllProducts")]
+        [AllowAnonymous]
         public async Task<ActionResult> GetAllProduct(int? page)
         {
             List<ProductListVM> ListProduct = new List<ProductListVM>();
@@ -221,7 +227,9 @@ namespace Rookie.CustomerSite.Controllers
 
             }
         }
+ 
         [HttpGet("/getListCategory")]
+        [AllowAnonymous]
         public async Task<List<Category>> getListCategory()
         {
             Category cateInfo = new Category();

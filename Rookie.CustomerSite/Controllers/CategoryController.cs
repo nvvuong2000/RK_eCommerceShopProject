@@ -13,6 +13,7 @@ namespace Rookie.CustomerSite.Controllers
 {
     public class CategoryController : Controller
     {
+
         
         string Baseurl = "https://localhost:44341/";
         // GET: CategoryController

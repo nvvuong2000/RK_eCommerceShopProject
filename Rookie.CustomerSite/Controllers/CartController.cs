@@ -20,15 +20,15 @@ using System.Threading.Tasks;
 
 namespace Rookie.CustomerSite.Controllers
 {
+    [Authorize]
 
-   
     public class CartController : Controller
     {
         // GET: CartController
 
         string Baseurl = "https://localhost:44341/";
         [HttpGet("/cart")]
-        [Authorize]
+
         public async Task<ActionResult> IndexCart()
         {
             using (var client = new HttpClient())
@@ -37,7 +37,7 @@ namespace Rookie.CustomerSite.Controllers
                 client.BaseAddress = new Uri(Baseurl);
 
                 client.DefaultRequestHeaders.Clear();
-             
+
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                 var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
@@ -46,7 +46,7 @@ namespace Rookie.CustomerSite.Controllers
                 string endpoint = "/api/Cart";
                 HttpResponseMessage Res = await client.GetAsync(endpoint);
                 Res.EnsureSuccessStatusCode();
-             
+
                 decimal total = await Total();
 
                 if (Res.IsSuccessStatusCode)
@@ -60,7 +60,7 @@ namespace Rookie.CustomerSite.Controllers
                 {
                     return View();
                 }
-               
+
 
             }
 
@@ -82,26 +82,26 @@ namespace Rookie.CustomerSite.Controllers
                 HttpResponseMessage Res = await client.GetAsync(endpoint);
                 if (Res.IsSuccessStatusCode)
                 {
-                    return RedirectToAction("Index", "Cart");
+                    return RedirectToAction("IndexCart", "Cart");
                 }
                 else
                 {
                     return View();
                 }
 
-               
+
             }
         }
-        
-     
+
+
         public async Task<ActionResult> Add(IFormCollection form)
-        
+
         {
 
             int Id = Convert.ToInt32(form["id"]);
             int quantity = Convert.ToInt32(form["quantity"]);
             bool isUpdate = Convert.ToBoolean(form["isUpdate"]);
-            
+
 
             using (var client = new HttpClient())
             {
@@ -122,11 +122,11 @@ namespace Rookie.CustomerSite.Controllers
                 {
                     endpoint = "/api/Cart/addquantity/" + Id.ToString() + "/number/" + quantity.ToString() + "/isUpdate/false";
                 }
-               
+
                 HttpResponseMessage Res = await client.GetAsync(endpoint);
                 if (Res.IsSuccessStatusCode)
                 {
-                    return RedirectToAction("Index", "Cart");
+                    return RedirectToAction("IndexCart", "Cart");
                 }
                 else
                 {
@@ -152,7 +152,7 @@ namespace Rookie.CustomerSite.Controllers
                 HttpResponseMessage Res = await client.GetAsync(endpoint);
                 if (Res.IsSuccessStatusCode)
                 {
-                    return RedirectToAction("Index", "Cart");
+                    return RedirectToAction("IndexCart", "Cart");
                 }
                 else
                 {
@@ -160,7 +160,7 @@ namespace Rookie.CustomerSite.Controllers
                 }
             }
         }
-       
+
         public async Task<Decimal> Total()
         {
 
@@ -209,7 +209,7 @@ namespace Rookie.CustomerSite.Controllers
                     return RedirectToAction("Index", "Order");
 
                 }
-                return RedirectToAction("Index", "Cart");
+                return RedirectToAction("IndexCart", "Cart");
             }
         }
     }
