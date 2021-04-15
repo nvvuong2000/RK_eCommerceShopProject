@@ -37,6 +37,9 @@ namespace RookieShop.Backend.Services.Implement
                 description = product.description,
                 stock = product.stock,
                 unitPrice = product.unitPrice,
+                status = product.status,
+                isNew = product.isNew
+
             };
             _context.Products.Add(newProduct);
             await _context.SaveChangesAsync();
@@ -277,9 +280,9 @@ namespace RookieShop.Backend.Services.Implement
             return productList;
         }
 
-        public async Task<Product> searchbyName(string keyword)
+        public async Task<List<Product>> searchbyName(string keyword)
         {
-            var product = _context.Products.Include(p => p.ProductImages).Where(p => p.productName.Contains(keyword)).OrderByDescending(p => p.productName).FirstOrDefault();
+            var product =await  _context.Products.Include(p => p.ProductImages).Where(p => p.productName.Contains(keyword)).OrderByDescending(p => p.productName).ToListAsync();
             return product;
         }
 

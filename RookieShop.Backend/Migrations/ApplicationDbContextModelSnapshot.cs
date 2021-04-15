@@ -269,6 +269,9 @@ namespace RookieShop.Backend.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("DateUpated")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("categoryId")
                         .HasColumnType("int");
 

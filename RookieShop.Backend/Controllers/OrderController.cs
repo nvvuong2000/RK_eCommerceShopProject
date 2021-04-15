@@ -55,17 +55,17 @@ namespace RookieShop.Backend.Controllers
         }
         [HttpGet("{id}")]
         [Authorize(Roles = "user")]
-        public async Task<ActionResult<IEnumerable<OrderDetails>>> GetOrderbyID(int id)
+        public async Task<ActionResult<OrderVm>> GetOrderbyID(int id)
         {
 
-            var userId = _repoUser.getUserID();
+          
             try
             {
 
                 var list = await _repo.getorDetailsbyOrderId(id);
 
 
-                return list;
+                return Ok(list);
 
             }
             catch (Exception ex)

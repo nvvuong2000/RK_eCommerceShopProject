@@ -51,6 +51,43 @@ namespace Rookie.CustomerSite.Controllers
              
             }
         }
+        [HttpGet("/order/{id:int}")]
+        public async Task<ActionResult> getOrderbyId(int id)
+        {
+
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Baseurl);
+
+                client.DefaultRequestHeaders.Clear();
+
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
+                client.SetBearerToken(accessToken);
+
+
+                string endpoint = "/api/Order/" +id.ToString();
+
+                HttpResponseMessage Res = await client.GetAsync(endpoint);
+
+
+                if (Res.IsSuccessStatusCode)
+                {
+                    var listOrderDetails = await Res.Content.ReadAsAsync<OrderVm>();
+                 
+
+                    
+                    return View(listOrderDetails);
+
+                }
+                else
+                {
+                    return View();
+                }
+
+            }
+        }
         [HttpGet("/updateorder/{id:int}")]
         public async Task<IActionResult> updateStatusOrder(int id)
         {

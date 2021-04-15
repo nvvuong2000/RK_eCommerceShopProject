@@ -20,6 +20,7 @@ namespace  RookieShop.Backend.Models
         public string description { get; set; }
         
         public DateTime DateCreated { get; set; }
+        public DateTime DateUpated { get; set; }
         public bool isNew { get; set; }
         public bool status { get; set; }
         public double rating { get; set; }

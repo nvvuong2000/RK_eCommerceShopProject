@@ -1,0 +1,80 @@
+﻿@model RookieShop.Shared.ViewModel.OrderVm
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div class="container mt-3 mt-md-5">
+    <h2 class="text-charcoal hidden-sm-down">Your Orders</h2>
+ 
+    <div class="row">
+        <div class="col-12">
+            <div class="list-group mb-5">
+                <div class="list-group-item p-3 bg-snow" style="position: relative;">
+                    <div class="row w-100 no-gutters">
+                        <div class="col-6 col-md">
+                            <h6 class="text-charcoal mb-0 w-100">Order Number</h6>
+                            <a href="" class="text-pebble mb-0 w-100 mb-2 mb-md-0">#@Model.Id</a>
+                        </div>
+                        <div class="col-6 col-md">
+                            <h6 class="text-charcoal mb-0 w-100">Date</h6>
+                            <p class="text-pebble mb-0 w-100 mb-2 mb-md-0">@Model.date</p>
+                        </div>
+                        <div class="col-6 col-md">
+                            <h6 class="text-charcoal mb-0 w-100">Total</h6>
+                            <p class="text-pebble mb-0 w-100 mb-2 mb-md-0">$ @Model.total</p>
+                        </div>
+                        @*<div class="col-6 col-md">
+                            <h6 class="text-charcoal mb-0 w-100">Shipped To</h6>
+                            <p class="text-pebble mb-0 w-100 mb-2 mb-md-0">Late M. Night</p>
+                        </div>*@
+                        <div class="col-12 col-md-3">
+                            <a href="@Url.Action("Index","Order")" class="btn btn-primary w-100">View Order</a>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="list-group-item p-3 bg-white">
+                    <div class="row no-gutters">
+                     
+                        @for(int i = 0; i < Model.productName.Count;i++)
+                        {
+                        <div class="row no-gutters mt-3">
+            
+                            <div class="col-12 col-md-12 pr-0 pr-md-3">
+                                <h6 class="text-charcoal mb-2 mb-md-1">
+                                    <a href="" class="text-charcoal">@Model.quantity[i] x @Model.productName[i]</a>
+                                </h6>
+                                <h6 class="text-charcoal text-left mb-0 mb-md-2"><b>$ @Convert.ToDecimal(Convert.ToInt32(@Model.quantity[i]) * @Convert.ToDecimal(@Model.unitPrice[i]))</b></h6>
+                            </div>
+                            
+                        </div>
+                        }
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+             <div class="col-12 col-md-4">
+              <div class="pt-5 pt-md-0">
+                <div class="list-group mb-3">
+                  <div class="list-group-item p-3 bg-snow">
+                    <h6 class="mb-0">Order Summary</h6>
+                  </div>
+           
+                  <div class="list-group-item py-2 px-3 bg-snow">
+                    <div class="row w-100 no-gutters">
+                      <div class="col-8 text-charcoal">
+                        <b>Total</b>
+                      </div>
+                      <div class="col-4 text-right text-green">
+                        <b>$ @Model.total</b>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> 
+    </div>
+</div>

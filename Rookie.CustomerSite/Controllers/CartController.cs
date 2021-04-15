@@ -160,7 +160,7 @@ namespace Rookie.CustomerSite.Controllers
                 }
             }
         }
-
+       
         public async Task<Decimal> Total()
         {
 
@@ -186,7 +186,7 @@ namespace Rookie.CustomerSite.Controllers
                 return total;
             }
         }
-
+        [HttpGet("/checkout")]
         public async Task<IActionResult> Checkout()
         {
 

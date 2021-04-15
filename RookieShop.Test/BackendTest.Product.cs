@@ -20,7 +20,7 @@ namespace RookieShop.Test
     public class UnitTest1
     {
 
-        private List<ProductListVM> GetListProductTest()
+        private  List<ProductListVM> GetListProductTest()
         {
             var sessions = new List<ProductListVM>();
             sessions.Add(new ProductListVM()
@@ -46,7 +46,7 @@ namespace RookieShop.Test
                 isNew = false,
             });
 
-            return sessions;
+            return  sessions;
         }
         [Fact]
         public async Task ProductGet_ReturnCountWithAListProduct()
@@ -94,10 +94,6 @@ namespace RookieShop.Test
             Assert.Equal(201, statusCode);
 
         }
-
-
-
-
         [Theory]
         [InlineData(3)]
         [InlineData(4)]
@@ -119,7 +115,7 @@ namespace RookieShop.Test
 
 
         }
-      
+    
 
     }
 }

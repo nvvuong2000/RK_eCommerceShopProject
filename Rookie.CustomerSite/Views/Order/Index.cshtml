@@ -56,7 +56,7 @@
                                                         {
                                                             <p class="product-des">
                                                                 <strong>@item.quantity[0] </strong>x<span> @item.productName[0] </span>
-                                                                <span>....</span>
+                                                                <span>.... more</span>
                                                             </p>
                                                         }
 
@@ -86,7 +86,7 @@
                                 </td>
 
 
-                                <td class="text-center"><a href="/Order/Details/@item.Id"><i class="lni-eye"></i></a></td>
+                                <td class="text-center"><a href="/order/@item.Id"><i class="lni-eye"></i></a></td>
                                 @if (item.status == 1)
                                 {
                                     <td class="text-center"><a href="@Url.Action("updateStatusOrder","Order",new { id =item.Id})" class="btn btn-outline-danger"> Đã nhận được hàng</a></td>

@@ -22,7 +22,7 @@ namespace RookieShop.Backend.Services.Interface
         public Task<List<Product>> SortDescAscByPrice();
         public Task<List<Product>> SortDescOrderByName();
         public Task<List<Product>> SortAscByName();
-        public Task<Product> searchbyName(string? keyword);
+        public Task<List<Product>> searchbyName(string? keyword);
         public Task<List<ProductListVM>> getlistProductNeedRating(string userId);
         public Task<bool> ratingProduct(RatingProductRequest request);
 
