@@ -22,6 +22,7 @@ namespace RookieShop.Shared.ViewModel
         public double rating { get; set; }
         public List<int> numberRating { get; set; }
         public List<string> userId { get; set; }
+        public List<string> alt { get; set; }
         public List<DateTime> dateRated { get; set; }
         public List<string> pathName { get; set; }
 

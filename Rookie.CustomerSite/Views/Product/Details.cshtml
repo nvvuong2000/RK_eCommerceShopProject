@@ -2,6 +2,18 @@
 @{
     ViewData["Title"] = "DetailsAsync";
 }
+<style>
+    .star {
+        color: yellow;
+        text-decoration: none
+    }
+
+        .star:hover {
+            color: yellow;
+            text-decoration: none;
+            pointer-events: none;
+        }
+</style>
 
 <!-- START HEADING SECTION -->
 <div class="about_content">
@@ -20,60 +32,66 @@
                     </nav>
                     <div class="pro-detail-sec row">
                         <div class="col-12">
-                            <h4 class="pro-heading text-center text-lg-left">Books  Collections</h4>
-                            <p class="pro-text text-center text-lg-left">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.</p>
+                            <h4 class="pro-heading text-center text-lg-left">@Model.productName</h4>
+                            <p class="pro-text text-center text-lg-left" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap"> @Model.description
+                            </p>
                         </div>
                     </div>
                     <div class="row product-list product-detail">
 
                         <div class="col-12 col-lg-6 product-detail-slider">
-                            <div class="wrapper">
-                                <div class="Gallery swiper-container img-magnifier-container" id="gallery">
-                                    <div class="swiper-wrapper myimgs">
-                                        <div class="swiper-slide"> <a href="@Model.pathName[0]" data-fancybox="1" title="Zoom In"><img class="myimage" src="@Model.pathName[0]" alt="gallery"></a></div>
-                                        <div class="swiper-slide"> <a href="~/book-shop/img/book-1.jpg" data-fancybox="2" title="Zoom In"><img class="myimage" src="~/book-shop/img/book-1.jpg" alt="thumnails"></a></div>
-                                        <div class="swiper-slide"> <a href="~/book-shop/img/book-1-2.jpg" data-fancybox="3" title="Zoom In"><img class="myimage" src="~/book-shop/img/book-1-2.jpg" alt="thumnails"></a></div>
+                            @for (int i = 0; i < Model.pathName.Count; i++)
+                            {
+                                <div class="wrapper">
+                                    <div class="Gallery swiper-container img-magnifier-container" id="gallery">
+                                        <div class="swiper-wrapper myimgs">
+                                            <div class="swiper-slide"> <a href="@Model.pathName[i]" data-fancybox="@i" title="Zoom In"><img class="myimage" src="@Model.pathName[i]" alt="@Model.alt[i]"></a></div>
+
+                                        </div>
+                                    </div>
+                                    <div class="Thumbs swiper-container" id="thumbs">
+                                        <div class="swiper-wrapper">
+                                            <div class="swiper-slide"> <img src="@Model.pathName[i]" alt="thumnails"></div>
+
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="Thumbs swiper-container" id="thumbs">
-                                    <div class="swiper-wrapper">
-                                        <div class="swiper-slide"> <img src="~/book-shop/img/book-1-1.jpg" alt="thumnails"></div>
-                                        <div class="swiper-slide"> <img src="~/book-shop/img/book-1.jpg" alt="thumnails"></div>
-                                        <div class="swiper-slide"> <img src="~/book-shop/img/book-1-2.jpg" alt="thumnails"></div>
-                                    </div>
-                                </div>
-                            </div>
+
+                            }
+
                         </div>
 
                         <div class="col-12 col-lg-6 text-center text-lg-left">
                             <div class="share-product-details">
-                                <ul class="user-rating">
+
+                                <ul class="user-rating" style="color:yellow">
+                                    <li><a href="#" style="color:black">@Model.rating</a></li>
                                     @for (var i = 1; i <= 5; i++)
                                     {
                                         if (Model.rating < i)
                                         {
                                             if ((Math.Round(Model.rating, 1) == i))
                                             {
-                                                <li><a href="#"><i class="lni lni-star-half"></i></a></li>
+                                                <li><a href="#" class="star"><i class="lni lni-star-half"></i></a></li>
 
 
                                             }
                                             else
                                             {
-                                                <li><a href="#"><i class="lni lni-star"></i></a></li>
-                                                
+                                                <li><a href="#" class="star"><i class="lni lni-star"></i></a></li>
+
                                             }
                                         }
                                         else
                                         {
-                                            <li><a href="#"><i class="lni-star-filled"></i></a></li>
+                                            <li><a href="#" class="star"><i class="lni-star-filled"></i></a></li>
                                         }
                                     }
-                                    
+                                    <li style="color:black">by @Model.userId.Count() reviewed </li>
                                 </ul>
                             </div>
                             <div class="product-single-price">
-                                <h4><span class="real-price">@Model.unitPrice</span> <span><del>$450</del></span></h4>
+                                <h4><span class="real-price">@Model.unitPrice</span> <span></span></h4>
                                 <p class="pro-description">@Model.description</p>
                             </div>
 
@@ -85,7 +103,7 @@
                                 </ul>
                             </div>
 
-                            <div class="row product-quantity input_plus_mins no-gutters" style="background-color:#dddddd">
+                            <div class="row product-quantity input_plus_mins no-gutters" style="background-color:white">
                                 @using (Html.BeginForm("Add", "Cart", FormMethod.Post))
                                 {
                                     <input type="hidden" name="id" value="@Model.Id" />
@@ -96,7 +114,7 @@
                                         <span class="plus bg-dark"><i class="lni-plus"></i></span>
                                     </div>
                                     <div class="col-12 col-lg-9">
-                                        <button type="submit" class="btn green-color-yellow-gradient-btn">ADD TO CART</button>
+                                        <button type="submit" class="btn btn-warning">ADD TO CART</button>
                                     </div>
 
                                 }
@@ -108,8 +126,8 @@
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                         <li class="breadcrumb-item"><p class="d-inline">SKU: <span>@Model.Id</span></p></li>
-                                        <li class="breadcrumb-item"><span class="d-inline">Categories: <a href="javascript:void(0)">Classic</a><span class="comma-separtor">,</span><a href="javascript:void(0)">@Model.categoryName</a></span></li>
-                                        <li class="breadcrumb-item" aria-current="page"><p class="d-inline">Tags: <a href="javascript:void(0)">Fantasy</a><span class="comma-separtor">,</span><a href="javascript:void(0)">@Model.providerId</a></p></li>
+                                        <li class="breadcrumb-item"><span class="d-inline">Categories:<span class="comma-separtor"></span><a href="#">@Model.categoryName</a></span></li>
+
                                     </ol>
                                 </nav>
                             </div>
@@ -127,67 +145,80 @@
 
                         <div class="col-12 mt-4 mb-4">
                             <div class="row no-gutters product-all-details">
+                                @if (Model.userId.Count == 0)
+                                {
 
-                                <ul class="col-12 nav nav-tabs" id="myTab" role="tablist">
+                                    <div class="alert alert-info fade show alert-dismissible" role="alert">
+                                        <strong><i class="fa fa-info-circle" aria-hidden="true"></i></strong> <b>No Review Yet</b>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+
+                                }
+                                else
+                                {
+                                    <ul class="col-12 nav nav-tabs" id="myTab" role="tablist">
 
 
-                                    <li class="col-4 nav-item">
-                                        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="true">Customer Reviews  (2)</a>
-                                    </li>
-                                </ul>
-                                <div class="col-12 tab-content" id="myTabContent">
+                                        <li class="col-4 nav-item">
+                                            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="true">Customer Reviews (@Model.userId.Count)</a>
+                                        </li>
+                                    </ul>
+                                    <div class="col-12 tab-content" id="myTabContent">
 
-                                    <div class="tab-pane fade reviews" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                                        <div class="tab-pane fade reviews" id="contact" role="tabpanel" aria-labelledby="contact-tab">
 
-                                        <div class="media">
-                                            <div class="row no-gutter">
-                                                @for (int i = 0; i < Model.userId.Count; i++)
-                                                {
-                                                    <div class="col-12 col-lg-2 p-0">
+                                            <div class="media">
+                                                <div class="row no-gutter">
 
-                                                        <div class="row no-gutters">
-                                                            <div class="col-12 d-flex  justify-content-center">
-                                                                <img src="img/user.jpg">
+                                                    @for (int i = 0; i < Model.userId.Count; i++)
+                                                    {
+                                                        <div class="col-12 col-lg-2 p-0">
+
+                                                            <div class="row no-gutters">
+                                                                <div class="col-12 d-flex  justify-content-center">
+                                                                    <img src="img/user.jpg">
+                                                                </div>
+
                                                             </div>
 
                                                         </div>
 
-                                                    </div>
+                                                        <div class="col-12 col-lg-10 p-0">
+                                                            <div class="media-body">
+                                                                <span class="text-center text-lg-left">@Model.dateRated[i]</span>
+                                                                <h5 class="mb-2 text-center text-lg-left">@Model.userId[i]</h5>
 
-                                                    <div class="col-12 col-lg-10 p-0">
-                                                        <div class="media-body">
-                                                            <span class="text-center text-lg-left">@Model.dateRated[i]</span>
-                                                            <h5 class="mb-2 text-center text-lg-left">@Model.userId[i]</h5>
-                                                           
-                                                            <ul class="user-rating">
+                                                                <ul class="user-rating">
 
-                                                                @for (int j = 0; j < 5; j++)
-                                                                {
-                                                                    if (Model.numberRating[i] > j)
+                                                                    @for (int j = 0; j < 5; j++)
                                                                     {
-                                                                        <li><a href="#"><i class="lni-star-filled"></i></a></li>
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <li><a href="#"><i class="lni lni-star"></i></a></li>
-                                                                    }
+                                                                        if (Model.numberRating[i] > j)
+                                                                        {
+                                                                            <li><a href="#"><i class="lni-star-filled"></i></a></li>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <li><a href="#"><i class="lni lni-star"></i></a></li>
+                                                                        }
 
 
-                                                                }
-                                                            </ul>
+                                                                    }
+                                                                </ul>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                }
+                                                    }
 
 
+                                                </div>
                                             </div>
+
+
+
                                         </div>
-                                      
-
-                                    
                                     </div>
-                                </div>
-
+                                }
                             </div>
                         </div>
 

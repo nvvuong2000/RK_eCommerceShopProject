@@ -6,111 +6,124 @@
 }
 
 <!-- START SHOP CART SECTION -->
-
-<div class="container">
-    <div class="row">
-        <div class="col-sm-12 col-md-12 col-lg-10  text-center text-lg-left wow slideInUp" data-wow-duration="2s">
-            <h1 class="heading">Get Ready For Checkout?</h1>
-
-        </div>
-    </div>
-</div>
 <div class="shop-cart wow slideInUp" data-wow-duration="2s">
     <div class="container">
-        <!-- START SHOP CART TABLE -->
-        <div class="row pt-5">
-            <div class="col-12 col-md-12  cart_table wow fadeInUp animated" data-wow-delay="300ms" style="visibility: visible; animation-delay: 300ms; animation-name: fadeInUp;">
-                <div class="table-responsive">
-                    <table class="table table-bordered border-radius">
-                        <thead>
-                            <tr>
+        <div class="container">
+            @if (Model.Count() == 0)
+            {
+                <div class="row">
 
-                                <th class="darkcolor">Order Id</th>
-                                <th class="darkcolor">Product</th>
-                                <th class="darkcolor">Status</th>
-                                <th class="darkcolor">Total</th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model)
-                            {
-                            <tr>
-                                <td>@item.Id</td>
-                                <td>
-                                    <div class="d-table product-detail-cart">
-
-                                        <div class="media">
-                                            <div class="row no-gutters">
-                                                <div class="col-12 col-lg-10 mt-auto product-detail-cart-data">
-                                                    <div class="media-body ml-lg-3">
-
-                                                        @if (item.productName.Count == 1)
-                                                        {
-                                                            <p class="product-des">
-                                                                <br>@item.quantity[0] <br><span>x @item.productName[0] </span>
-                                                            </p>
-                                                        }
-                                                        else
-                                                        {
-                                                            <p class="product-des">
-                                                                <strong>@item.quantity[0] </strong>x<span> @item.productName[0] </span>
-                                                                <span>.... more</span>
-                                                            </p>
-                                                        }
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    @if (item.status == 0)
-                                    {
-                                        <h4 class="text-center amount">PROCCESSING</h4>
-                                    }
-                                    @if (item.status == 1)
-                                    {
-                                        <h4 class="text-center amount">TRANSPORTING</h4>
-                                    }
-                                    @if (item.status == 2)
-                                    {
-                                        <h4 class="text-center amount">RECEVIED</h4>
-                                    }
-
-                                </td>
-                                <td>
-                                    <h4 class="text-center amount">@item.total</h4>
-                                </td>
-
-
-                                <td class="text-center"><a href="/order/@item.Id"><i class="lni-eye"></i></a></td>
-                                @if (item.status == 1)
-                                {
-                                    <td class="text-center"><a href="@Url.Action("updateStatusOrder","Order",new { id =item.Id})" class="btn btn-outline-danger"> Đã nhận được hàng</a></td>
-                                }
-                                
-                            </tr>
-                            }
-                        </tbody>
-                    </table>
+                    <img src="~/book-shop/img/list_empty.png" />
                 </div>
-                <div class="apply_coupon">
-                    <div class="row">
-                        <div class="col-12 text-left">
-                            <a href="shop-cart.html" class="btn yellow-color-green-gradient-btn">GO BACK</a>
 
-                        </div>
+
+                <a href="##" onClick="history.go(-1); return false;" class="btn btn-warning">GO BACK</a>
+            }
+            else
+            {
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-10  text-center text-lg-left wow slideInUp" data-wow-duration="2s">
+                        <h1 class="heading">Get Ready For Checkout?</h1>
 
                     </div>
                 </div>
+                <!-- START SHOP CART TABLE -->
+                <div class="row pt-5">
+                    <div class="col-12 col-md-12  cart_table wow fadeInUp animated" data-wow-delay="300ms" style="visibility: visible; animation-delay: 300ms; animation-name: fadeInUp;">
+
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered border-radius">
+                                <thead>
+                                    <tr>
+
+                                        <th class="darkcolor">Order Id</th>
+                                        <th class="darkcolor">Product</th>
+                                        <th class="darkcolor">Status</th>
+                                        <th class="darkcolor">Total</th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@item.Id</td>
+                                            <td>
+                                                <div class="d-table product-detail-cart">
+
+                                                    <div class="media">
+                                                        <div class="row no-gutters">
+                                                            <div class="col-12 col-lg-10 mt-auto product-detail-cart-data">
+                                                                <div class="media-body ml-lg-3">
+
+                                                                    @if (item.productName.Count == 1)
+                                                                    {
+                                                                        <p class="product-des">
+                                                                            <br>@item.quantity[0] <br><span>x @item.productName[0] </span>
+                                                                        </p>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <p class="product-des">
+                                                                            <strong>@item.quantity[0] </strong>x<span> @item.productName[0] </span>
+                                                                            <span>.... more</span>
+                                                                        </p>
+                                                                    }
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                @if (item.status == 0)
+                                                {
+                                                    <h4 class="text-center amount">PROCCESSING</h4>
+                                                }
+                                                @if (item.status == 1)
+                                                {
+                                                    <h4 class="text-center amount">TRANSPORTING</h4>
+                                                }
+                                                @if (item.status == 2)
+                                                {
+                                                    <h4 class="text-center amount">RECEVIED</h4>
+                                                }
+
+                                            </td>
+                                            <td>
+                                                <h4 class="text-center amount">@item.total</h4>
+                                            </td>
+
+
+                                            <td class="text-center"><a href="/order/@item.Id"><i class="lni-eye"></i></a></td>
+                                            @if (item.status == 1)
+                                            {
+                                                <td class="text-center"><a href="@Url.Action("updateStatusOrder", "Order", new { id = item.Id })" class="btn btn-outline-danger"> Đã nhận được hàng</a></td>
+                                            }
+
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="apply_coupon">
+                            <div class="row">
+                                <div class="col-12 text-left">
+                                    <a href="##" onClick="history.go(-1); return false;" class="btn yellow-color-green-gradient-btn">GO BACK</a>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- END SHOP CART TABLE -->
+
+            }
             </div>
         </div>
-        <!-- END SHOP CART TABLE -->
-
-
-    </div>
-</div>
 <!-- END SHOP CART SECTION-->

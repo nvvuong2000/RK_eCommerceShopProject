@@ -6,94 +6,106 @@
 }
 
 <!-- START SHOP CART SECTION -->
-<div class="container">
-    <div class="row">
-        <div class="col-sm-12 col-md-12 col-lg-10  text-center text-lg-left wow slideInUp" data-wow-duration="2s">
-            <h1 class="heading">Get Ready For Ratings?</h1>
 
-        </div>
-    </div>
-</div>
 <div class="shop-cart wow slideInUp" data-wow-duration="2s">
     <div class="container">
-        <!-- START SHOP CART TABLE -->
-        <div class="row pt-5">
-            <div class="col-12 col-md-12  cart_table wow fadeInUp animated" data-wow-delay="300ms" style="visibility: visible; animation-delay: 300ms; animation-name: fadeInUp;">
-                @if (Model.Count <= 0)
-                {
-                    <div></div>
-                }
-                else {
-                <div class="table-responsive">
-                    <table class="table table-bordered border-radius">
-                        <thead>
-                            <tr>
+        @if (Model.Count() == 0)
+        {
+            <div class="row">
 
-                                <th class="darkcolor">Product Id</th>
-                                <th class="darkcolor">Product</th>
-                                <th class="darkcolor">Number Rate</th>
-                                <th class="darkcolor"></th>                              
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model)
-                            {
-                            <tr>
-                                <td>@item.productID</td>
-                                <td>
-                                    <div class="d-table product-detail-cart">
+                <img src="~/book-shop/img/list_empty.png" />
+            </div>
 
-                                        <div class="media">
-                                            <div class="row no-gutters">
 
-                                                <div class="col-12 col-lg-2 product-detail-cart-image">
-                                                    <a class="shopping-product" href="javascript:void(0)"><img src="@item.imgDefault" alt="Generic placeholder image"></a>
-                                                </div>
+            <a href="##" onClick="history.go(-1); return false;" class="btn btn-warning">GO BACK</a>
+        }
+        else
+        {
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-10  text-center text-lg-left wow slideInUp" data-wow-duration="2s">
+                    <h1 class="heading">Get Ready For Ratings?</h1>
 
-                                                <div class="col-12 col-lg-10 mt-auto product-detail-cart-data">
-                                                    <div class="media-body ml-lg-3">
-                                                        <h4 class="product-name"><a href="product-detail.html">@item.productName</a></h4>
-                                                        <p class=""></p>
+                </div>
+            </div>
+            <!-- START SHOP CART TABLE -->
+            <div class="row pt-5">
+                <div class="col-12 col-md-12  cart_table wow fadeInUp animated" data-wow-delay="300ms" style="visibility: visible; animation-delay: 300ms; animation-name: fadeInUp;">
+                    @if (Model.Count <= 0)
+                    {
+                        <div></div>
+                    }
+                    else
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-bordered border-radius">
+                                <thead>
+                                    <tr>
+
+                                        <th class="darkcolor">Product Id</th>
+                                        <th class="darkcolor">Product</th>
+                                        <th class="darkcolor">Number Rate</th>
+                                        <th class="darkcolor"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@item.productID</td>
+                                            <td>
+                                                <div class="d-table product-detail-cart">
+
+                                                    <div class="media">
+                                                        <div class="row no-gutters">
+
+                                                            <div class="col-12 col-lg-2 product-detail-cart-image">
+                                                                <a class="shopping-product" href="javascript:void(0)"><img src="@item.imgDefault" alt="Generic placeholder image"></a>
+                                                            </div>
+
+                                                            <div class="col-12 col-lg-10 mt-auto product-detail-cart-data">
+                                                                <div class="media-body ml-lg-3">
+                                                                    <h4 class="product-name"><a href="product-detail.html">@item.productName</a></h4>
+                                                                    <p class=""></p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                @using (Html.BeginForm("PostRatings", "Product", FormMethod.Post))
-                                {
-                                    <input type="hidden" name="id" value="@item.productID"/>
-                                    <td>
-                                        <div class="star-rating">
-                                            <input type="radio" name="stars-@item.productID" value="5" />
-                                            <input type="radio" name="stars-@item.productID" value="4" />
-                                            <input type="radio" name="stars-@item.productID" value="3" checked />
-                                            <input type="radio" name="stars-@item.productID" value="2" />
-                                            <input type="radio" name="stars-@item.productID" value="1" />
-                                        </div>
-                                    </td>
-                                    <td class="text-center"><button class="btn-close" type="submit"><i class="lni lni-reload"></i></button></td>
-                                }
-                            </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-                <div class="apply_coupon">
-                    <div class="row">
-                        <div class="col-12 text-left">
-                            <a href="shop-cart.html" class="btn yellow-color-green-gradient-btn">GO BACK</a>
-
+                                            </td>
+                                            @using (Html.BeginForm("PostRatings", "Product", FormMethod.Post))
+                                            {
+                                                <input type="hidden" name="id" value="@item.productID" />
+                                                <td>
+                                                    <div class="star-rating">
+                                                        <input type="radio" name="stars-@item.productID" value="5" />
+                                                        <input type="radio" name="stars-@item.productID" value="4" />
+                                                        <input type="radio" name="stars-@item.productID" value="3" checked />
+                                                        <input type="radio" name="stars-@item.productID" value="2" />
+                                                        <input type="radio" name="stars-@item.productID" value="1" />
+                                                    </div>
+                                                </td>
+                                                <td class="text-center"><button class="btn-close" type="submit"><i class="lni lni-reload"></i></button></td>
+                                            }
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
                         </div>
+                        <div class="apply_coupon">
+                            <div class="row">
+                                <div class="col-12 text-left">
+                                    <a href="shop-cart.html" class="btn yellow-color-green-gradient-btn">GO BACK</a>
 
-                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    }
                 </div>
-                }
             </div>
+            <!-- END SHOP CART TABLE -->
+        }
+
         </div>
-        <!-- END SHOP CART TABLE -->
-
-
-    </div>
 </div>
 <!-- END SHOP CART SECTION-->

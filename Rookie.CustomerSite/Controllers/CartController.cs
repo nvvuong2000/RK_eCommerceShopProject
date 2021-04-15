@@ -86,7 +86,7 @@ namespace Rookie.CustomerSite.Controllers
                 }
                 else
                 {
-                    return View();
+                    return RedirectToAction("Index", "Home");
                 }
 
 

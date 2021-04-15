@@ -120,11 +120,10 @@ namespace RookieShop.Backend.Services.Implement
 
         public async Task<ProductDetailsVM> getProductAsync(int? id)
         {
-            var product = _context.Products.Include(p => p.ProductImages).Include(p => p.Category).Include(p => p.RattingProduct).Select(p=>new ProductDetailsVM() 
-            { 
+            var product = _context.Products.Include(p => p.ProductImages).Include(p => p.Category).Include(p => p.RattingProduct).Select(p => new ProductDetailsVM()
+            {
                 Id = p.Id,
                 productName = p.productName,
-
                 categoryName = p.Category.categoryName,
                 providerId = p.providerId,
                 categoryId = p.categoryId,
@@ -134,8 +133,9 @@ namespace RookieShop.Backend.Services.Implement
                 DateCreated = p.DateCreated,
                 isNew = p.isNew,
                 status = p.status,
-                pathName = p.ProductImages.Select(img=>img.pathName).ToList(),
-                userId = p.RattingProduct.Select(r=>r.User.customerName).ToList(),
+                pathName = p.ProductImages.Select(img => "https://localhost:44341" + @img.pathName).ToList(),
+                alt = p.ProductImages.Select(img => img.captionImage).ToList(),
+                userId = p.RattingProduct.Select(r => r.User.customerName).ToList(),
                 numberRating = p.RattingProduct.Select(r => r.numberRating).ToList(),
                 dateRated = p.RattingProduct.Select(r => r.date).ToList(),
 
