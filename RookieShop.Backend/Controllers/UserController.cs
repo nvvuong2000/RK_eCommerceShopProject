@@ -39,7 +39,21 @@ namespace RookieShop.Backend.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpGet("infoUser")]
+        public async Task<IActionResult> infoUser()
+        {
+            try
+            {
 
-        
+                var user = await _repo.getInfoUser();
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
     }
 }
