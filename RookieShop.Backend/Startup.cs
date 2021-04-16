@@ -95,25 +95,14 @@ namespace RookieShop.Backend
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
-            services.AddControllersWithViews().AddJsonOptions(o => o.JsonSerializerOptions
-                        .ReferenceHandler = ReferenceHandler.Preserve);
+            services.AddControllersWithViews();
             services.AddCors(options =>
             {
-                options.AddPolicy("Policy1", builder =>
-                {
-                    builder.WithOrigins("http://localhost:3000")
-                    .WithMethods("POST", "GET", "PUT", "DELETE")
-                    .WithHeaders(HeaderNames.ContentType);
-                });
-                options.AddPolicy("Policy1", builder =>
-                {
-                    builder.WithOrigins("https://localhost:44367")
-                    .WithMethods("POST", "GET", "PUT", "DELETE")
-                    .WithHeaders(HeaderNames.ContentType);
-                });
+                options.AddPolicy("AllowAnyOrigin", builder => builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
             });
-            //  services.AddSingleton<IUserServices, UserServices>();
-
             services.AddSwaggerGen(c =>
             {
               
@@ -161,8 +150,8 @@ namespace RookieShop.Backend
                 app.UseHsts();
             }
 
-            app.UseCors("Policy1");
-           
+            app.UseCors("AllowAnyOrigin");
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

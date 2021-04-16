@@ -19,6 +19,7 @@ using System.Web;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Net.Http;
+using Microsoft.AspNetCore.Cors;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -27,6 +28,7 @@ namespace RookieShop.Backend.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize("Bearer")]
+
 
     public class ProductController : ControllerBase
     {
@@ -49,9 +51,10 @@ namespace RookieShop.Backend.Controllers
         {
             try
             {
+                
                 var list = await _repo.getListProductAsync();
 
-                return Ok(list);
+                return Ok(list.ToList());
 
 
             }

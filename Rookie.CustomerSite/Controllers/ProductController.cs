@@ -115,13 +115,13 @@ namespace Rookie.CustomerSite.Controllers
                 if (Res.IsSuccessStatusCode)
                 {
 
-                    var cartResponse = await Res.Content.ReadAsAsync<IEnumerable<ProductListVM>>();
-                    return View(cartResponse);
+                   
+                    return View("Ratings");
                 }
 
             }
 
-            return View();
+            return View("Ratings");
         }
 
 
