@@ -1,4 +1,4 @@
-import {Account} from '../api/index'
+import api from '../api/user'
 import * as types from "../contains/user";
 import {history} from "../index"
 
@@ -11,7 +11,7 @@ import {
 
 export const login = (value) => async (dispatch) => {
     try { 
-        const data = await Account.login(value);
+        const data = await api.User.login(value)
         localStorage.setItem("__token", 'Bearer' + ` ${data.access_token}`);
         console.log(data);
         dispatch({
@@ -25,7 +25,7 @@ export const login = (value) => async (dispatch) => {
 };
 export const get_info_user = () => async (dispatch) => {
     try {
-        const data = await Account.get_info_user();
+        const data = await api.User.get_info_user()
         dispatch({
             type: types.GET_CURRENT_USER,
             payload: data,

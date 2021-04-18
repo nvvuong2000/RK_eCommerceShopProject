@@ -97,7 +97,10 @@ namespace RookieShop.Backend.Services.Implement
                 unitPrice = x.unitPrice,
                 isNew = x.isNew,
                 categoryId = x.categoryId,
-                
+                categoryName = x.Category.categoryName,
+                stock = x.stock,
+
+
                 imgDefault = x.ProductImages.Where(img => img.isDefault == true).Select(img => "https://localhost:44341" + img.pathName).FirstOrDefault(),
             }).ToListAsync();
 

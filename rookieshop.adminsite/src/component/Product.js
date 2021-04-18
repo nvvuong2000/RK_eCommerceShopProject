@@ -1,9 +1,17 @@
-import React from 'react'
-import {
-
-    Link
-} from "react-router-dom";
+import React, { Fragment, useEffect } from 'react'
+import { useSelector, useDispatch, } from "react-redux";
+import { Link } from "react-router-dom";
+import { get_product_list } from "../actions/product"
+import ProductList from './ProductList';
 export default function Product() {
+    let disptach = useDispatch();
+    useEffect(() => {
+        disptach(get_product_list());
+    }, []);
+    const { productList } = useSelector((state) => state.product);
+    // const prod = useSelector((state) =>console.log(state));
+    var list_product = productList.data;
+    console.log(list_product)
     return (
         <div>
             {/* Content */}
@@ -16,7 +24,7 @@ export default function Product() {
                         </div>
                         <div className="col-sm-auto">
                             <Link to={`/product/addProduct`} className="btn btn-primary" href="ecommerce-add-product.html">Add product</Link>
-                          
+
                         </div>
                     </div>
                     {/* End Row */}
@@ -37,7 +45,7 @@ export default function Product() {
                             <li className="nav-item">
                                 <a className="nav-link active" href="#">All products</a>
                             </li>
-                           
+
                         </ul>
                         {/* End Nav */}
                     </div>
@@ -46,7 +54,7 @@ export default function Product() {
                 {/* End Page Header */}
                 <div className="row justify-content-end mb-3">
                     <div className="col-lg">
-                       
+
                     </div>
                 </div>
                 {/* End Row */}
@@ -66,20 +74,7 @@ export default function Product() {
                                         </div>
                                         <input id="datatableSearch" type="search" className="form-control" placeholder="Search product" aria-label="Search users" />
 
-                                  {/* Example split danger button */}
-<div className="btn-group ml-4">
-  <button type="button" className="btn btn-danger">Action</button>
-  <button type="button" className="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <span className="sr-only">Toggle Dropdown</span>
-  </button>
-  <div className="dropdown-menu">
-    <a className="dropdown-item" href="#">Action</a>
-    <a className="dropdown-item" href="#">Another action</a>
-    <a className="dropdown-item" href="#">Something else here</a>
-    <div className="dropdown-divider" />
-    <a className="dropdown-item" href="#">Separated link</a>
-  </div>
-</div>
+                                        {/* Example split danger button */}
 
                                     </div>
                                     {/* End Search */}
@@ -201,67 +196,8 @@ export default function Product() {
                                     <option name="status" value="-1" disabled="">Hủy</option>
 
                                 </select>
-                                </div>
-
-                            <table id="datatable" className="table table-borderless table-thead-bordered table-nowrap table-align-middle card-table dataTable no-footer">
-                                <thead className="thead-light">
-                                    <tr role="row">
-                                        <th scope="col" className="table-column-pr-0 sorting_disabled" rowSpan={1} colSpan={1} aria-label="
-              
-                
-                
-              
-            " style={{ width: 41 }}>
-                                        </th>
-                                        <th className="sorting" tabIndex={0} aria-controls="datatable" rowSpan={1} colSpan={1} aria-label="SKU: activate to sort column ascending" style={{ width: 121 }}>SKU</th>
-                                        <th className="table-column-pl-0 sorting" tabIndex={0} aria-controls="datatable" rowSpan={1} colSpan={1} aria-label="Product: activate to sort column ascending" style={{ width: 331 }}>Product</th>
-                                        <th className="sorting" tabIndex={0} aria-controls="datatable" rowSpan={1} colSpan={1} aria-label="Type: activate to sort column ascending" style={{ width: 107 }}>Type</th>
-                                        <th className="sorting" tabIndex={0} aria-controls="datatable" rowSpan={1} colSpan={1} aria-label="Price: activate to sort column ascending" style={{ width: 83 }}>Price
-              </th>
-                                        <th className="sorting" tabIndex={0} aria-controls="datatable" rowSpan={1} colSpan={1} aria-label="Variants: activate to sort column ascending" style={{ width: 118 }}>
-                                            Stocks</th>
-                                        <th className="sorting_disabled" rowSpan={1} colSpan={1} aria-label="Stocks" style={{ width: 46 }}>Status</th>
-                                        <th className="sorting_disabled" rowSpan={1} colSpan={1} aria-label="Actions" style={{ width: 99 }}>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr role="row" className="odd">
-                                        <td className="table-column-pr-0">
-                                        </td>
-                                        <td>#1</td>
-                                        <td className="table-column-pl-0">
-                                            <a className="media align-items-center" href="ecommerce-product-details.html">
-                                                <img className="avatar avatar-lg mr-3" src="assets\img\400x400\img4.jpg" alt="Image Description" />
-                                                <div className="media-body">
-                                                    <Link to={`/product/${1}`} className="text-hover-primary mb-0">Photive wireless speakers</Link>
-                                                 
-                                                </div>
-                                            </a>
-                                        </td>
-                                        <td>Electronics</td>
-                                        <td>$65</td>
-                                        <td>2</td>
-                                        <td>
-                                            <label className="toggle-switch toggle-switch-sm" htmlFor="stocksCheckbox1">
-                                                <input type="checkbox" className="toggle-switch-input" id="stocksCheckbox1" defaultChecked />
-                                                <span className="toggle-switch-label">
-                                                    <span className="toggle-switch-indicator" />
-                                                </span>
-                                            </label>
-                                        </td>
-                                        <td>
-                                            <div className="btn-group" role="group">
-                                                <a className="btn btn-sm btn-white" href="#">
-                                                    <i className="fas fa-edit" /> Edit
-                  </a>
-
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    
-                                   
-                                </tbody>
-                            </table>
+                            </div>
+                            <ProductList list={list_product} />
                             <div className="dataTables_info" id="datatable_info" role="status" aria-live="polite">Showing 1 to 12 of
           20 entries</div>
                         </div>

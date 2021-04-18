@@ -9,6 +9,7 @@ namespace RookieShop.Shared.ViewModel
         public int productID { get; set; }
         public string productName { get; set; }
         public decimal unitPrice { get; set; }
+        public int stock { get; set; }
         public bool isNew { get; set; }
         public string imgDefault { get; set; }
         public int categoryId { get; set; }
