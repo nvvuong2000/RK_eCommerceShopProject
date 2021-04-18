@@ -1,35 +1,64 @@
 
-import React, { useState, Fragment } from "react";
-import { useDispatch, useSelector } from "react-redux";
-// import { login, get_info_user } from "./actions/user";
-import Login from "./component/Login"
-import Index from "./component/Index"
+import React, { Fragment, useEffect } from 'react'
+import { useSelector, useDispatch, } from "react-redux";
+import Orders from './component/Orders'
+import Product from './component/Product'
+import Customer from './component/Customer'
+import CustomerDetails from './component/CustomerDetails'
+import AddProduct from './component/AddProduct'
+import OrderDetails from './component/OderDetails'
+import Error from './component/Error';
+import Login from './component/Login'
+import Banner from "./component/Banner"
+import PrivateRoute from './component/PrivateRoute'
+import Page403 from "./component/Page403"
+import { history } from "./index";
+
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect
+} from "react-router-dom";
+import { get_info_user} from "./actions/user"
 
 function App() {
-  // const dispatch = useDispatch();
-  // const [data, setData] = useState({
-  //   tenDangNhap: "",
-  //   matKhau: "",
-  // });
-  // var __token = localStorage.getItem("__token");
-  // if(__token){
-  //   dispatch(get_info_user());
-  // }
+ 
+  const dispatch = useDispatch();
+  const { currentUser}  = useSelector((state) => state.user);
   
-  // const handleSubmit = (e) => {
-  //    e.preventDefault();   
-  //   dispatch(login(data))
-  // };
+  
+  useEffect(() => {
+    dispatch(get_info_user());
+
+  }, []);
+  if (currentUser.roles == "user") {
+    history.push("/page403")
+  }
+ 
   return (
 
     <Fragment>
-     
-      <Index/>
-      {/* <form onSubmit={handleSubmit}>
-        <input name="email" type="email" value={data.tenDangNhap} onChange={(e) => setData({ ...data, tenDangNhap: e.target.value })} />
-        <input name="password" value={data.matKhau} onChange={(e) => setData({ ...data, matKhau: e.target.value })} type="password" />
-        <button type="submit" >Đăng nhập</button>
-      </form> */}
+
+
+      <Router>
+        <Banner user={currentUser}/>
+        <Switch>
+          <PrivateRoute exact path="/orders" component={Orders} />
+          <Route exact path="/products" component={Product} />
+          <Route exact path="/orders" component={Orders} />
+          <Route exact path="/customer" component={Customer} />
+          <Route exact path="/user/:id" component={CustomerDetails} />
+          <Route exact path="/product/:id" component={AddProduct} />
+          <Route exact path="/product/addProduct" component={AddProduct} />
+          <Route exact path="/order/:id" component={OrderDetails} />
+          <Route exact path="/login" component={Login} />
+         <Route exact path="/page403" component={Page403}></Route>
+
+        </Switch>
+      </Router>
+
     </Fragment>
   );
 }

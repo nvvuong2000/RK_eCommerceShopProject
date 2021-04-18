@@ -6,22 +6,29 @@ import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-// import rootReducer from './reducers/index';
+import rootReducer from './reducers/index';
+import { createBrowserHistory } from "history";
+import { Router } from 'react-router';
+
 
 
 // Note: this API requires redux@>=3.1.0
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || typeof(compose);
+export const history = createBrowserHistory();
 const store = createStore(
- // rootReducer,
+ rootReducer,
   composeEnhancers(
     applyMiddleware(thunk),
   )
 );
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <Router history={history}>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </Router>
+  
   </React.StrictMode>,
   document.getElementById('root')
 );
