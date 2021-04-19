@@ -23,7 +23,7 @@ export default function Product() {
                             <h1 className="page-header-title">Category <span className="badge badge-soft-dark ml-2" /></h1>
                         </div>
                         <div className="col-sm-auto">
-                            <Link to={`/product/addProduct`} className="btn btn-primary" href="ecommerce-add-product.html">Add Category</Link>
+                            <Link to={`/category/addCategory`} className="btn btn-primary" href="ecommerce-add-product.html">Add Category</Link>
 
                         </div>
                     </div>
@@ -72,7 +72,7 @@ export default function Product() {
                 {/* End Card */}
             </div>
             {/* End Content */}
-
+       
         </div>
     )
 }

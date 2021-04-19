@@ -23,6 +23,7 @@ import {
   Redirect
 } from "react-router-dom";
 import { get_info_user} from "./actions/user"
+import AddCategory from './component/AddCategory';
 
 function App() {
  
@@ -48,7 +49,10 @@ function App() {
         <Switch>
           <PrivateRoute exact path="/orders" component={Orders} />
           <Route  exact path="/products" component={Product} />
+          
           <Route  exact path="/category" component={Category} />
+          <Route exact path="/category/addCategory" component={AddCategory} />
+          <Route exact path="/orders" component={Orders} />
           <Route exact path="/orders" component={Orders} />
           <Route exact path="/customer" component={Customer} />
           <Route exact path="/user/:id" component={CustomerDetails} />

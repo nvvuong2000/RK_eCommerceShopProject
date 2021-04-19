@@ -1,1 +1,2 @@
 export const CATEGORY_LIST = "CATEGORY_LIST";
+export const ADD_CATEGORY = "ADD_CATEGORY";

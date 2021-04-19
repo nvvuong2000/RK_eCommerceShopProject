@@ -211,3 +211,19 @@ body {
         text-decoration: none !important;
     }
 }
+.right-form {
+    width: 406px;
+}
+
+textarea {
+    width: 100%;
+    height: 208px;
+    resize: none;
+    border: 0;
+    border: 1px solid #2E2F22;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    padding: 20px;
+}

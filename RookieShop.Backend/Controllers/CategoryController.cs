@@ -34,6 +34,7 @@ namespace RookieShop.Backend.Controllers
                 Category newItem = new Category()
                 {
                     categoryName = category.categoryName,
+                    categoryDescription = category.categoryDescription,
                 };
                 return await _repo.addCategory(newItem);
             }

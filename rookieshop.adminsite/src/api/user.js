@@ -30,6 +30,7 @@ const Product = {
 }
 const Category = {
     getAllCategory: async () => await axios.get("/api/Category", config),
+    addNewCategory: async (data) => await axios.post("/api/Category", data, config),
   
 }
 
