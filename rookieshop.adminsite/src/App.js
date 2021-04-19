@@ -12,6 +12,7 @@ import Login from './component/Login'
 import Banner from "./component/Banner"
 import PrivateRoute from './component/PrivateRoute'
 import Page403 from "./component/Page403"
+import Category from "./component/Category"
 import { history } from "./index";
 
 import {
@@ -47,6 +48,7 @@ function App() {
         <Switch>
           <PrivateRoute exact path="/orders" component={Orders} />
           <Route  exact path="/products" component={Product} />
+          <Route  exact path="/category" component={Category} />
           <Route exact path="/orders" component={Orders} />
           <Route exact path="/customer" component={Customer} />
           <Route exact path="/user/:id" component={CustomerDetails} />

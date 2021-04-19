@@ -182,6 +182,9 @@ namespace RookieShop.Backend.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("categoryDescription")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("categoryName")
                         .HasColumnType("nvarchar(max)");
 
@@ -193,11 +196,13 @@ namespace RookieShop.Backend.Migrations
                         new
                         {
                             Id = 3,
+                            categoryDescription = "A jacket is a garment for the upper body, usually extending below the hips. ..",
                             categoryName = "Jacket"
                         },
                         new
                         {
                             Id = 4,
+                            categoryDescription = "pants (North American English) are an item of clothing that might have originated in Central Asia, worn from the waist to the ankles, covering ...",
                             categoryName = "Pant"
                         });
                 });

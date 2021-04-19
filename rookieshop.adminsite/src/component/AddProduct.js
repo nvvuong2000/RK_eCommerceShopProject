@@ -7,8 +7,6 @@ import ImagesProduct from './ImagesProduct';
 export default function AddProduct(props) {
 
   const id = props.match.params.id;
-
-
   function handleChange(evt) {
     const value = evt.target.value;
     setItem({
