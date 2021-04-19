@@ -23,7 +23,7 @@ import {
   Redirect
 } from "react-router-dom";
 import { get_info_user} from "./actions/user"
-import AddCategory from './component/AddCategory';
+import AddCategory from './component/AddEditCategory';
 
 function App() {
  

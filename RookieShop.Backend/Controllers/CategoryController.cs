@@ -50,12 +50,12 @@ namespace RookieShop.Backend.Controllers
         [HttpPut]
         [Authorize(Roles = "admin")]
 
-        public async Task<bool> Edit(int? id, CategoryRequest category)
+        public async Task<bool> Edit(Category category)
         {
             try
             {
                
-                return await _repo.updateCategory(id,category);
+                return await _repo.updateCategory(category);
             }
             catch (Exception ex)
             {

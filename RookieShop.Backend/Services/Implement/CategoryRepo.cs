@@ -21,14 +21,16 @@ namespace RookieShop.Backend.Services.Implement
         }
          
         
-        public async Task<bool> updateCategory(int? id,CategoryRequest category)
+        public async Task<bool> updateCategory(Category category)
         {
+            var id = category.Id;
             var result = await _context.Categories.FindAsync(id);
             if (result == null)
             {
                 return false;
             }
             result.categoryName = category.categoryName;
+            result.categoryDescription = category.categoryDescription;
             _context.Categories.Update(result);
             _context.SaveChangesAsync();
             return true;

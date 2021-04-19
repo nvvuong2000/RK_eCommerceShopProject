@@ -12,7 +12,7 @@ namespace RookieShop.Backend.Services.Interface
     public interface ICategory
     {
         public Task<bool> addCategory(Category category);
-        public Task<bool> updateCategory(int? id, CategoryRequest category);
+        public Task<bool> updateCategory(Category category);
         public Task<List<Category>> getListCategory();
 
         public Task<Category> getCategorybyID(int id);

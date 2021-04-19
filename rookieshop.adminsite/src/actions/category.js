@@ -44,6 +44,20 @@ export const get_Category_by_Id = (id) => async (dispatch) => {
         console.log(error);
     }
 };
+export const update_category = (value) => async (dispatch) => {
+    try {
+        const data = await api.Category.updateCategory(value);
+        console.log(data);
+
+        dispatch({
+            type: category.UPDATE_CATEGORY,
+            payload: data,
+        });
+
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 
 
