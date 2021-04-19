@@ -1,10 +1,13 @@
 
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { add_category } from "../actions/category"
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { add_category,get_Category_by_Id } from "../actions/category"
 import {history} from "../index"
 
-export default function AddCategory() {
+export default function AddCategory({match,history}) {
+    const { id } = match.params;
+    console.log(id);
+    const isAddMode = !id;
     const dispatch = useDispatch();
 
 
@@ -26,8 +29,31 @@ export default function AddCategory() {
          console.log(newCategory)
        dispatch(add_category(newCategory));
         history.push('/');
-
     }
+    
+ 
+    useEffect(() => {
+
+        dispatch(get_Category_by_Id(id))
+    }, []);
+    useEffect(() => {
+        if (!isAddMode) {
+            // get user and set form fields
+            dispatch(get_Category_by_Id(id))
+           
+           
+        }
+    }, []);
+    const categorySelected = useSelector(state => state.category.categoryselected.data);
+    useEffect(()=>{
+      if(categorySelected){
+          setNewCategory({
+              categoryName: categorySelected.categoryName,
+              categoryDescription: categorySelected.categoryDescription,
+          })
+      }
+    }, [categorySelected])
+    
 return (
     <div>
         {
@@ -58,7 +84,7 @@ return (
                                 <div className="card-body">
                                     <div className="form-group">
                                         <label htmlFor="productNameLabel" className="input-label">Name <i className="tio-help-outlined text-body ml-1" data-toggle="tooltip" data-placement="top" title data-original-title="Products are the goods or services you sell." /></label>
-                                        <input type="text" className="form-control" name="categoryName" onChange={handleChange} value={newCategory.categoryName} id="categoryName" placeholder="Shirt, t-shirts, etc." aria-label="Shirt, t-shirts, etc." />
+                                        <input type="text" className="form-control"  name="categoryName" onChange={handleChange} value={newCategory.categoryName} id="categoryName" placeholder="Shirt, t-shirts, etc." aria-label="Shirt, t-shirts, etc." />
                                     </div>
                                     <div class="form-group">
                                         <textarea name="categoryDescription" id="categoryDescription" onChange={handleChange} value={newCategory.categoryDescription} rows="10" placeholder="Please type description of product"></textarea>

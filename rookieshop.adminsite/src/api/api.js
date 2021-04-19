@@ -31,6 +31,7 @@ const Product = {
 const Category = {
     getAllCategory: async () => await axios.get("/api/Category", config),
     addNewCategory: async (data) => await axios.post("/api/Category", data, config),
+    getCategorybyID: async (id) => await axios.get(`/api/Category/${id}`,config)
   
 }
 

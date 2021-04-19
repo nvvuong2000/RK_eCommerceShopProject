@@ -7,6 +7,8 @@ using RookieShop.Shared.Repo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace RookieShop.Backend.Controllers
@@ -73,6 +75,26 @@ namespace RookieShop.Backend.Controllers
             catch (Exception ex)
             {
                  throw new Exception(ex.Message);
+            }
+        }
+        [HttpGet("{id}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<Category>> GetbyID(int id)
+        {
+            try
+            {
+
+                var category =  await  _repo.getCategorybyID(id);
+                if (category == null)
+                {
+                    HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.NotFound);
+                    return Ok(result);
+                }
+                return Ok(category);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
 

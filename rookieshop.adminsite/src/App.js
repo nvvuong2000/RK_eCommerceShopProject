@@ -52,6 +52,7 @@ function App() {
           
           <Route  exact path="/category" component={Category} />
           <Route exact path="/category/addCategory" component={AddCategory} />
+          <Route exact path="/category/:id" render={({ match }) => <AddCategory match={match} />} />
           <Route exact path="/orders" component={Orders} />
           <Route exact path="/orders" component={Orders} />
           <Route exact path="/customer" component={Customer} />

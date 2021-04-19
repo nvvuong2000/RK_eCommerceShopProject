@@ -1,4 +1,4 @@
-import api from '../api/user'
+import api from '../api/api'
 import * as category from "../contains/category";
 import { history } from "../index";
 export const get_category_list = () => async (dispatch) => {
@@ -25,6 +25,20 @@ export const add_category = (value) => async (dispatch) => {
             payload: data,
         });
         history.push("/category");
+
+    } catch (error) {
+        console.log(error);
+    }
+};
+export const get_Category_by_Id = (id) => async (dispatch) => {
+    try {
+        const data = await api.Category.getCategorybyID(id);
+        console.log(data);
+
+        dispatch({
+            type: category.CATEGORY_SELECTED,
+            payload: data,
+        });
 
     } catch (error) {
         console.log(error);

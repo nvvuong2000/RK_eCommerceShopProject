@@ -1,4 +1,4 @@
-import api from '../api/user'
+import api from '../api/api'
 import * as product from "../contains/product";
 export const get_product_list = () => async (dispatch) => {
     try {

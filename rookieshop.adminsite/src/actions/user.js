@@ -1,4 +1,4 @@
-import api from '../api/user'
+import api from '../api/api'
 import * as types from "../contains/user";
 import {history} from "../index"
 export const login = (value) => async (dispatch) => {
