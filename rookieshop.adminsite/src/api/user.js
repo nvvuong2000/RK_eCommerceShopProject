@@ -26,6 +26,11 @@ const User = {
 }
 const Product = {
     getAllProducts: async () => await axios.get("/api/Product", config),
+    getProductbyId: async (id) => await axios.get(`/api/Product/${id}`)
+}
+const Category = {
+    getAllCategory: async () => await axios.get("/api/Category", config),
+  
 }
 
-export default { User, Product };
+export default { User, Product, Category };

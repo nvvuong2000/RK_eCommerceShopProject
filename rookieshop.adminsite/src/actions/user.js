@@ -1,14 +1,6 @@
 import api from '../api/user'
 import * as types from "../contains/user";
 import {history} from "../index"
-
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
-} from "react-router-dom";
-
 export const login = (value) => async (dispatch) => {
     try { 
         const data = await api.User.login(value)

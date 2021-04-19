@@ -14,5 +14,20 @@ export const get_product_list = () => async (dispatch) => {
         console.log(error);
     }
 };
+export const get_product_by_id = (id) => async (dispatch) => {
+    console.log(id);
+    try {
+        const data = await api.Product.getProductbyId(id)
+        console.log(data);
+       
+        dispatch({
+            type: product.EDIT_PRODUCT,
+            payload: data,
+        });
+   
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 

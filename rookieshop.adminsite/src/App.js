@@ -46,11 +46,11 @@ function App() {
         <Banner user={currentUser}/>
         <Switch>
           <PrivateRoute exact path="/orders" component={Orders} />
-          <Route exact path="/products" component={Product} />
+          <Route  exact path="/products" component={Product} />
           <Route exact path="/orders" component={Orders} />
           <Route exact path="/customer" component={Customer} />
           <Route exact path="/user/:id" component={CustomerDetails} />
-          <Route exact path="/product/:id" component={AddProduct} />
+          <Route exact path="/product/:id" render={({ match}) =><AddProduct match={match} />}/>
           <Route exact path="/product/addProduct" component={AddProduct} />
           <Route exact path="/order/:id" component={OrderDetails} />
           <Route exact path="/login" component={Login} />
