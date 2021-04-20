@@ -2,6 +2,7 @@ import * as user from "../contains/user";
 
 const initialState = {
     currentUser: {},
+    listUsers:[],
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -13,12 +14,18 @@ export default (state = initialState, { type, payload }) => {
                 currentUser: payload,
             };
         }
-        case user.GET_CURRENT_USER: {
+        case user.GETCURRENTUSER: {
             
             return {
 
                 currentUser: payload,
             };
+        }
+        case user.GETLISTUSER: {
+            state.listUsers = payload;
+            return { ...state };
+
+           
         }
         default:
             return state;

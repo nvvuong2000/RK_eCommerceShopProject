@@ -13,6 +13,7 @@ import Banner from "./component/Banner"
 import PrivateRoute from './component/PrivateRoute'
 import Page403 from "./component/Page403"
 import Category from "./component/Category"
+import Footer from "./component/Footer"
 import { history } from "./index";
 
 import {
@@ -48,8 +49,7 @@ function App() {
         <Banner user={currentUser}/>
         <Switch>
           <PrivateRoute exact path="/orders" component={Orders} />
-          <Route  exact path="/products" component={Product} />
-          
+          <Route  exact path="/products" component={Product} />         
           <Route  exact path="/category" component={Category} />
           <Route exact path="/category/addCategory" component={AddCategory} />
           <Route exact path="/category/:id" render={({ match }) => <AddCategory match={match} />} />
@@ -62,8 +62,8 @@ function App() {
           <Route exact path="/order/:id" component={OrderDetails} />
           <Route exact path="/login" component={Login} />
          <Route exact path="/page403" component={Page403}></Route>
-
         </Switch>
+        <Footer/>
       </Router>
 
     </Fragment>

@@ -38,22 +38,6 @@ export default function Banner(props) {
                                     </div>
                                 </nav>
                             </header>
-
-                            {/* Content */}
-                            <main id="content" role="main" className="main">
-                                {/*  Component ở đây */}
-                                {/* <Orders/> */}
-
-
-                                <div className="footer">
-                                    <div className="row justify-content-between align-items-center">
-                                        <div className="col">
-                                            <p className="font-size-sm mb-0">© Front. <span className="d-none d-sm-inline-block">2021.</span></p>
-                                        </div>
-                                    </div>
-                                </div>
-                                {/* End Footer */}
-                            </main>
                         </div>
                     </div>
                     {/* End of Content Wrapper */}

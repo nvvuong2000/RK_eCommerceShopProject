@@ -57,12 +57,32 @@ namespace RookieShop.Backend.Controllers
         [Authorize(Roles = "user")]
         public async Task<ActionResult<OrderVm>> GetOrderbyID(int id)
         {
-
-          
             try
             {
 
                 var list = await _repo.getorDetailsbyOrderId(id);
+
+
+                return Ok(list);
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+
+
+            }
+        }
+        [HttpGet("listOrder/{id}")]
+        [Authorize(Roles = "user")]
+        public async Task<ActionResult<OrderVm>> GetListOrderbyuserID(string id)
+        {
+
+
+            try
+            {
+
+                var list = await _repo.getOrderListofCus(id);
 
 
                 return Ok(list);

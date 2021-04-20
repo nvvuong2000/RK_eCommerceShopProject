@@ -35,7 +35,21 @@ namespace RookieShop.Backend.Services.Implement
             }).ToListAsync();
             return listOrder;
         }
+        public async Task<List<OrderVm>> getOrderListofCus(string id)
+        {
+            var listOrder = await _context.Order.Include(o => o.OrderDetails).Include(o => o.OrderDetails).Where(x => x.userId.Equals(id)).Select(x => new OrderVm
+            {
+                Id = x.Id,
+                productName = x.OrderDetails.Select(o => o.productName).ToList(),
+                quantity = x.OrderDetails.Select(o => o.quantity).ToList(),
+                total = x.Total,
+                status = x.status,
+                unitPrice = x.OrderDetails.Select(o => o.unitPrice).ToList(),
+                date = x.dateOrdered,
 
+            }).ToListAsync();
+            return listOrder;
+        }
         public async Task<OrderVm> getorDetailsbyOrderId(int id)
         {
             var listOrder = await _context.Order.Include(o => o.OrderDetails).Include(o => o.OrderDetails).Where(x => x.userId == _repoUser.getUserID() && x.Id == id).Select(x => new OrderVm

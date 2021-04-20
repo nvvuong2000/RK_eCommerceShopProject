@@ -12,6 +12,7 @@ namespace RookieShop.Backend.Services.Interface
     {
         public Task<List<OrderVm>> myOrderList();
         public Task<OrderVm> getorDetailsbyOrderId(int id);
+        public Task<List<OrderVm>> getOrderListofCus(string id);
         public bool updateSttOrdrerCs(int id);
         public bool updateSttOrdrerAd(StatusOrderRequest statusRequest);
     }

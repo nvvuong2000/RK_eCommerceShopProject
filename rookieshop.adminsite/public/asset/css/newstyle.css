@@ -25,7 +25,7 @@ body {
 .header {
     width: 100%;
     height: 100vh;
-    background: url(https://bit.ly/2QNWUBq);
+    background: url(../images/banner.jpeg);
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
@@ -226,4 +226,28 @@ textarea {
     font-family: 'Open Sans', sans-serif;
     font-size: 16px;
     padding: 20px;
+}
+/* Copyright Styling */
+#copyright {
+
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
+
+}
+
+
+.copy {
+
+    color: #a7a7a7;
+    font-size: 16px;
+    font-family: Helvetica, Arial, Sans-Serif;
+    font-weight: 500;
+    line-height: 20px;
+    text-align: center;
+    margin-left: 20px;
+    display: inline-block;
+    overflow: hidden;
+
 }

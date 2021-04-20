@@ -19,7 +19,19 @@ export const get_info_user = () => async (dispatch) => {
     try {
         const data = await api.User.get_info_user()
         dispatch({
-            type: types.GET_CURRENT_USER,
+            type: types.GETCURRENTUSER,
+            payload: data,
+        });
+       
+    } catch (error) {
+        console.log(error);;
+    }
+};
+export const get_list_user = () => async (dispatch) => {
+    try {
+        const data = await api.User.getlistuser();
+        dispatch({
+            type: types.GETLISTUSER,
             payload: data,
         });
        

@@ -10,7 +10,7 @@ const config = {
 const User = {
     login: async (data) => {
 
-        var url = "https://localhost:44341/connect/token";
+        var url = "/connect/token";
         var urlencoded = new URLSearchParams();
         urlencoded.append("grant_type", "password");
         urlencoded.append("username", data.email);
@@ -20,8 +20,11 @@ const User = {
         return await axios.post(url, urlencoded).then(r => { return r.data });
     },
     get_info_user: async () => {
-        var url = "https://localhost:44341/api/User/infoUser";
+        var url = "/api/User/infoUser";
         return await axios.get(url, config).then(r => { return r.data });
+    },
+    getlistuser :async(data)=>{
+        return await axios.get("/api/User/listUser", config).then(r => { return r.data });
     }
 }
 const Product = {

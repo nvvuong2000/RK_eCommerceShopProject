@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RookieShop.Backend.Data;
 using RookieShop.Backend.Models;
 using RookieShop.Backend.Services.Interface;
+using RookieShop.Shared.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,7 +53,11 @@ namespace RookieShop.Backend.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-
+        [HttpGet("listUser")]
+        public async Task<ActionResult<IList<UserListInfo>>> ListinfoUser()
+        {
+                var user = await _repo.getListUser();
+                return Ok(user);
+        }
     }
 }

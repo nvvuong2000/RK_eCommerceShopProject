@@ -11,5 +11,6 @@ namespace RookieShop.Backend.Services.Interface
     {
         public string getUserID();
         public Task<UserInfo> getInfoUser();
+        public Task<List<UserListInfo>> getListUser();
     }
 }
