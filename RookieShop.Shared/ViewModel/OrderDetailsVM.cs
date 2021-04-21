@@ -13,5 +13,6 @@ namespace RookieShop.Shared.ViewModel
         public DateTime date { get; set; }
         public decimal total { get; set; }
         public int status { get; set; }
+        
     }
 }

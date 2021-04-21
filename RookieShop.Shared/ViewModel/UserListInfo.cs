@@ -20,6 +20,7 @@ namespace RookieShop.Shared.ViewModel
 
         public decimal TotalOrder { get; set; }
 
+        
 
     }
 }

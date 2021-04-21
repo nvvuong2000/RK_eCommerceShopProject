@@ -6,8 +6,9 @@ import { add_category, get_Category_by_Id, update_category } from "../actions/ca
 
 export default function AddCategory({ match, history }) {
     const { id } = match.params;
-    console.log(id);
+
     const isAddMode = !id;
+
     const dispatch = useDispatch();
 
     const [Category, setCategory] = useState({
@@ -39,12 +40,15 @@ export default function AddCategory({ match, history }) {
 
         dispatch(get_Category_by_Id(id))
     }, []);
+
     useEffect(() => {
         if (!isAddMode) {
             dispatch(get_Category_by_Id(id))
         }
     }, []);
+
     const categorySelected = useSelector(state => state.category.categoryselected.data);
+
     useEffect(() => {
         if (categorySelected) {
             setCategory({

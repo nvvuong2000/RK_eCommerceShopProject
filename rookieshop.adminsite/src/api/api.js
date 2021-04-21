@@ -38,5 +38,9 @@ const Category = {
     updateCategory: async (data) => await axios.put(`/api/Category`, data,config)
   
 }
+const Order = {
+    getListOrderofCustomer: async (id) => await axios.get(`/api/Order/listOrder/${id}`, config),
+    
+}
 
-export default { User, Product, Category };
+export default { User, Product, Category, Order };

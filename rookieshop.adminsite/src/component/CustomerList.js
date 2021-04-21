@@ -26,12 +26,12 @@ export default function CustomerList(props) {
                                     <tr role="row" className="odd">
                                         <td className="table-column-pr-0">
                                         </td>
-                                        <td><Link to={`/user/${item.userId }}`} >#{i+1}</Link> </td>
+                                        <td><Link to={`/customer/${item.userId}`} >#{i+1}</Link> </td>
                                         <td className="table-column-pl-0">
                                             <a className="media align-items-center" href="ecommerce-product-details.html">
                                                 <img className="avatar avatar-lg mr-3" src={item.avatar == null ? "https://localhost:44341/images/default-user.jpg":`${item.avatar}`} alt="Avatar" />
                                                 <div className="media-body">
-                                                    <Link to={`/user/${1}`} className="text-hover-primary mb-0">{item.userName}</Link>
+                                                    <Link to={`/customer/${item.userId}`} className="text-hover-primary mb-0">{item.userName}</Link>
                                                 </div>
                                             </a>
                                         </td>

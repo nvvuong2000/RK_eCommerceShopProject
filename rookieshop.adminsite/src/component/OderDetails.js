@@ -135,7 +135,7 @@ export default function OderDetails() {
           <hr />
           <div className="d-flex justify-content-between align-items-center">
             <h5>Shipping address</h5>
-            <a className="link" href="javascript:;">Edit</a>
+         
           </div>
           <span className="d-block">
             45 Roker Terrace<br />

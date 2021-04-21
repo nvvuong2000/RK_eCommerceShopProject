@@ -13,5 +13,9 @@ namespace RookieShop.Shared.ViewModel
         public DateTime date { get; set; }
         public decimal total { get; set; }
         public int status { get; set; }
+        public string UserId { get; set; }
+        public string UserName { get; set; }
+        public string UserAddress { get; set; }
+        public string UserTel { get; set; }
     }
 }

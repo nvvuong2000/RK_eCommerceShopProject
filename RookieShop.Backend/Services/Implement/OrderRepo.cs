@@ -46,13 +46,17 @@ namespace RookieShop.Backend.Services.Implement
                 status = x.status,
                 unitPrice = x.OrderDetails.Select(o => o.unitPrice).ToList(),
                 date = x.dateOrdered,
+                 UserId = x.userId,
+                UserName = x.User.customerName,
+                UserAddress = x.User.address,
+                UserTel = x.User.PhoneNumber,
 
             }).ToListAsync();
             return listOrder;
         }
         public async Task<OrderVm> getorDetailsbyOrderId(int id)
         {
-            var listOrder = await _context.Order.Include(o => o.OrderDetails).Include(o => o.OrderDetails).Where(x => x.userId == _repoUser.getUserID() && x.Id == id).Select(x => new OrderVm
+            var listOrder = await _context.Order.Include(o => o.OrderDetails).Include(o => o.OrderDetails).Include(o=>o.User).Where(x => x.userId == _repoUser.getUserID() && x.Id == id).Select(x => new OrderVm
             {
                 Id = x.Id,
                 productName = x.OrderDetails.Select(o => o.productName).ToList(),
@@ -61,6 +65,11 @@ namespace RookieShop.Backend.Services.Implement
                 status = x.status,
                 unitPrice = x.OrderDetails.Select(o => o.unitPrice).ToList(),
                 date = x.dateOrdered,
+                UserId = x.userId,
+                UserName = x.User.customerName,
+                UserAddress = x.User.address,
+                UserTel = x.User.PhoneNumber,
+                
 
             }) .FirstOrDefaultAsync();
             return listOrder;
