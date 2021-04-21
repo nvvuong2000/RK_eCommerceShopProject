@@ -109,6 +109,18 @@ namespace RookieShop.Backend.Services.Implement
             return true;
         }
 
-  
+        public async  Task<List<OrderVm>> getAllOrder()
+        {
+            var listOrder = await _context.Order.Include(o => o.OrderDetails).Include(o => o.User).Select(x => new OrderVm
+            {
+                Id = x.Id,
+                total = x.Total,
+                status = x.status,
+                date = x.dateOrdered,
+                UserId = x.userId,
+                UserName = x.User.customerName,
+            }).ToListAsync();
+            return listOrder;
+        }
     }
 }

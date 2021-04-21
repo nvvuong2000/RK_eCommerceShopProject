@@ -3,6 +3,7 @@ import * as order from "../contains/order";
 const initialState = {
     orderlistofcustomer:[],
     orderDetails:[],
+    orderList:[]
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -16,6 +17,12 @@ export default (state = initialState, { type, payload }) => {
         case order.ORDERDETAILS: {
 
             state.orderDetails = payload;
+            return { ...state };
+
+        }
+        case order.GETALLORDERLIST: {
+
+            state.orderList = payload;
             return { ...state };
 
         }

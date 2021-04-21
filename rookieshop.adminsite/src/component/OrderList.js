@@ -2,7 +2,6 @@ import React, { Fragment } from 'react'
 import {Link } from "react-router-dom"
 export default function OrderList(props) {
     const order= props.order;
-    console.log(order);
     return (
         <Fragment>
             <tr>

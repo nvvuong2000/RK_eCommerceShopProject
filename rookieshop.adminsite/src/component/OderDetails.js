@@ -1,42 +1,36 @@
 import React, { useEffect } from 'react'
-import CustomerInfo from "./CustomerInfo"
 import { useSelector, useDispatch, } from "react-redux";
 import { get_list_order_details } from "../actions/order"
 import OrderDetailsItem from './OrderDetailsItem';
-import ProductList from './ProductList';
 export default function OderDetails({ match }) {
 
   const { id } = match.params;
-  //.log(id);
 
   const dispatch = useDispatch();
+
   useEffect(() => {
 
     dispatch(get_list_order_details(id))
   }, [])
 
-  const orderList = useSelector((state) => state.order.orderDetails)
+  const orderList = useSelector((state) => state.order.orderDetails);
+
   let data = orderList.data;
-  console.log(data);
+
   const getList = (data) => {
     var list = [];
-    if(data){
+    if (data) {
       for (var i = 0; i < data.productName.length; i++) {
-        list.push({ productName: data.productName[i], productQuantity: data.quantity[i], productunitPrice: data.unitPrice[i], productImage: data.imageDefault[i], productId:data.productID[i] })
+        list.push({ productName: data.productName[i], productQuantity: data.quantity[i], productunitPrice: data.unitPrice[i], productImage: data.imageDefault[i], productId: data.productID[i] })
       }
       return list
     }
- 
-
-  
-
   }
   useEffect(() => {
-   
 
-  }, [data])
+  }, [data]);
+
   const list = getList(data);
- 
   
   return (
     <div>
@@ -67,24 +61,24 @@ export default function OderDetails({ match }) {
         </div>
         <div className="row">
           <div className="col-lg-12 mb-3 mb-lg-0  ">
-            <div className="card mb-3 mb-lg-5">             
+            <div className="card mb-3 mb-lg-5">
               <div className="card-header">
                 <h4 className="card-header-title">Order details</h4>
               </div>
 
               <OrderDetailsItem list={list} />
-             
+
               <hr />
               <div className="row justify-content-md-end mb-3">
                 <div className="col-md-8 col-lg-7">
                   <div className="row text-sm-right">
                     <dt className="col-sm-10">Amount paid:<span class="ml-4">{data.total}</span></dt>
-                    
+
                   </div>
                 </div>
               </div>
             </div>
-          </div>       
+          </div>
         </div>
       </div>
       }

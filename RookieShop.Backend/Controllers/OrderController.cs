@@ -33,14 +33,32 @@ namespace RookieShop.Backend.Controllers
         }
         [HttpGet]
         [Authorize(Roles = "user")]
-        public async Task<ActionResult<IEnumerable<OrderVm>>> GetListOrder()
+        public async Task<ActionResult<IEnumerable<OrderVm>>> GetMyListOrder()
         {
-
-            var userId = _repoUser.getUserID();
             try
             {
 
                 var list = await _repo.myOrderList();
+
+
+                return list;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+
+
+            }
+        }
+        [HttpGet("/getorderlist")]
+        [Authorize(Roles = "admin")]
+        public async Task<ActionResult<IEnumerable<OrderVm>>> GetListOrder()
+        {
+            try
+            {
+
+                var list = await _repo.getAllOrder();
 
 
                 return list;
