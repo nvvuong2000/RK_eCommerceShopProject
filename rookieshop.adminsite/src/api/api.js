@@ -40,6 +40,7 @@ const Category = {
 }
 const Order = {
     getListOrderofCustomer: async (id) => await axios.get(`/api/Order/listOrder/${id}`, config),
+    getListOrderDetails: async (id) => await axios.get(`/api/Order/${id}`, config),
     
 }
 

@@ -7,14 +7,10 @@ export default function CustomerListOrder(props) {
         <Fragment>
 
             <div className="col-lg-8">
-                {/* Card */}
                 <div className="card mb-3 mb-lg-5">
-                    {/* Header */}
                     <div className="card-header">
                         <h5 className="card-header-title">Order List</h5>
                     </div>
-                    {/* End Header */}
-                    {/* Table */}
                     <div className="table-responsive">
                         <table className="table table-borderless table-thead-bordered table-nowrap table-align-middle card-table">
                             <thead className="thead-light">
@@ -34,9 +30,7 @@ export default function CustomerListOrder(props) {
                             </tbody>
                         </table>
                     </div>
-                    {/* End Table */}
                 </div>
-                {/* End Card */}
             </div>
 
         </Fragment>

@@ -13,3 +13,15 @@ export const get_list_order_of_customer = (id) => async (dispatch) => {
         console.log(error);;
     }
 };
+export const get_list_order_details = (id) => async (dispatch) => {
+    try {
+        const data = await api.Order.getListOrderDetails(id);
+        dispatch({
+            type: types.ORDERDETAILS,
+            payload: data,
+        });
+
+    } catch (error) {
+        console.log(error);
+    }
+};

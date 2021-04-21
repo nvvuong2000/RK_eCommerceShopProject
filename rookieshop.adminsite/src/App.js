@@ -59,7 +59,7 @@ function App() {
           <Route exact path="/customer/:id" render={({ match }) => <CustomerDetails match={match} />} />
           <Route exact path="/product/:id" render={({ match}) =><AddProduct match={match} />}/>
           <Route exact path="/product/addProduct" component={AddProduct} />
-          <Route exact path="/order/:id" component={OrderDetails} />
+          <Route exact path="/order/:id" render={({ match }) => <OrderDetails match={match} />} />
           <Route exact path="/login" component={Login} />
          <Route exact path="/page403" component={Page403}></Route>
         </Switch>

@@ -1,7 +1,8 @@
 import * as order from "../contains/order";
 
 const initialState = {
-    orderlistofcustomer:[]
+    orderlistofcustomer:[],
+    orderDetails:[],
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -9,6 +10,12 @@ export default (state = initialState, { type, payload }) => {
         case order.ORDERLISTOFCUS: {
 
             state.orderlistofcustomer = payload;
+            return { ...state };
+
+        }
+        case order.ORDERDETAILS: {
+
+            state.orderDetails = payload;
             return { ...state };
 
         }

@@ -37,26 +37,7 @@ namespace RookieShop.Backend.Services.Implement
         }
         public async Task<List<OrderVm>> getOrderListofCus(string id)
         {
-            var listOrder = await _context.Order.Include(o => o.OrderDetails).Include(o => o.OrderDetails).Where(x => x.userId.Equals(id)).Select(x => new OrderVm
-            {
-                Id = x.Id,
-                productName = x.OrderDetails.Select(o => o.productName).ToList(),
-                quantity = x.OrderDetails.Select(o => o.quantity).ToList(),
-                total = x.Total,
-                status = x.status,
-                unitPrice = x.OrderDetails.Select(o => o.unitPrice).ToList(),
-                date = x.dateOrdered,
-                 UserId = x.userId,
-                UserName = x.User.customerName,
-                UserAddress = x.User.address,
-                UserTel = x.User.PhoneNumber,
-
-            }).ToListAsync();
-            return listOrder;
-        }
-        public async Task<OrderVm> getorDetailsbyOrderId(int id)
-        {
-            var listOrder = await _context.Order.Include(o => o.OrderDetails).Include(o => o.OrderDetails).Include(o=>o.User).Where(x => x.userId == _repoUser.getUserID() && x.Id == id).Select(x => new OrderVm
+            var listOrder = await _context.Order.Include(o => o.OrderDetails).Include(o => o.OrderDetails).Include(o => o.User).Where(x => x.userId.Equals(id)).Select(x => new OrderVm
             {
                 Id = x.Id,
                 productName = x.OrderDetails.Select(o => o.productName).ToList(),
@@ -69,9 +50,30 @@ namespace RookieShop.Backend.Services.Implement
                 UserName = x.User.customerName,
                 UserAddress = x.User.address,
                 UserTel = x.User.PhoneNumber,
-                
 
-            }) .FirstOrDefaultAsync();
+            }).ToListAsync();
+            return listOrder;
+        }
+        public async Task<OrderVm> getorDetailsbyOrderId(int id)
+        {
+            var listOrder = await _context.Order.Include(o => o.OrderDetails).Include(o => o.User).Where(x=>x.Id == id).Select(x => new OrderVm
+            {
+                Id = x.Id,
+                productID = x.OrderDetails.Select(o=>o.productId).ToList(),
+                imageDefault = x.OrderDetails.Select(o=>o.Product.ProductImages.Where(img=>img.isDefault==true).Select(img=>img.pathName).FirstOrDefault()),
+                productName = x.OrderDetails.Select(o => o.productName).ToList(),
+                quantity = x.OrderDetails.Select(o => o.quantity).ToList(),
+                total = x.Total,
+                status = x.status,
+                unitPrice = x.OrderDetails.Select(o => o.unitPrice).ToList(),
+                date = x.dateOrdered,
+                UserId = x.userId,
+                UserName = x.User.customerName,
+                UserAddress = x.User.address,
+                UserTel = x.User.PhoneNumber,
+
+
+            }).FirstOrDefaultAsync();
             return listOrder;
         }
         public async Task<Order> myOrderListbyId(int id)
