@@ -1,14 +1,30 @@
-import React, { Fragment } from 'react'
-import {Link} from "react-router-dom"
+import React, { Fragment, useEffect, useState } from 'react'
+import { useSelector, useDispatch, } from "react-redux";
+import { Link } from "react-router-dom"
+import {update_status_order} from "../actions/order"
 
 export default function OrderItem(props) {
-    const list = props.list;
+    console.log(props);
+    useEffect(() => console.log('value changed!'),[props.list]);
+    const {list} = props;
+    console.log(props);
+    const dispatch = useDispatch();
+    const handleChange = (value,id) => {
+        let data =
+        {
+            "orderId": id,
+            "statusId": value
+        }
+
+        dispatch(update_status_order(data))
+    }
+ 
     return (
-       <Fragment>
-           {
-                list && list.map(item=>{
+        <Fragment>
+            {
+                list && list.map(item => {
                     return (
-                        <tr role="row" className="odd">
+                        <tr role="row" className="odd" key={item.id}>
                             <td className="table-column-pr-0">
                             </td>
                             <td><Link to={`/order/${item.id}`}>#{item.id}</Link></td>
@@ -20,23 +36,22 @@ export default function OrderItem(props) {
                             <td>{item.userName}</td>
                             <td>{item.status == 2 ? "Received" : item.status == 1 ? "Delivery" : item.status == -1 ? "Canceled" : "Processing"}</td>
                             <td>{item.total}</td>
-                            
-                               <td>
-                                {(item.status != 2)?
-                                    <select id="datatableEntries" class="js-select2-custom" >
+
+                            <td>
+                                {(item.status == 0) ?
+                                    <select class="js-select2-custom" id={item.id} onChange={(e)=>handleChange(e.target.value,item.id)} key={item.id} >
                                         <option name="status" value="1">Delivery</option>
-                                        <option name="status" value="0">Processing</option>
-                                        <option name="status" value="2">Received</option>
-                                        <option name="status" value="-1">Cancel</option>                                       
+                                        <option name="status" value="0" selected >Processing</option>
+                                        <option name="status" value="-1">Cancel</option>
                                     </select>
                                     : ""
-                                }           
-                                </td>
+                                }
+                            </td>
                         </tr>
                     );
                 })
-           }
-            
-       </Fragment>
+            }
+
+        </Fragment>
     )
 }

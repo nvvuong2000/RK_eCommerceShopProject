@@ -51,7 +51,7 @@ export const update_category = (value) => async (dispatch) => {
 
         dispatch({
             type: category.UPDATE_CATEGORY,
-            payload: data,
+            payload: value,
         });
 
     } catch (error) {

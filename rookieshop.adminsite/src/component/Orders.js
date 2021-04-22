@@ -13,7 +13,10 @@ export default function Orders() {
         dispatch(get_list_order())
     }, [])
 
-    const orderList = useSelector((state) => state.order.orderList.data);
+
+    const orderList = useSelector((state) => state.order.orderList);
+    const list = orderList.data
+     console.log(list);
     return (
         <Fragment>
             <div className="content container-fluid">
@@ -40,7 +43,7 @@ export default function Orders() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <OrderItem list={orderList}/>
+                                    <OrderItem list={list}/>
                                 </tbody>
                             </table>
                         </div>

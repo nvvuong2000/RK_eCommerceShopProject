@@ -37,3 +37,15 @@ export const get_list_order = () => async (dispatch) => {
         console.log(error);
     }
 };
+export const update_status_order = (value) => async (dispatch) => {
+    try {
+        const data = await api.Order.updateStatusOrder(value);
+        dispatch({
+            type: types.UPDATESTATUSORDER,
+            payload: value,
+        });
+
+    } catch (error) {
+        console.log(error);
+    }
+};

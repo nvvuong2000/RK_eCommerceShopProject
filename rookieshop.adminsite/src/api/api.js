@@ -42,6 +42,7 @@ const Order = {
     getListOrderofCustomer: async (id) => await axios.get(`/api/Order/listOrder/${id}`, config),
     getListOrderDetails: async (id) => await axios.get(`/api/Order/${id}`, config),
     getOrderList: async (id) => await axios.get(`/getorderlist`, config),
+    updateStatusOrder: async (data) => await axios.post(`/api/Order/updateSttOrderad`, data, config),
     
 }
 
