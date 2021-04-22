@@ -14,9 +14,9 @@ export default function Orders() {
     }, [])
 
 
-    const orderList = useSelector((state) => state.order.orderList);
+    const orderList = useSelector((state) => state.order.orderList,()=>{});
     const list = orderList.data
-     console.log(list);
+
     return (
         <Fragment>
             <div className="content container-fluid">
