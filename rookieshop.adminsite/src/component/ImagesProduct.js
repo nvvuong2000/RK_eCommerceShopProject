@@ -21,22 +21,18 @@ export default function ImagesProduct(props) {
                                     <div className="row text-center">
                                         <div className="col">
                                             <label className="toggle-switch toggle-switch-sm" htmlFor="stocksCheckbox1">
-                                                <input type="radio" className="toggle-switch-input" id="stocksCheckbox1" name="status" {...item.status == true ? "defaultChecked" : ""} />
+                                                <input type="radio" className="toggle-switch-input" id="stocksCheckbox1" name="status" checked={index==0} />
                                                 <span className="toggle-switch-label">
                                                     <span className="toggle-switch-indicator" />
                                                 </span>
                                             </label>
                                         </div>
                                         <div className="col column-divider">
-                                            <a className="text-danger" href="javascript:;" data-toggle="tooltip" data-placement="top" title data-original-title="Delete">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </a>
+                                           Default
                                         </div>
                                     </div>
-                                    {/* End Row */}
                                 </div>
                             </div>
-                            {/* End Card */}
                         </div>
                     );
                 })}

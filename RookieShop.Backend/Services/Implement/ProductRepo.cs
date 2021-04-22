@@ -188,64 +188,75 @@ namespace RookieShop.Backend.Services.Implement
                 productEdit.unitPrice = product.unitPrice;
                 productEdit.stock = product.stock;
                 productEdit.providerId = product.providerID;
+               
 
 
-                var productImagesEdit = await _context.ProductImages.Where(p => p.ID == id).ToListAsync();
-                if (productImagesEdit != null)
-                {
-                    for (int i = 0; i < productImagesEdit.Count; i++)
-                    {
-                        if (DeleteFile(productImagesEdit[i].pathName) == true)
-                        {
-                            var img = await _context.ProductImages.FindAsync(productImagesEdit[i].ID);
-                            if (img == null)
-                            {
-                                return false;
-                            }
-
-                            _context.ProductImages.Remove(img);
-                            await _context.SaveChangesAsync();
-                        }
-                    }
-
-                }
+                
 
                 await _context.SaveChangesAsync();
-                try
+                if(product.FormFiles == null)
                 {
-
-                    foreach (var formFile in product.FormFiles)
-                    {
-                        Random getrandom = new Random();
-                        int random = getrandom.Next(1, 99999);
-                        string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", random.ToString() + formFile.FileName);
-                        if (formFile.Length > 0)
-                        {
-                            using (var stream = new FileStream(path, FileMode.Create))
-                            {
-                                formFile.CopyToAsync(stream);
-
-                            }
-                        }
-                        var ProductImage = new ProductImages
-                        {
-                            ProductID = id,
-
-                            pathName = Path.Combine("/images/" + random.ToString() + formFile.FileName),
-
-                            isDefault = false,
-                            captionImage = "Hình ảnh minh họa cho sản phẩm " + product.productName,
-
-                        };
-                        _context.ProductImages.Add(ProductImage);
-                        await _context.SaveChangesAsync();
-                    }
                     return true;
                 }
-                catch (Exception)
+                else
                 {
-                    return false;
+                    try
+                    {
+                        var productImagesEdit = productEdit.ProductImages.ToList();
+                        if (productImagesEdit != null)
+                        {
+                            for (int i = 0; i < productImagesEdit.Count; i++)
+                            {
+                                if (DeleteFile(productImagesEdit[i].pathName) == true)
+                                {
+                                    var img = await _context.ProductImages.FindAsync(productImagesEdit[i].ID);
+                                    if (img == null)
+                                    {
+                                        return false;
+                                    }
+
+                                    _context.ProductImages.Remove(img);
+                                    await _context.SaveChangesAsync();
+                                }
+                            }
+
+                        }
+                        foreach (var formFile in product.FormFiles)
+                        {
+                            Random getrandom = new Random();
+                            int random = getrandom.Next(1, 99999);
+                            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", random.ToString() + formFile.FileName);
+                            if (formFile.Length > 0)
+                            {
+                                using (var stream = new FileStream(path, FileMode.Create))
+                                {
+                                    formFile.CopyToAsync(stream);
+
+                                }
+                            }
+                            var ProductImage = new ProductImages
+                            {
+                                ProductID = id,
+
+                                pathName = Path.Combine("/images/" + random.ToString() + formFile.FileName),
+
+                                isDefault = false,
+                                captionImage = "Hình ảnh minh họa cho sản phẩm " + product.productName,
+
+                            };
+                            _context.ProductImages.Add(ProductImage);
+                            await _context.SaveChangesAsync();
+                        }
+                        return true;
+                    }
+                    catch (Exception)
+                    {
+                        return false;
+                    }
+               
+
                 }
+               
 
                 return true;
 

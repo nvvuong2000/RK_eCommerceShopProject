@@ -14,8 +14,12 @@ export default function Orders() {
     }, [])
 
 
-    const orderList = useSelector((state) => state.order.orderList,()=>{});
-    const list = orderList.data
+   // const orderList = useSelector((state) => state.order.orderList); // not re-rendering
+
+   const orderList = useSelector((state) => state.order.orderList,()=>{}); // it's re-rendering
+    
+    const list = orderList
+    console.log(list);
 
     return (
         <Fragment>

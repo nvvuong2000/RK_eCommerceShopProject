@@ -96,7 +96,7 @@ namespace RookieShop.Backend.Controllers
         {
             try
             {
-                var list = await _repo.addProduct(product);
+                var result = await _repo.addProduct(product);
 
                 return Ok(StatusCodes.Status201Created);
 
@@ -109,13 +109,14 @@ namespace RookieShop.Backend.Controllers
 
         }
         // PUT api/<Product>/5
-        [HttpPut("{id}")]
+        [HttpPut]
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> Put(int id, [FromForm] ProductCreateRequest product)
+        public async Task<IActionResult> Put([FromForm] ProductCreateRequest product)
         {
             try
             {
-                var list = await _repo.updateProduct(id, product);
+                var id = product.productID;
+                var result = await _repo.updateProduct(id, product);
 
                 return Ok(StatusCodes.Status202Accepted);
 

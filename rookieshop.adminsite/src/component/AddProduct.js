@@ -1,88 +1,148 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch, } from "react-redux";
-import { get_product_by_id } from "../actions/product"
-import { get_category_list } from "../actions/category"
+import { get_product_by_id, add_product,update_product } from "../actions/product"
+import { get_category_list, update_category } from "../actions/category"
 import ImagesProduct from './ImagesProduct';
 
-export default function AddProduct(props) {
+export default function AddProduct({ match }) {
 
-  const id = props.match.params.id;
+  const { id } = match.params;
+
+  const isAddMode = isNaN(id);
+  console.log(isAddMode);
+  const dispatch = useDispatch();
+
+
+  const [product, setProduct] = useState({
+    productID: 0,
+    providerId: 0,
+    categoryId: 0,
+    productName: "",
+    stock: 0,
+    unitPrice: 0,
+    description: "",
+    isNew: true,
+    status: true,
+    rating: 0,
+    pathName: []
+  });
+
+  const [fileImages, setFileImages] = useState([]);
+
+  const [formData, setFormData] = useState(new FormData());
+
   function handleChange(evt) {
     const value = evt.target.value;
-    setItem({
-      ...item,
+    setProduct({
+      ...product,
       [evt.target.name]: value
     });
   }
-  function handleSubmit(e) {
-    e.preventDefault();
+  const handleChangeFileImages = (e) => {
+    const files = [];
+    const formData = new FormData();
+    if (e.target.files) {
+      for (let i = 0; i < e.target.files.length; i++) {
+        files.push(URL.createObjectURL(e.target.files[i]));
+        console.log(e.target.files[i], e.target.files[i].name)
+        formData.append("FormFiles", e.target.files[i], e.target.files[i].name);
+        console.log(e.target.files[i], e.target.files[i].name)
+      }
+      setFileImages(files);
 
+      setProduct({ ...product, pathName: files })
+    }
+    setFormData(formData);
   }
-  const dispatch = useDispatch();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formDataSubmit = formData;
+    console.log(product);
+    formDataSubmit.append('productID', product.productID);
+    formDataSubmit.append('productName', product.productName);
+    formDataSubmit.append('description', product.description);
+    formDataSubmit.append('unitPrice', product.unitPrice);
+    formDataSubmit.append('stock', product.stock);
+    formDataSubmit.append('isNew', product.isNew);
+    formDataSubmit.append('status', product.status);
+    formDataSubmit.append('categoryID', parseInt(product.categoryId));
+    formDataSubmit.append('providerID', 3);
+    return isAddMode
+      ? dispatch(add_product(formDataSubmit))
+      : dispatch(update_product(formDataSubmit))
+
+    
+  };
   useEffect(() => {
+    if (!isAddMode) {
+      dispatch(get_product_by_id(id))
+    }
 
-    dispatch(get_product_by_id(id))
-  }, [dispatch])
+  }, [])
 
   useEffect(() => {
-
     dispatch(get_category_list())
   }, [])
-  const product_selected = useSelector((state) => state.product.product_selected)
-  const getCategoryList = useSelector((state) => state.category.categoryList)
-  let categoryList = getCategoryList.data;
-  let product = product_selected.data;
-  console.log(product);
-  const [item, setItem] = useState(product_selected?.data)
 
+  const getCategoryList = useSelector((state) => state.category.categoryList)
+
+  let categoryList = getCategoryList.data;
+
+  console.log(categoryList);
+
+  const product_selected = useSelector((state) => state.product.product_selected.data)
+  console.log(product_selected);
   useEffect(() => {
-    
-    setItem(product_selected?.data)
-  }, [product_selected])
-  const [categories, setCategories] = useState(categoryList);
-  useEffect(() => {
-    setCategories(categoryList)
-  }, [categoryList]);
-  console.log(item);
+    if (isAddMode==false && product_selected) {
+      setProduct({
+        productID: product_selected.id,
+        providerId: product_selected.providerId,
+        categoryId: product_selected.categoryId,
+        productName: product_selected.productName,
+        stock: product_selected.stock,
+        unitPrice: product_selected.unitPrice,
+        description: product_selected.description,
+        isNew: product_selected.isNew,
+        status: product_selected.status,
+        pathName: product_selected.pathName
+      })
+    }
+  }, [product_selected]);
+
   return (
 
     <div>
       {
-        item && (<div className="content container-fluid">
-          {/* Page Header */}
+        (<div className="content container-fluid">
           <div className="page-header">
             <div className="row align-items-center">
               <div className="col-sm mb-2 mb-sm-0">
                 <nav aria-label="breadcrumb">
                   <ol className="breadcrumb breadcrumb-no-gutter">
                     <li className="breadcrumb-item"><a className="breadcrumb-link" href="#">Products</a></li>
-                    <li className="breadcrumb-item active" aria-current="page">Add product
-            </li>
+                    <li className="breadcrumb-item active" aria-current="page">{isAddMode ? "Add Product" : "Edit Product"}
+                    </li>
                   </ol>
                 </nav>
-                <h1 className="page-header-title">Add product</h1>
+                <h1 className="page-header-title">{isAddMode ? "Add Product" : "Edit Product"}</h1>
               </div>
             </div>
-
-            {/* End Row */}
           </div>
-          {/* End Page Header */}
-          <form>
+
+
+
+          <form onSubmit={handleSubmit}>
             <div className="row">
               <div className="col-lg-10">
-                {/* Card */}
                 <div className="card mb-3 mb-lg-5">
-                  {/* Header */}
                   <div className="card-header">
                     <h4 className="card-header-title">Product information</h4>
                   </div>
-                  {/* End Header */}
-                  {/* Body */}
                   <div className="card-body">
-                    {/* Form Group */}
                     <div className="form-group">
                       <label htmlFor="productNameLabel" className="input-label">Name <i className="tio-help-outlined text-body ml-1" data-toggle="tooltip" data-placement="top" title data-original-title="Products are the goods or services you sell." /></label>
-                      <input type="text" className="form-control" onChange={handleChange} value={item.productName} name="productName" id="productName" placeholder="Shirt, t-shirts, etc." aria-label="Shirt, t-shirts, etc." />
+                      <input type="text" className="form-control" onChange={handleChange} value={product.productName} name="productName" id="productName" placeholder="Shirt, t-shirts, etc." aria-label="Shirt, t-shirts, etc." />
                     </div>
                     <div className="row">
                       {/* <div className="col-sm-6">
@@ -99,125 +159,81 @@ export default function AddProduct(props) {
                       
                       </div> */}
                       <div class="col-sm-6">
-                        {/* Form Group */}
                         <div className="form-group">
                           <label htmlFor="categoryLabel" className="input-label">Status</label>
-                          {/* Select */}
-                          <select className="js-select2-custom custom-select" size={1} id="categoryLabel" tabIndex={-1} aria-hidden="true">
 
-                            <option value={item.status} data-select2-id={156} selected={item.status === true}> On
+                          {!isAddMode ? <select className="js-select2-custom custom-select" name="status" onChange={handleChange} size={1} id="categoryLabel" tabIndex={-1} aria-hidden="true">
+
+                            <option value={product.status} data-select2-id={156} selected={product.status === true}> On
                                     </option>
-                            <option value={item.status} data-select2-id={156} selected={item.status === false}> Off
+                            <option value={product.status} data-select2-id={156} selected={product.status === false}> Off
                                     </option>
-                           
+                          </select> : ""}
 
-
-                          </select>
-                          {/* End Select */}
                         </div>
-                        {/* End Form Group */}
                       </div>
                       <div className="col-sm-6">
-                        {/* Form Group */}
                         <div className="form-group">
                           <label htmlFor="categoryLabel" className="input-label">Category</label>
-                          {/* Select */}
-                          <select className="js-select2-custom custom-select" size={1} id="categoryLabel" tabIndex={-1} aria-hidden="true">
+                          
+                          <select className="js-select2-custom custom-select" size={1} id="categoryLabel" name="categoryId" tabIndex={-1} aria-hidden="true" onChange={handleChange} >
                             {
-                              categories && categories.map(itemCate => {
+                              categoryList && categoryList.map(itemCate => {
                                 return (
-                                  <option value={itemCate.id} data-select2-id={156} selected={item.categoryId == itemCate.id}> {itemCate.categoryName}
+                                  <option value={itemCate.id} data-select2-id={156} selected={itemCate.categoryId == itemCate.id}> {itemCate.categoryName}
                                   </option>
                                 );
                               })
                             }
 
                           </select>
-                          {/* End Select */}
+                          
+
                         </div>
-                        {/* End Form Group */}
                       </div>
                       <div className="col-sm-6">
-                        {/* Form Group */}
                         <div className="form-group">
                           <label htmlFor="SKULabel" className="input-label">Quan</label>
-                          <input type="number" className="form-control" onChange={handleChange} value={item.stock} name="stock" id="stock" placeholder="eg. 10" aria-label="eg. 10" />
+                          <input type="number" className="form-control" onChange={handleChange} value={product.stock} name="stock" id="stock" placeholder="eg. 10" aria-label="eg. 10" />
                         </div>
-                        {/* End Form Group */}
                       </div>
                       <div className="col-sm-6">
-                        {/* Form Group */}
                         <div className="form-group">
                           <label htmlFor="SKULabel" className="input-label">Price</label>
-                          <input type="number" className="form-control" onChange={handleChange} value={item.unitPrice} name="unitPrice" id="unitPrice" placeholder="eg. 10.000" aria-label="eg. 10.000" />
+                          <input type="number" className="form-control" onChange={handleChange} value={product.unitPrice} name="unitPrice" id="unitPrice" placeholder="eg. 10.000" aria-label="eg. 10.000" />
                         </div>
-                        {/* End Form Group */}
                       </div>
                     </div>
-                    {/* End Row */}
                     <label className="input-label">Description <span className="input-label-secondary">(Optional)</span></label>
-                    {/* Quill */}
                     <div className="quill-custom">
-                      <div className="js-quill ql-container ql-snow" style={{ minHeight: '15rem' }} data-hs-quill-options="{
-                    &quot;placeholder&quot;: &quot;Type your description...&quot;
-                   }">
-                        <div className="ql-editor ql-blank" data-gramm="false" contentEditable="true" name="description" >
-                          <p onChange={handleChange} value={item.description}><br />{item.description}</p>
-                        </div>
-                        <div className="ql-clipboard" contentEditable="true" tabIndex={-1}>
-                        </div>
+
+                      <div className="form-group" >
+                        <textarea onChange={handleChange} value={product.description} name="description" rows="10" placeholder="Please type description of product"></textarea>
                       </div>
+
                     </div>
-                    {/* End Quill */}
                   </div>
-                  {/* Body */}
                 </div>
-                {/* End Card */}
                 <div className="card mb-3 mb-lg-5">
-  {/* Header */}
-  <div className="card-header">
-    <h4 className="card-header-title">Media</h4>
-    {/* Unfold */}
-    <div className="hs-unfold">
-      <a className="js-hs-unfold-invoker btn btn-sm btn-ghost-secondary" href="javascript:;" data-hs-unfold-options="{
-                 &quot;target&quot;: &quot;#mediaDropdown&quot;,
-                 &quot;type&quot;: &quot;css-animation&quot;
-               }" data-hs-unfold-target="#mediaDropdown" data-hs-unfold-invoker>
-        Add media from URL <i className="tio-chevron-down" />
-      </a>
-      <div id="mediaDropdown" className="hs-unfold-content dropdown-unfold dropdown-menu dropdown-menu-right mt-1 hs-unfold-hidden hs-unfold-content-initialized hs-unfold-css-animation animated" data-hs-target-height="97.6" data-hs-unfold-content data-hs-unfold-content-animation-in="slideInUp" data-hs-unfold-content-animation-out="fadeOut" style={{animationDuration: '300ms'}}>
-        <a className="dropdown-item" href="javascript:;" data-toggle="modal" data-target="#addImageFromURLModal">
-          <i className="tio-link dropdown-item-icon" /> Add image from URL
-        </a>
-        <a className="dropdown-item" href="javascript:;" data-toggle="modal" data-target="#embedVideoModal">
-          <i className="tio-youtube-outlined dropdown-item-icon" /> Embed video
-        </a>
-      </div>
-    </div>
-    {/* End Unfold */}
-  </div>
-  {/* End Header */}
-  {/* Body */}
-  <div className="card-body">
-    {/* Gallery */}
-               <ImagesProduct list={item.pathName}/>
-    {/* End Gallery */}
-    {/* Dropzone */}
-    <div id="attachFilesNewProjectLabel" className="js-dropzone dropzone-custom custom-file-boxed dz-clickable">
-      <div className="dz-message custom-file-boxed-label">
-        <img className="avatar avatar-xl avatar-4by3 mb-3" src="assets\svg\illustrations\browse.svg" alt="Image Description" />
-        <h5 className="mb-1">Choose files to upload</h5>
-        <p className="mb-2">or</p>
-        <span className="btn btn-sm btn-primary">Browse files</span>
-      </div>
-    </div>
-    {/* End Dropzone */}
-  </div>
-  {/* Body */}
-</div>
+                  <div className="card-header">
+                    <h4 className="card-header-title">Media</h4>
+                    <div className="hs-unfold">
+                      <a className="js-hs-unfold-invoker btn btn-sm btn-ghost-secondary" href="javascript:;">
+                        <h5 className="mb-1">Choose files to upload</h5>
+                      </a>
+                    </div>
+                  </div>
+                 
+                  <input type='file' multiple className="form-control" onChange={handleChangeFileImages} />
+                  <div className="card-body">
+                    <ImagesProduct list={product.pathName} />
+                  </div>
+                
+                </div>
 
               </div>
               <div className="col-lg-4">
+                <button type="submit" className="btn btn-danger">Submit</button>
               </div>
             </div>
             {/* End Row */}

@@ -4,10 +4,10 @@ import { Link } from "react-router-dom"
 import {update_status_order} from "../actions/order"
 
 export default function OrderItem(props) {
-    console.log(props);
+    console.log(props.list);
     useEffect(() => console.log('value changed!'),[props.list]);
-    const {list} = props;
-    console.log(props);
+    const list  = props.list;
+    console.log(list);
     const dispatch = useDispatch();
     const handleChange = (value,id) => {
         let data =

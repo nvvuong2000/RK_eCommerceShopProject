@@ -28,9 +28,10 @@ export const get_list_order_details = (id) => async (dispatch) => {
 export const get_list_order = () => async (dispatch) => {
     try {
         const data = await api.Order.getOrderList();
+    
         dispatch({
             type: types.GETALLORDERLIST,
-            payload: data,
+            payload: data.data,
         });
 
     } catch (error) {
@@ -40,6 +41,7 @@ export const get_list_order = () => async (dispatch) => {
 export const update_status_order = (value) => async (dispatch) => {
     try {
         const data = await api.Order.updateStatusOrder(value);
+        
         dispatch({
             type: types.UPDATESTATUSORDER,
             payload: value,

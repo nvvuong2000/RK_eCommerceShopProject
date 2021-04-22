@@ -28,14 +28,27 @@ export default (state = initialState, { type, payload }) => {
 
         }
         case order.UPDATESTATUSORDER: {
-            const {orderList} = state;
-            const index = state.orderList.data.findIndex((x) => x.id == payload.orderId)
-            const item = orderList.data[index];
-            console.log(item.status);
-            item.status = parseInt(payload.statusId);
-            console.log(item.status);
-            orderList.data[index] = item;
-            return { ...state,orderList  };
+
+            const index = state.orderList.findIndex((x) => x.id === payload.orderId);
+            state.orderList[index].status = parseInt(payload.statusId);
+            console.log(index)
+            return {
+                ...state,
+            };
+   
+            // const {orderList} = state;
+
+            // console.log(orderList);
+
+            // const index = state.orderList.findIndex((x) => x.id == payload.orderId);
+
+            // const item = {...orderList[index]};
+                    
+            // item.status = parseInt(payload.statusId);
+                       
+            // orderList[index] = item;
+
+           // return { ...state, };
 
         }
         default:

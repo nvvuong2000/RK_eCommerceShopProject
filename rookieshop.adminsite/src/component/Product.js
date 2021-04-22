@@ -5,13 +5,15 @@ import { get_product_list } from "../actions/product"
 import ProductList from './ProductList';
 export default function Product() {
     let disptach = useDispatch();
+
     useEffect(() => {
         disptach(get_product_list());
     }, []);
+
     const { productList } = useSelector((state) => state.product);
-    // const prod = useSelector((state) =>console.log(state));
+
     var list_product = productList.data;
-    console.log(list_product)
+
     return (
         <div>
             {/* Content */}
@@ -80,106 +82,7 @@ export default function Product() {
                                     {/* End Search */}
                                 </form>
                             </div>
-                            <div className="col-auto">
-                                {/* Unfold */}
-                                <div className="hs-unfold">
-                                    <div id="showHideDropdown" className="hs-unfold-content dropdown-unfold dropdown-menu dropdown-menu-right dropdown-card hs-unfold-hidden hs-unfold-content-initialized hs-unfold-css-animation animated" style={{ width: '15rem', animationDuration: '300ms' }} data-hs-target-height="352.4" data-hs-unfold-content data-hs-unfold-content-animation-in="slideInUp" data-hs-unfold-content-animation-out="fadeOut">
-                                        <div className="card card-sm">
-                                            <div className="card-body">
-                                                <div className="d-flex justify-content-between align-items-center mb-3">
-                                                    <span className="mr-2">Product</span>
-                                                    {/* Checkbox Switch */}
-                                                    <label className="toggle-switch toggle-switch-sm" htmlFor="toggleColumn_product">
-                                                        <input type="checkbox" className="toggle-switch-input" id="toggleColumn_product" defaultChecked />
-                                                        <span className="toggle-switch-label">
-                                                            <span className="toggle-switch-indicator" />
-                                                        </span>
-                                                    </label>
-                                                    {/* End Checkbox Switch */}
-                                                </div>
-                                                <div className="d-flex justify-content-between align-items-center mb-3">
-                                                    <span className="mr-2">Type</span>
-                                                    {/* Checkbox Switch */}
-                                                    <label className="toggle-switch toggle-switch-sm" htmlFor="toggleColumn_type">
-                                                        <input type="checkbox" className="toggle-switch-input" id="toggleColumn_type" defaultChecked />
-                                                        <span className="toggle-switch-label">
-                                                            <span className="toggle-switch-indicator" />
-                                                        </span>
-                                                    </label>
-                                                    {/* End Checkbox Switch */}
-                                                </div>
-                                                <div className="d-flex justify-content-between align-items-center mb-3">
-                                                    <span className="mr-2">Vendor</span>
-                                                    {/* Checkbox Switch */}
-                                                    <label className="toggle-switch toggle-switch-sm" htmlFor="toggleColumn_vendor">
-                                                        <input type="checkbox" className="toggle-switch-input" id="toggleColumn_vendor" />
-                                                        <span className="toggle-switch-label">
-                                                            <span className="toggle-switch-indicator" />
-                                                        </span>
-                                                    </label>
-                                                    {/* End Checkbox Switch */}
-                                                </div>
-                                                <div className="d-flex justify-content-between align-items-center mb-3">
-                                                    <span className="mr-2">Stocks</span>
-                                                    {/* Checkbox Switch */}
-                                                    <label className="toggle-switch toggle-switch-sm" htmlFor="toggleColumn_stocks">
-                                                        <input type="checkbox" className="toggle-switch-input" id="toggleColumn_stocks" defaultChecked />
-                                                        <span className="toggle-switch-label">
-                                                            <span className="toggle-switch-indicator" />
-                                                        </span>
-                                                    </label>
-                                                    {/* End Checkbox Switch */}
-                                                </div>
-                                                <div className="d-flex justify-content-between align-items-center mb-3">
-                                                    <span className="mr-2">SKU</span>
-                                                    {/* Checkbox Switch */}
-                                                    <label className="toggle-switch toggle-switch-sm" htmlFor="toggleColumn_sku">
-                                                        <input type="checkbox" className="toggle-switch-input" id="toggleColumn_sku" defaultChecked />
-                                                        <span className="toggle-switch-label">
-                                                            <span className="toggle-switch-indicator" />
-                                                        </span>
-                                                    </label>
-                                                    {/* End Checkbox Switch */}
-                                                </div>
-                                                <div className="d-flex justify-content-between align-items-center mb-3">
-                                                    <span className="mr-2">Price</span>
-                                                    {/* Checkbox Switch */}
-                                                    <label className="toggle-switch toggle-switch-sm" htmlFor="toggleColumn_price">
-                                                        <input type="checkbox" className="toggle-switch-input" id="toggleColumn_price" defaultChecked />
-                                                        <span className="toggle-switch-label">
-                                                            <span className="toggle-switch-indicator" />
-                                                        </span>
-                                                    </label>
-                                                    {/* End Checkbox Switch */}
-                                                </div>
-                                                <div className="d-flex justify-content-between align-items-center mb-3">
-                                                    <span className="mr-2">Quantity</span>
-                                                    {/* Checkbox Switch */}
-                                                    <label className="toggle-switch toggle-switch-sm" htmlFor="toggleColumn_quantity">
-                                                        <input type="checkbox" className="toggle-switch-input" id="toggleColumn_quantity" />
-                                                        <span className="toggle-switch-label">
-                                                            <span className="toggle-switch-indicator" />
-                                                        </span>
-                                                    </label>
-                                                    {/* End Checkbox Switch */}
-                                                </div>
-                                                <div className="d-flex justify-content-between align-items-center">
-                                                    <span className="mr-2">Variants</span>
-                                                    {/* Checkbox Switch */}
-                                                    <label className="toggle-switch toggle-switch-sm" htmlFor="toggleColumn_variants">
-                                                        <input type="checkbox" className="toggle-switch-input" id="toggleColumn_variants" defaultChecked />
-                                                        <span className="toggle-switch-label">
-                                                            <span className="toggle-switch-indicator" />
-                                                        </span>
-                                                    </label>
-                                                    {/* End Checkbox Switch */}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                {/* End Unfold */}
-                            </div>
+                         
                         </div>
                         {/* End Row */}
                     </div>

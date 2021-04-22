@@ -1,2 +1,4 @@
 export const PRODUCT_LIST = "PRODUCT_LIST";
-export const EDIT_PRODUCT = "EDIT_PRODUCT";
+export const PRODUCT_SELECTED = "PRODUCT_SELECTED";
+export const ADD_PRODUCT = "ADD_PRODUCT";
+export const UPDATE_PRODUCT = "UPDATE_PRODUCT";
