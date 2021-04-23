@@ -15,10 +15,9 @@ import PrivateRoute from './component/PrivateRoute'
 import Page403 from "./component/Page403"
 import Category from "./component/Category"
 import Footer from "./component/Footer"
-import { history } from "./index";
-
+import history from './history';
 import {
-  BrowserRouter as Router,
+  Router,
   Switch,
   Route,
   Link,
@@ -46,7 +45,7 @@ function App() {
     <Fragment>
 
 
-      <Router>
+      <Router history={history}>
         <Banner user={currentUser}/>
         <Switch>
           <PrivateRoute exact path="/orders" component={Orders} />
@@ -54,7 +53,6 @@ function App() {
           <Route  exact path="/category" component={Category} />
           <Route exact path="/category/addCategory" component={AddCategory} />
           <Route exact path="/category/:id" render={({ match }) => <AddCategory match={match} />} />
-          <Route exact path="/orders" component={Orders} />
           <Route exact path="/orders" component={Orders} />
           <Route exact path="/customer" component={Customer} />
           <Route exact path="/customer/:id" render={({ match }) => <CustomerDetails match={match} />} />

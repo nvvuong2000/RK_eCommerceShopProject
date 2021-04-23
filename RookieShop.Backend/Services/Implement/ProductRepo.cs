@@ -243,7 +243,7 @@ namespace RookieShop.Backend.Services.Implement
 
                                 pathName = Path.Combine("/images/" + random.ToString() + formFile.FileName),
 
-                                isDefault = false,
+                                isDefault = product.FormFiles.IndexOf(formFile) == 0 ? true : false,
                                 captionImage = "Hình ảnh minh họa cho sản phẩm " + product.productName,
 
                             };

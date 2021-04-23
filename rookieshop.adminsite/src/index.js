@@ -10,25 +10,22 @@ import rootReducer from './reducers/index';
 import { createBrowserHistory } from "history";
 import { Router } from 'react-router';
 import "react-toastify/dist/ReactToastify.css";
+import history from './history';
 
 
 // Note: this API requires redux@>=3.1.0
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || typeof(compose);
-export const history = createBrowserHistory();
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || typeof (compose);
 const store = createStore(
- rootReducer,
+  rootReducer,
   composeEnhancers(
     applyMiddleware(thunk),
   )
 );
 ReactDOM.render(
   <React.StrictMode>
-    <Router history={history}>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </Router>
-  
+    <Provider store={store}>
+        <App />  
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

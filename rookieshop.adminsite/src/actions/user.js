@@ -1,6 +1,6 @@
 import api from '../api/api'
 import * as types from "../contains/user";
-import {history} from "../index"
+import history from '../history';
 import { success, error as err } from "../notify/index";
 export const login = (value) => async (dispatch) => {
     try { 
