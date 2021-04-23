@@ -1,6 +1,7 @@
 
 import React, { Fragment, useEffect } from 'react'
 import { useSelector, useDispatch, } from "react-redux";
+import { ToastContainer } from "react-toastify";
 import Orders from './component/Orders'
 import Product from './component/Product'
 import Customer from './component/Customer'
@@ -65,7 +66,7 @@ function App() {
         </Switch>
         <Footer/>
       </Router>
-
+      <ToastContainer />
     </Fragment>
   );
 }

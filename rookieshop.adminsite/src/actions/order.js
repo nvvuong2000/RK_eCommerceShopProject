@@ -1,6 +1,6 @@
 import api from '../api/api'
 import * as types from "../contains/order";
-
+import { success, error as err } from "../notify/index";
 export const get_list_order_of_customer = (id) => async (dispatch) => {
     try {
         const data = await api.Order.getListOrderofCustomer(id);
@@ -10,7 +10,7 @@ export const get_list_order_of_customer = (id) => async (dispatch) => {
         });
 
     } catch (error) {
-        console.log(error);;
+        err(error);;
     }
 };
 export const get_list_order_details = (id) => async (dispatch) => {
@@ -22,7 +22,7 @@ export const get_list_order_details = (id) => async (dispatch) => {
         });
 
     } catch (error) {
-        console.log(error);
+        err(error);
     }
 };
 export const get_list_order = () => async (dispatch) => {
@@ -35,7 +35,7 @@ export const get_list_order = () => async (dispatch) => {
         });
 
     } catch (error) {
-        console.log(error);
+        err(error);
     }
 };
 export const update_status_order = (value) => async (dispatch) => {
@@ -46,8 +46,9 @@ export const update_status_order = (value) => async (dispatch) => {
             type: types.UPDATESTATUSORDER,
             payload: value,
         });
+        success("Updated order successfully");
 
     } catch (error) {
-        console.log(error);
+        err(error);
     }
 };

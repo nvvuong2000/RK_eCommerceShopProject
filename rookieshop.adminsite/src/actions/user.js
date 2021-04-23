@@ -1,6 +1,7 @@
 import api from '../api/api'
 import * as types from "../contains/user";
 import {history} from "../index"
+import { success, error as err } from "../notify/index";
 export const login = (value) => async (dispatch) => {
     try { 
         const data = await api.User.login(value)
@@ -12,7 +13,7 @@ export const login = (value) => async (dispatch) => {
         });
         history.push("/");
     } catch (error) {
-        console.log(error);
+        err(error);
     }
 };
 export const get_info_user = () => async (dispatch) => {
@@ -24,7 +25,7 @@ export const get_info_user = () => async (dispatch) => {
         });
        
     } catch (error) {
-        console.log(error);;
+        err(error);;
     }
 };
 export const get_list_user = () => async (dispatch) => {
@@ -36,7 +37,7 @@ export const get_list_user = () => async (dispatch) => {
         });
        
     } catch (error) {
-        console.log(error);;
+        err(error);;
     }
 };
 

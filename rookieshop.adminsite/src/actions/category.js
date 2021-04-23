@@ -1,5 +1,6 @@
 import api from '../api/api'
 import * as category from "../contains/category";
+import { success, error as err } from "../notify/index";
 import { history } from "../index";
 export const get_category_list = () => async (dispatch) => {
     try {
@@ -12,7 +13,7 @@ export const get_category_list = () => async (dispatch) => {
         });
 
     } catch (error) {
-        console.log(error);
+        err(error);
     }
 };
 export const add_category = (value) => async (dispatch) => {
@@ -24,10 +25,10 @@ export const add_category = (value) => async (dispatch) => {
             type: category.ADD_CATEGORY,
             payload: data,
         });
-        history.push("/category");
+        success("Add category successfully");
 
     } catch (error) {
-        console.log(error);
+        err(error);
     }
 };
 export const get_Category_by_Id = (id) => async (dispatch) => {
@@ -41,7 +42,7 @@ export const get_Category_by_Id = (id) => async (dispatch) => {
         });
 
     } catch (error) {
-        console.log(error);
+        err(error);
     }
 };
 export const update_category = (value) => async (dispatch) => {
@@ -53,9 +54,10 @@ export const update_category = (value) => async (dispatch) => {
             type: category.UPDATE_CATEGORY,
             payload: value,
         });
+        success("Edited category successfully");
 
     } catch (error) {
-        console.log(error);
+        err(error);
     }
 };
 

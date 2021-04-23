@@ -1,5 +1,6 @@
 import api from '../api/api'
 import { PROVIDER_LIST} from "../contains/provider";
+import { success, error as err } from "../notify/index";
 
 export const get_provider_list = () => async (dispatch) => {
     try {
@@ -10,6 +11,6 @@ export const get_provider_list = () => async (dispatch) => {
         });
 
     } catch (error) {
-        console.log(error);
+        err(error);
     }
 };

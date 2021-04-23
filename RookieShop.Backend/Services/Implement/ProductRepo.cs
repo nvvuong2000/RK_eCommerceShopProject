@@ -191,6 +191,7 @@ namespace RookieShop.Backend.Services.Implement
                 productEdit.stock = product.stock;
                 productEdit.providerId = product.providerID;
                
+               
 
 
                 

@@ -9,7 +9,7 @@ import thunk from 'redux-thunk';
 import rootReducer from './reducers/index';
 import { createBrowserHistory } from "history";
 import { Router } from 'react-router';
-
+import "react-toastify/dist/ReactToastify.css";
 
 
 // Note: this API requires redux@>=3.1.0
