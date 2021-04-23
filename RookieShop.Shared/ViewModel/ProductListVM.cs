@@ -10,6 +10,7 @@ namespace RookieShop.Shared.ViewModel
         public string productName { get; set; }
         public decimal unitPrice { get; set; }
         public int stock { get; set; }
+        public bool status { get; set; }
         public bool isNew { get; set; }
         public string imgDefault { get; set; }
         public int categoryId { get; set; }

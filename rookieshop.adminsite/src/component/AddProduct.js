@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch, } from "react-redux";
-import { get_product_by_id, add_product,update_product } from "../actions/product"
-import { get_category_list, update_category } from "../actions/category"
+import { get_product_by_id, add_product, update_product } from "../actions/product"
+import { get_category_list } from "../actions/category"
+import { get_provider_list } from "../actions/provider"
 import ImagesProduct from './ImagesProduct';
+import provider from '../reducers/provider';
 
 export default function AddProduct({ match }) {
 
   const { id } = match.params;
 
   const isAddMode = isNaN(id);
-  console.log(isAddMode);
-  const dispatch = useDispatch();
 
+  const dispatch = useDispatch();
 
   const [product, setProduct] = useState({
     productID: 0,
-    providerId: 0,
-    categoryId: 0,
+    providerId: 3,
+    categoryId: 3,
     productName: "",
     stock: 0,
     unitPrice: 0,
@@ -72,29 +73,34 @@ export default function AddProduct({ match }) {
       ? dispatch(add_product(formDataSubmit))
       : dispatch(update_product(formDataSubmit))
 
-    
+
   };
   useEffect(() => {
     if (!isAddMode) {
-      dispatch(get_product_by_id(id))
+      dispatch(get_product_by_id(id));
     }
 
   }, [])
 
   useEffect(() => {
-    dispatch(get_category_list())
+    dispatch(get_category_list());
+    dispatch(get_provider_list());
   }, [])
 
   const getCategoryList = useSelector((state) => state.category.categoryList)
 
   let categoryList = getCategoryList.data;
 
-  console.log(categoryList);
+  const getProviderList = useSelector((state) => state.provider.providerList)
+
+  let providerList = getProviderList.data;
+
+
 
   const product_selected = useSelector((state) => state.product.product_selected.data)
   console.log(product_selected);
   useEffect(() => {
-    if (isAddMode==false && product_selected) {
+    if (isAddMode == false && product_selected) {
       setProduct({
         productID: product_selected.id,
         providerId: product_selected.providerId,
@@ -145,19 +151,25 @@ export default function AddProduct({ match }) {
                       <input type="text" className="form-control" onChange={handleChange} value={product.productName} name="productName" id="productName" placeholder="Shirt, t-shirts, etc." aria-label="Shirt, t-shirts, etc." />
                     </div>
                     <div className="row">
-                      {/* <div className="col-sm-6">
-                      
+
+                      <div className="col-sm-6">
                         <div className="form-group">
                           <label htmlFor="categoryLabel" className="input-label">Provider</label>
-                        
-                          <select className="js-select2-custom custom-select" size={1} id="categoryLabel" tabIndex={-1} aria-hidden="true">
-                            <option value="Clothing" data-select2-id={156}>
-                            </option>
+
+                          <select className="js-select2-custom custom-select" size={1} id="categoryLabel" name="categoryId" tabIndex={-1} aria-hidden="true" onChange={handleChange} >
+                            {
+                              providerList && providerList.map(itemProvider => {
+                                return (
+                                  <option value={itemProvider.id} data-select2-id={156} selected={itemProvider.categoryId == itemProvider.id}> {itemProvider.providerName}
+                                  </option>
+                                );
+                              })
+                            }
                           </select>
-                      
+
+
                         </div>
-                      
-                      </div> */}
+                      </div>
                       <div class="col-sm-6">
                         <div className="form-group">
                           <label htmlFor="categoryLabel" className="input-label">Status</label>
@@ -172,10 +184,24 @@ export default function AddProduct({ match }) {
 
                         </div>
                       </div>
+                      <div class="col-sm-6">
+                        <div className="form-group">
+                          <label htmlFor="categoryLabel" className="input-label">is New</label>
+
+                          {!isAddMode ? <select className="js-select2-custom custom-select" name="status" onChange={handleChange} size={1} id="categoryLabel" tabIndex={-1} aria-hidden="true">
+
+                            <option value={product.isNew} data-select2-id={156} selected={product.isNew === true}> On
+                                    </option>
+                            <option value={product.isNew} data-select2-id={156} selected={product.isNew === false}> Off
+                                    </option>
+                          </select> : ""}
+
+                        </div>
+                      </div>
                       <div className="col-sm-6">
                         <div className="form-group">
                           <label htmlFor="categoryLabel" className="input-label">Category</label>
-                          
+
                           <select className="js-select2-custom custom-select" size={1} id="categoryLabel" name="categoryId" tabIndex={-1} aria-hidden="true" onChange={handleChange} >
                             {
                               categoryList && categoryList.map(itemCate => {
@@ -187,7 +213,7 @@ export default function AddProduct({ match }) {
                             }
 
                           </select>
-                          
+
 
                         </div>
                       </div>
@@ -223,12 +249,12 @@ export default function AddProduct({ match }) {
                       </a>
                     </div>
                   </div>
-                 
+
                   <input type='file' multiple className="form-control" onChange={handleChangeFileImages} />
                   <div className="card-body">
                     <ImagesProduct list={product.pathName} />
                   </div>
-                
+
                 </div>
 
               </div>

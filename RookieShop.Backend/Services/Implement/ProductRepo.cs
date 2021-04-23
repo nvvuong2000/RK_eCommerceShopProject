@@ -63,16 +63,16 @@ namespace RookieShop.Backend.Services.Implement
                     var ProductImage = new ProductImages
                     {
                         ProductID = productId,
-
+                        
                         pathName = Path.Combine("/images/" + random.ToString()+ formFile.FileName),
 
-                        isDefault = false,
+                        isDefault=  product.FormFiles.IndexOf(formFile) == 0 ? true: false,
+
                         captionImage = "Hình ảnh minh họa cho sản phẩm " + product.productName,
 
                     };
                     _context.ProductImages.Add(ProductImage);
                     await _context.SaveChangesAsync();
-
 
                 }
                 return true;
@@ -99,6 +99,8 @@ namespace RookieShop.Backend.Services.Implement
                 categoryId = x.categoryId,
                 categoryName = x.Category.categoryName,
                 stock = x.stock,
+                status = x.status,
+                
 
 
                 imgDefault = x.ProductImages.Where(img => img.isDefault == true).Select(img => "https://localhost:44341" + img.pathName).FirstOrDefault(),

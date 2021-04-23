@@ -44,7 +44,7 @@ export default function ProductList(props) {
                                 
                                 <td>
                                     <label className="toggle-switch toggle-switch-sm" htmlFor="stocksCheckbox1">
-                                        <input type="checkbox" className="toggle-switch-input" id="stocksCheckbox1" name={`status-${item.productID}`} {...item.status == true ?"defaultChecked":""} />
+                                        <input type="checkbox" className="toggle-switch-input" id={`status-${item.productID}`}name={`status-${item.productID}`} defaultChecked={item.status===true?"checked":""} />
                                         <span className="toggle-switch-label">
                                             <span className="toggle-switch-indicator" />
                                         </span>
@@ -53,7 +53,8 @@ export default function ProductList(props) {
                                 <td>
                                     <div className="btn-group" role="group">
                                         <a className="btn btn-sm btn-white" href="#">
-                                            <i className="fas fa-edit" /> Edit
+                                            <i className="fas fa-edit" />
+                                             <Link to={`/product/${item.productID}`} className="text-hover-primary mb-0">Edit</Link>
                   </a>
 
                                     </div>

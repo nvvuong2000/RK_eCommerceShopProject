@@ -47,5 +47,9 @@ const Order = {
     updateStatusOrder: async (data) => await axios.post(`/api/Order/updateSttOrderad`, data, config),
     
 }
+const Provider = {
+    getListProvider: async () => await axios.get("/api/Provider", config),
 
-export default { User, Product, Category, Order };
+}
+
+export default { User, Product, Category, Order, Provider };
