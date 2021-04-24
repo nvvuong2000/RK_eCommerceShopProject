@@ -7,15 +7,17 @@ const initialState = {
 
 export default (state = initialState, { type, payload }) => {
     switch (type) {
-        case user.LOGIN: {
-      
+        case user.LOGIN: {   
+            state.currentUser = payload;
+            return { ...state};
+        }
+        case user.LOGOUT: {
             return {
-
-                currentUser: payload,
+                ...state,
+                currentUser: {},
             };
         }
-        case user.GETCURRENTUSER: {
-            
+        case user.GETCURRENTUSER: {       
             return {
 
                 currentUser: payload,
@@ -23,9 +25,7 @@ export default (state = initialState, { type, payload }) => {
         }
         case user.GETLISTUSER: {
             state.listUsers = payload;
-            return { ...state };
-
-           
+            return { ...state };     
         }
         default:
             return state;

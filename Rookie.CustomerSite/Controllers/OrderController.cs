@@ -4,11 +4,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Newtonsoft.Json;
+using Rookie.CustomerSite.Containts;
+using Rookie.CustomerSite.Services.BaseServices;
 using RookieShop.Backend.Models;
 using RookieShop.Shared.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -23,101 +26,55 @@ namespace Rookie.CustomerSite.Controllers
         public async Task<ActionResult> Index()
         {
 
+            var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
+            HttpResponseMessage Res = await RequestServices.GetAsync(APIOrderEndPoint.GetList, accessToken);
 
-            using (var client = new HttpClient())
+            if (Res.StatusCode.ToString().Equals(HttpStatusCode.Unauthorized.ToString()))
             {
-                client.BaseAddress = new Uri(Baseurl);
-
-                client.DefaultRequestHeaders.Clear();
-
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
-                client.SetBearerToken(accessToken);
-
-
-                string endpoint = "/api/Order";
-
-                HttpResponseMessage Res = await client.GetAsync(endpoint);
-
-
+                return RedirectToAction("SignIn", "Account");
+            }
+            else
+            {
                 if (Res.IsSuccessStatusCode)
                 {
                     var listOrder = await Res.Content.ReadAsAsync<IEnumerable<OrderVm>>();
                     return View(listOrder);
 
                 }
-                else
-                {
-                    return View();
-                }
-
+                return View();
             }
         }
         [HttpGet("/order/{id:int}")]
         public async Task<ActionResult> getOrderbyId(int id)
         {
+            var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
+            HttpResponseMessage Res = await RequestServices.GetAsync(APIOrderEndPoint.GetOrderDetails + id.ToString(), accessToken);
 
-
-            using (var client = new HttpClient())
+            if (Res.IsSuccessStatusCode)
             {
-                client.BaseAddress = new Uri(Baseurl);
+                var listOrderDetails = await Res.Content.ReadAsAsync<OrderVm>();
 
-                client.DefaultRequestHeaders.Clear();
-
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
-                client.SetBearerToken(accessToken);
-
-
-                string endpoint = "/api/Order/" + id.ToString();
-
-                HttpResponseMessage Res = await client.GetAsync(endpoint);
-
-
-                if (Res.IsSuccessStatusCode)
-                {
-                    var listOrderDetails = await Res.Content.ReadAsAsync<OrderVm>();
-
-
-
-                    return View(listOrderDetails);
-
-                }
-                else
-                {
-                    return View();
-                }
-
+                return View(listOrderDetails);
+            }
+            else
+            {
+                return View();
             }
         }
         [HttpGet("/updateorder/{id:int}")]
         public async Task<IActionResult> updateStatusOrder(int id)
         {
-            Product EmpInfo = new Product();
-
-            using (var client = new HttpClient())
+            var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
+            HttpResponseMessage Res = await RequestServices.GetAsync(APIOrderEndPoint.UpdateStatusOrder + id.ToString(), accessToken);
+            if (Res.IsSuccessStatusCode)
             {
-
-                client.BaseAddress = new Uri(Baseurl);
-
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
-                client.SetBearerToken(accessToken);
-
-
-
-                string endpoint = "/api/Order/updateSttOrder/" + id.ToString();
-                HttpResponseMessage Res = await client.GetAsync(endpoint);
-                if (Res.IsSuccessStatusCode)
-                {
-
-                    return RedirectToAction("Index", "Order");
-                }
 
                 return RedirectToAction("Index", "Order");
             }
-        }
 
+            return RedirectToAction("Index", "Order");
+        }
     }
+
 }
+

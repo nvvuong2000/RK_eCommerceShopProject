@@ -6,12 +6,23 @@ export const login = (value) => async (dispatch) => {
     try { 
         const data = await api.User.login(value)
         localStorage.setItem("__token", 'Bearer' + ` ${data.access_token}`);
-        console.log(data);
         dispatch({
             type: types.LOGIN,
-            payload: data,      
+            payload:"",      
         });
         history.push("/");
+    } catch (error) {
+        err(error);
+    }
+};
+export const logout = () => async (dispatch) => {
+    try { 
+        localStorage.removeItem("__token");
+        dispatch({
+            type: types.LOGOUT,
+            payload:"",      
+        });
+        history.push("/login");
     } catch (error) {
         err(error);
     }

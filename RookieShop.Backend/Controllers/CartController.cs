@@ -51,7 +51,7 @@ namespace RookieShop.Backend.Controllers
                 return null;
             }
         }
-        [HttpGet("/add/{id}")]  
+        [HttpGet("add/{id}")]  
         public async Task<IActionResult> Buy(int id)
 
         {
@@ -166,7 +166,7 @@ namespace RookieShop.Backend.Controllers
             }
         }
 
-        [HttpGet("/remove/{id}")]
+        [HttpGet("remove/{id}")]
         public async Task<IActionResult> Remove(int id)
         {
 

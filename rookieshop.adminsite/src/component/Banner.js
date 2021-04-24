@@ -1,8 +1,13 @@
-import React from 'react'
-import {Link} from "react-router-dom"
+import React, { Fragment, } from 'react'
+import { Link } from "react-router-dom"
+import {logout} from "../actions/user"
+import { useDispatch ,useSelector} from 'react-redux'
 
 export default function Banner(props) {
-    console.log(props);
+    const dispatch = useDispatch();
+    const handleLogout =()=>{
+        dispatch(logout());
+    }
     return (
         <div>
             <div>
@@ -28,12 +33,17 @@ export default function Banner(props) {
                                             <Link to='/products' className="menu-item"><a href="#">Products</a></Link>
                                             <Link to='/orders' className="menu-item"><a href="#">Orders</a></Link>
                                             <Link to='/customer' className="menu-item"><a href="#">Customer</a></Link>
-                                            {props.user == null ? 
-                                            <Link to='/login' className="menu-item"><a href="#">Login</a></Link> 
-                                            : 
-                                            <li className="menu-item"><a href="#">Hello: {props.user.userName}</a></li>
+                                            {!props.user.userId
+                                                ?
+                                                <Link to='/login' className="menu-item"><a href="#">Login</a></Link>
+                                                :
+                                                <Fragment>
+                                                    <li className="menu-item"><a href="#">Hello: {props.user.userName}</a></li>
+                                                    <button class="btn btn-danger" onClick={handleLogout} to='/login' className="menu-item"><a href="#">Log out</a></button>
+                                                </Fragment>
+
                                             }
-                                     
+
                                         </ul>
                                     </div>
                                 </nav>

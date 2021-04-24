@@ -35,7 +35,7 @@ function App() {
   useEffect(() => {
     dispatch(get_info_user());
 
-  }, []);
+  }, [dispatch]);
   if (currentUser.roles == "user") {
     history.push("/page403")
   }
@@ -56,8 +56,8 @@ function App() {
           <Route exact path="/orders" component={Orders} />
           <Route exact path="/customer" component={Customer} />
           <Route exact path="/customer/:id" render={({ match }) => <CustomerDetails match={match} />} />
-          <Route exact path="/product/:id" render={({ match}) =><AddProduct match={match} />}/>
-          <Route exact path="/product/addProduct" component={AddProduct} />
+          {/* <Route exact path="/product/:id" render={({ match}) =><AddProduct match={match} />}/> */}
+          <Route exact path={["/product/addProduct", "/product/:id"]} render={({ match }) => <AddProduct match={match} />} />
           <Route exact path="/order/:id" render={({ match }) => <OrderDetails match={match} />} />
           <Route exact path="/login" component={Login} />
          <Route exact path="/page403" component={Page403}></Route>

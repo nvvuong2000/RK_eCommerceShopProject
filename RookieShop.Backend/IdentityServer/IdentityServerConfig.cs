@@ -51,7 +51,7 @@ namespace RookieShop.Backend.IdentityServer
                         IdentityServerConstants.StandardScopes.Profile,
                         "rookieshop.api"
                     },
-                   
+                                      
 
                 },
                 new Client

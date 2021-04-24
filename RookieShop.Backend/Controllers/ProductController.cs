@@ -251,7 +251,7 @@ namespace RookieShop.Backend.Controllers
             }
 
         }
-        [HttpGet("/rating")]
+        [HttpGet("rating")]
         [Authorize(Roles = "user")]
         public async Task<List<ProductListVM>> rating()
         {
@@ -270,7 +270,7 @@ namespace RookieShop.Backend.Controllers
             }
 
         }
-        [HttpPost("/rating")]
+        [HttpPost("rating")]
         [Authorize(Roles = "user")]
         public async Task<IActionResult> rattingRequest(RatingProductRequest request)
         {
