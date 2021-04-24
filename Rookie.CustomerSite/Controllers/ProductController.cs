@@ -60,7 +60,7 @@ namespace Rookie.CustomerSite.Controllers
                     var cartResponse = await Res.Content.ReadAsAsync<IEnumerable<ProductListVM>>();
                     return View(cartResponse);
                 }
-            
+            TempData["ERROR"] = "ERROR";
             return View();
         }
         // Post
@@ -81,10 +81,11 @@ namespace Rookie.CustomerSite.Controllers
             HttpResponseMessage Res = await RequestServices.PostAsync(APIProductEndPoint.Ratings, accessToken, rating);
             if (Res.IsSuccessStatusCode)
             {
+                TempData["RATINGS_SUCESS"] = "RATINGS_SUCESS";
                 return View("Ratings");
             }
 
-
+            TempData["ERROR"] = "ERROR";
             return View("Ratings");
         }
 

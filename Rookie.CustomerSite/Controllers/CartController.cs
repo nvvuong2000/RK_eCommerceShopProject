@@ -20,6 +20,8 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
+
+
 namespace Rookie.CustomerSite.Controllers
 {
     [Authorize]
@@ -49,9 +51,8 @@ namespace Rookie.CustomerSite.Controllers
 
                 if (Res.IsSuccessStatusCode)
                 {
-
                     var cartResponse = await Res.Content.ReadAsAsync<IEnumerable<CartVM>>();
-                    ViewBag.Total = total;
+                    ViewBag.Total = total;                
                     return View(cartResponse);
                 }
                 else
@@ -72,6 +73,8 @@ namespace Rookie.CustomerSite.Controllers
 
             if (Res.IsSuccessStatusCode)
             {
+                TempData["ADD_SUCESS"] = "ADD_SUCESS";
+
                 return RedirectToAction("IndexCart", "Cart");
             }
             else
@@ -100,10 +103,12 @@ namespace Rookie.CustomerSite.Controllers
             HttpResponseMessage Res = await RequestServices.GetAsync(endpoint, accessToken);
             if (Res.IsSuccessStatusCode)
             {
+                TempData["UPDATE_SUCESS"] = "UPDATE_SUCESS";
                 return RedirectToAction("IndexCart", "Cart");
             }
             else
             {
+                TempData["ERROR"] = "ERROR";
                 return RedirectToAction("Index", "Home");
             }
 
@@ -116,10 +121,12 @@ namespace Rookie.CustomerSite.Controllers
             HttpResponseMessage Res = await RequestServices.GetAsync(APICartEndPoint.DeleteFromCart + id.ToString(), accessToken);
             if (Res.IsSuccessStatusCode)
             {
+                TempData["REMOVE_SUCESS"] = "REMOVE_SUCESS";
                 return RedirectToAction("IndexCart", "Cart");
             }
             else
             {
+                TempData["ERROR"] = "ERROR";
                 return View();
             }
 
@@ -144,10 +151,11 @@ namespace Rookie.CustomerSite.Controllers
             HttpResponseMessage Res = await RequestServices.GetAsync(APICartEndPoint.Checkout, accessToken);
             if (Res.IsSuccessStatusCode)
             {
-
+                TempData["CHECKOUT_SUCESS"] = "CHECKOUT_SUCESS";
                 return RedirectToAction("Index", "Order");
 
             }
+            TempData["ERROR"] = "ERROR";
             return RedirectToAction("IndexCart", "Cart");
         }
     }

@@ -41,6 +41,7 @@ namespace Rookie.CustomerSite.Controllers
                     return View(listOrder);
 
                 }
+                TempData["ERROR"] = "ERROR";
                 return View();
             }
         }
@@ -58,6 +59,7 @@ namespace Rookie.CustomerSite.Controllers
             }
             else
             {
+                TempData["ERROR"] = "ERROR";
                 return View();
             }
         }
@@ -69,9 +71,10 @@ namespace Rookie.CustomerSite.Controllers
             if (Res.IsSuccessStatusCode)
             {
 
+                TempData["UPDATE_STATUS_SUCESS"] = "UPDATE_STATUS_SUCESS";
                 return RedirectToAction("Index", "Order");
             }
-
+            TempData["ERROR"] = "ERROR";
             return RedirectToAction("Index", "Order");
         }
     }

@@ -1,0 +1,119 @@
+﻿
+@{
+    var temp = TempData["ReturnUrl"]; // temp is null on all partials except the first
+}
+<script>
+
+    toastr.options = {
+        closeButton: true,
+        debug: false,
+        positionClass: "toast-top-full-width",
+        onclick: null,
+        showDuration: "300",
+        hideDuration: "1000",
+        timeOut: "5000",
+        extendedTimeOut: "1000",
+        showEasing: "swing",
+        hideEasing: "linear",
+        showMethod: "fadeIn",
+        hideMethod: "fadeOut"
+    }
+
+</script>
+
+@if (TempData.ContainsKey("ADD_SUCESS"))
+{
+    <script>
+        window.onload = () => {
+            $(document).ready(function () {
+                toastr.info("Add Sucessfully");
+
+            });
+        }
+
+    </script>
+    TempData.Remove("ADD_SUCESS");
+
+}
+@if (TempData.ContainsKey("REMOVE_SUCESS"))
+{
+    <script>
+        window.onload = () => {
+            $(document).ready(function () {
+                toastr.info("Remove Sucessfully");
+
+            });
+        }
+
+    </script>
+    TempData.Remove("REMOVE_SUCESS");
+
+}
+@if (TempData.ContainsKey("CHECKOUT_SUCESS"))
+{
+    <script>
+        window.onload = () => {
+            $(document).ready(function () {
+                toastr.info("Checkout Sucessfully!!! Thank You");
+
+            });
+        }
+
+    </script>
+    TempData.Remove("CHECKOUT_SUCESS");
+
+}
+@if (TempData.ContainsKey("UPDATE_SUCESS"))
+{
+    <script>
+        window.onload = () => {
+            $(document).ready(function () {
+                toastr.info("Udapte Sucessfully");
+
+            });
+        }
+
+    </script>
+    TempData.Remove("UPDATE_SUCESS");
+
+}
+@if (TempData.ContainsKey("RATINGS_SUCESS"))
+{
+    <script>
+        window.onload = () => {
+            $(document).ready(function () {
+                toastr.info("Ratings Sucessfully");
+
+            });
+        }
+
+    </script>
+    TempData.Remove("RATINGS_SUCESS");
+
+}
+@if (TempData.ContainsKey("UPDATE_STATUS_SUCESS"))
+{
+    <script>
+        window.onload = () => {
+            $(document).ready(function () {
+                toastr.info("Udapte Sucessfully");
+
+            });
+        }
+
+    </script>
+    TempData.Remove("UPDATE_STATUS_SUCESS");
+
+}
+@if (TempData.ContainsKey("ERROR"))
+{
+    <script>
+        window.onload = () => {
+            $(document).ready(function () {
+                toastr.info("ERROR");
+            });
+        }
+    </script>
+    TempData.Remove("ERROR");
+
+}
