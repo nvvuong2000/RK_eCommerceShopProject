@@ -6,7 +6,7 @@ import Orders from './component/Orders'
 import Product from './component/Product'
 import Customer from './component/Customer'
 import CustomerDetails from './component/CustomerDetails'
-import AddProduct from './component/AddProduct'
+import AddProduct from './component/AddEditProduct'
 import OrderDetails from './component/OderDetails'
 import Error from './component/Error';
 import Login from './component/Login'
