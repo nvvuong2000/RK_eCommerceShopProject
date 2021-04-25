@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,7 +42,7 @@ namespace RookieShop.Backend
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-         
+
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddTransient<ICategory, CategoryRepo>();
@@ -105,7 +107,7 @@ namespace RookieShop.Backend
             });
             services.AddSwaggerGen(c =>
             {
-              
+
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Rookie Shop API", Version = "v1" });
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
@@ -137,7 +139,7 @@ namespace RookieShop.Backend
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory, ApplicationDbContext context, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
-           
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -160,7 +162,7 @@ namespace RookieShop.Backend
             app.UseIdentityServer();
             app.UseAuthorization();
             app.UseSession();
-            app.UseSwagger();
+            app.UseSwagger();          
             app.UseSwaggerUI(c =>
             {
                 c.OAuthClientId("swagger");

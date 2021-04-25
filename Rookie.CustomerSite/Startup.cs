@@ -23,7 +23,7 @@ namespace Rookie.CustomerSite
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
+        {         
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = "Cookies";
@@ -52,7 +52,7 @@ namespace Rookie.CustomerSite
                         NameClaimType = "name",
                         RoleClaimType = "role"
                     };
-                });
+                });               
             //services.ConfigureApplicationCookie(options =>
             //{
             //    options.LoginPath = "Identity/Account/Login";
@@ -79,7 +79,7 @@ namespace Rookie.CustomerSite
 
             app.UseRouting();
 
-            app.UseAuthentication();
+            app.UseAuthentication();   
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

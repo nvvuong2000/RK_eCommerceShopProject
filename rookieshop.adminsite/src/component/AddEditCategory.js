@@ -1,5 +1,7 @@
 
 import React, { useState, useEffect } from "react";
+import { Formik, useFormik } from "formik";
+import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { add_category, get_Category_by_Id, update_category } from "../actions/category"
 
@@ -7,7 +9,7 @@ import { add_category, get_Category_by_Id, update_category } from "../actions/ca
 export default function AddCategory({ match, history }) {
     const { id } = match.params;
 
-    const isAddMode = !id;
+    const isAddMode = isNaN(id);
 
     const dispatch = useDispatch();
 
@@ -24,18 +26,7 @@ export default function AddCategory({ match, history }) {
         });
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        var data = {
-            Id: id,
-            categoryName: Category.categoryName,
-            categoryDescription: Category.categoryDescription,
-        }
-        return isAddMode
-            ? dispatch(add_category(Category))
-            : dispatch(update_category(data))
 
-    }
     useEffect(() => {
 
         dispatch(get_Category_by_Id(id))
@@ -50,13 +41,45 @@ export default function AddCategory({ match, history }) {
     const categorySelected = useSelector(state => state.category.categoryselected.data);
 
     useEffect(() => {
-        if (categorySelected) {
+        if (isAddMode == false && categorySelected) {
             setCategory({
                 categoryName: categorySelected.categoryName,
                 categoryDescription: categorySelected.categoryDescription,
             })
+
         }
-    }, [categorySelected])
+    }, [categorySelected]);
+
+    const formik = useFormik({
+        //When set to true, the form will reinitialize every time the initialValues prop changes. 
+        enableReinitialize: true, // important
+        initialValues: {
+            categoryName: Category.categoryName,
+            categoryDescription: Category.categoryDescription,
+        },
+        validationSchema: Yup.object({
+            categoryName: Yup.string()
+                .min(3, "Category Name required mininum 3 characters")
+                .required(" Category Name is Required!")
+                .matches(/\s*\S.*/, '* Category Name cannot contain only blank spaces'),
+            categoryDescription: Yup.string()
+                .min(15, "Category Name required mininum 15 characters")
+                .required("Category Description is Required!")
+                .matches(/\s*\S.*/, '* Category Description cannot contain only blank spaces'),
+        }),
+        onSubmit: () => {
+            
+            var data = {
+                Id: id,
+                categoryName: Category.categoryName,
+                categoryDescription: Category.categoryDescription,
+            }
+            
+            return isAddMode
+                ? dispatch(add_category(Category))
+                : dispatch(update_category(data))
+        }
+    });
 
     return (
         <div>
@@ -78,29 +101,39 @@ export default function AddCategory({ match, history }) {
                         {/* End Row */}
                     </div>
                     {/* End Page Header */}
-                    <form onSubmit={handleSubmit}>
-                        <div className="row">
-                            <div className="col-lg-10">
-                                <div className="card mb-3 mb-lg-5">
-                                    <div className="card-header">
-                                        <h4 className="card-header-title">Category information</h4>
-                                    </div>
-                                    <div className="card-body">
-                                        <div className="form-group">
-                                            <label htmlFor="productNameLabel" className="input-label">Name <i className="tio-help-outlined text-body ml-1" data-toggle="tooltip" data-placement="top" title data-original-title="Products are the goods or services you sell." /></label>
-                                            <input type="text" className="form-control" name="categoryName" onChange={handleChange} value={Category.categoryName} id="categoryName" placeholder="Shirt, t-shirts, etc." aria-label="Shirt, t-shirts, etc." />
+                    <Formik enableReinitialize>
+                        <form onSubmit={formik.handleSubmit}>
+                            <div className="row">
+                                <div className="col-lg-10">
+                                    <div className="card mb-3 mb-lg-5">
+                                        <div className="card-header">
+                                            <h4 className="card-header-title">Category information</h4>
+                                        </div>
+                                        <div className="card-body">
+                                            <div className="form-group">
+                                                <input type="text" className="form-control" name="categoryName" value={formik.values.categoryName} onChange={handleChange} id="categoryName" placeholder="Shirt, t-shirts, etc." aria-label="Shirt, t-shirts, etc." />
+
+                                                {formik.errors.categoryName && formik.touched.categoryName && (
+                                                    <p style={{ color: "red" }}>{formik.errors.categoryName}</p>
+                                                )}
+                                            </div>
+                                            <div class="form-group">
+                                                <textarea name="categoryDescription" id="categoryDescription" onChange={handleChange} value={formik.values.categoryDescription} rows="10" placeholder="Please type description of product"></textarea>
+                                                {formik.errors.categoryDescription &&
+                                                    formik.touched.categoryDescription && (
+                                                        <p style={{color:"red"}}>{formik.errors.categoryDescription}</p>
+                                                    )}
+                                            </div>
                                         </div>
                                         <div class="form-group">
-                                            <textarea name="categoryDescription" id="categoryDescription" onChange={handleChange} value={Category.categoryDescription} rows="10" placeholder="Please type description of product"></textarea>
+                                            <button type="submit" class="btn btn-danger">{isAddMode ? "Add" : "Edit"} </button>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-danger">{isAddMode? "Add":"Edit"} </button>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </Formik>
+
                 </div>
                 )
             }
