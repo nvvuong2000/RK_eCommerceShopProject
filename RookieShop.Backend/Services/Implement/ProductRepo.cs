@@ -100,6 +100,7 @@ namespace RookieShop.Backend.Services.Implement
                 categoryName = x.Category.categoryName,
                 stock = x.stock,
                 status = x.status,
+                providerID = x.providerId,
                 
 
 
@@ -184,17 +185,14 @@ namespace RookieShop.Backend.Services.Implement
             }
             else
             {
-                productEdit.categoryId = product.categoryID;
-                productEdit.description = product.description;
                 productEdit.productName = product.productName;
+                productEdit.categoryId = product.categoryID;
+                productEdit.description = product.description;             
                 productEdit.unitPrice = product.unitPrice;
                 productEdit.stock = product.stock;
                 productEdit.providerId = product.providerID;
-               
-               
-
-
-                
+                productEdit.isNew = product.isNew;
+                productEdit.status = product.status;
 
                 await _context.SaveChangesAsync();
                 if(product.FormFiles == null)
