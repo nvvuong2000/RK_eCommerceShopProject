@@ -3,75 +3,215 @@
 @{
     ViewData["Title"] = "Register";
 }
-
-<h1>@ViewData["Title"]</h1>
-
+<link href="~/css/site.css" />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h4>Create a new account.</h4>
-            <hr />
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Input.Email"></label>
-                <input asp-for="Input.Email" class="form-control" />
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
+    <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+        <div id="formWrapper" style="height:1200px">
+
+            <div id="form">
+                <div class="logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/1/14/Logo_Vavu.png" />
+                </div>
+
+                <div class="form-item">
+
+                    <input placeholder="email" asp-for="Input.Email" class="form-style" />
+                    <span asp-validation-for="Input.Email" typeof="text" class="text-danger"></span>
+                </div>
+                <div class="form-item">
+
+                    <input placeholder="full name" asp-for="Input.FullName" class="form-style" />
+                    <span asp-validation-for="Input.FullName" class="text-danger"></span>
+                </div>
+                <div class="form-item">
+
+                    <input placeholder="phone number" asp-for="Input.PhoneNumber" class="form-style" />
+                    <span asp-validation-for="Input.PhoneNumber" typeof="text" class="text-danger"></span>
+                </div>
+                <div class="form-item">
+
+                    <input placeholder="address" asp-for="Input.Address" class="form-style" />
+                    <span asp-validation-for="Input.Address" typeof="text" class="text-danger"></span>
+                </div>
+                <div class="form-item">
+
+                    <input placeholder="password" asp-for="Input.Password" class="form-style" />
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+                <div class="form-item">
+
+                    <input placeholder="confirm password" asp-for="Input.ConfirmPassword" class="form-style" />
+                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                </div>
+
+                <div class="form-item">
+                    <p class="pull-left"><a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl"><small>Login</small></a></p>
+                    <input type="submit" class="login pull-right" value="Register">
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Input.UserName"></label>
-                <input asp-for="Input.UserName" class="form-control" />
-                <span asp-validation-for="Input.UserName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.FullName"></label>
-                <input asp-for="Input.FullName" class="form-control" />
-                <span asp-validation-for="Input.FullName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.Password"></label>
-                <input asp-for="Input.Password" class="form-control" />
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.ConfirmPassword"></label>
-                <input asp-for="Input.ConfirmPassword" class="form-control" />
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-            </div>
-            <button type="submit" class="btn btn-primary">Register</button>
-        </form>
-    </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h4>Use another service to register.</h4>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
-                            for details on setting up this ASP.NET application to support logging in via external services.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
-                        </div>
-                    </form>
-                }
-            }
-        </section>
-    </div>
+        </div>
+
+  
+    </form>
+  
 </div>
 
-@section Scripts {F
+<style>
+    a {
+        color: #58bff6;
+        text-decoration: none;
+    }
+
+        a:hover {
+            color: #aaa;
+        }
+
+    .pull-right {
+        float: right;
+    }
+
+    .pull-left {
+        float: left;
+    }
+
+    .clear-fix {
+        clear: both;
+    }
+
+    div.logo {
+        text-align: center;
+        margin: 20px 20px 30px 20px;
+        fill: #566375;
+    }
+
+        div.logo svg {
+            width: 180px;
+            height: 100px;
+        }
+
+    .logo-active {
+        fill: #44aacc !important;
+    }
+
+    #formWrapper {
+        background: rgba(0,0,0,.2);
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        transition: all .3s ease;
+    }
+
+    .darken-bg {
+        background: rgba(0,0,0,.5) !important;
+        transition: all .3s ease;
+    }
+
+    div#form {
+        position: absolute;
+        width: 360px;
+        height: 320px;
+        height: auto;
+        background-color: #fff;
+        margin: auto;
+        border-radius: 5px;
+        padding: 20px;
+        left: 50%;
+        top: 50%;
+        margin-left: -180px;
+        margin-top: -200px;
+    }
+
+    div.form-item {
+        position: relative;
+        display: block;
+        margin-bottom: 20px;
+    }
+
+    input {
+        transition: all .2s ease;
+    }
+
+        input.form-style {
+            color: #8a8a8a;
+            display: block;
+            width: 90%;
+            height: 44px;
+            padding: 5px 5%;
+            border: 1px solid #ccc;
+            -moz-border-radius: 27px;
+            -webkit-border-radius: 27px;
+            border-radius: 27px;
+            -moz-background-clip: padding;
+            -webkit-background-clip: padding-box;
+            background-clip: padding-box;
+            background-color: #fff;
+            font-family: 'HelveticaNeue','Arial', sans-serif;
+            font-size: 105%;
+            letter-spacing: .8px;
+        }
+
+    div.form-item .form-style:focus {
+        outline: none;
+        border: 1px solid #58bff6;
+        color: #58bff6;
+    }
+
+    div.form-item p.formLabel {
+        position: absolute;
+        left: 26px;
+        top: 2px;
+        transition: all .4s ease;
+        color: #bbb;
+    }
+
+    .formTop {
+        top: -22px !important;
+        left: 26px;
+        background-color: #fff;
+        padding: 0 5px;
+        font-size: 14px;
+        color: #58bff6 !important;
+    }
+
+    .formStatus {
+        color: #8a8a8a !important;
+    }
+
+    input[type="submit"].login {
+        float: right;
+        width: 112px;
+        height: 37px;
+        -moz-border-radius: 19px;
+        -webkit-border-radius: 19px;
+        border-radius: 19px;
+        -moz-background-clip: padding;
+        -webkit-background-clip: padding-box;
+        background-clip: padding-box;
+        background-color: #55b1df;
+        border: 1px solid #55b1df;
+        border: none;
+        color: #fff;
+        font-weight: bold;
+    }
+
+        input[type="submit"].login:hover {
+            background-color: #fff;
+            border: 1px solid #55b1df;
+            color: #55b1df;
+            cursor: pointer;
+        }
+
+        input[type="submit"].login:focus {
+            outline: none;
+        }
+
+    .text-danger {
+        color: red !important;
+    }
+</style>
+
+@section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

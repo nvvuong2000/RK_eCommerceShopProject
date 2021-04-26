@@ -59,9 +59,21 @@ namespace RookieShop.Backend.Areas.Identity.Pages.Account
             [Required]
 
             [Display(Name = "UserName")]
+
             public string UserName { get; set; }
 
-            [Display(Name = "Full Name")]
+            [Display(Name = "Phone Number")]
+            [DataType(DataType.PhoneNumber)]
+            [Required]
+            public string PhoneNumber { get; set; }
+
+
+            [Display(Name = "Address")]
+            [Required]
+            public string Address { get; set; }
+
+            [Display(Name = "Customer Name")]
+            [Required]
             public string FullName { get; set; }
 
             [Required]
@@ -88,7 +100,7 @@ namespace RookieShop.Backend.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             { 
-                var user = new User { UserName = Input.UserName, Email = Input.Email, customerName = Input.FullName };
+                var user = new User { address = Input.Address, UserName=Input.Email, Email = Input.Email, customerName = Input.FullName, PhoneNumber = Input.PhoneNumber };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
