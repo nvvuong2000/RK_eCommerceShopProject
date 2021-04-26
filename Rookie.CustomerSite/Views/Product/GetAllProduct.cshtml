@@ -13,7 +13,6 @@
             <div class="col-12">
                 <div class="portfolioHeading text-center">
                     <h1 class="high-lighted-heading">Our Popular Product</h1>
-                    <p>Aenean imperdiet. Etiam ultricies nisi vel augue men tuhi spectrum alle me.</p>
                 </div>
             </div>
             <!-- END PORTFOLIO HEADING -->
@@ -41,8 +40,8 @@
                         <a class="portfolio-circle-cart" href="@Url.Action("AddProduct","Cart", new { id = item.productID})">
                             <i class="fa fa-shopping-cart"></i>
                         </a>
-                        <div class="cbp-caption-defaultWrap  owl-theme sync-portfolio-carousel owl-carousel">
-                            <div class="item"> <a href="book-shop\img\book-1.jpg" class="cbp-caption" data-fancybox="gallery1" data-title="Book 1"><img src="@item.imgDefault" alt="Book 1"></a></div>
+                        <div class="img-fluid">
+                            <div class="item"> <a href="#" class="cbp-caption" data-fancybox="gallery1" data-title="Book 1"><img src="@item.imgDefault" alt="#" style="max-height:340px; max-width:340px"></a></div>
 
                         </div>
                         <div class="row">
@@ -58,7 +57,8 @@
             </div>
             @Html.PagedListPager((IPagedList)ViewBag.OnePageOfProducts, page => Url.Action("GetAllProduct", new { page }), new X.PagedList.Web.Common.PagedListRenderOptionsBase
        {
-           LiElementClasses = new string[] { "page-item justify-content-center" },
+          
+           LiElementClasses = new string[] { "page-item" },
            PageClasses = new string[] { "page-link" },
 
        })
@@ -106,10 +106,6 @@
             <div class="col-12">
                 <hr>
             </div>
-
-
-
-
         </div>
     </div>
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using RookieShop.Backend.Data;
 using RookieShop.Backend.Models;
 using RookieShop.Backend.Services.Interface;
@@ -15,11 +16,13 @@ namespace RookieShop.Backend.Services.Implement
     {
         private readonly ApplicationDbContext _context;
         private readonly IUserDF _repoUser;
+        private readonly IConfiguration _config;
 
-        public OrderRepo(ApplicationDbContext context, IUserDF repoUser)
+        public OrderRepo(ApplicationDbContext context, IUserDF repoUser, IConfiguration config)
         {
             _context = context;
             _repoUser = repoUser;
+            _config = config;
         }
         public async Task<List<OrderVm>> myOrderList()
         {
@@ -60,7 +63,7 @@ namespace RookieShop.Backend.Services.Implement
             {
                 Id = x.Id,
                 productID = x.OrderDetails.Select(o=>o.productId).ToList(),
-                imageDefault = x.OrderDetails.Select(o=>o.Product.ProductImages.Where(img=>img.isDefault==true).Select(img=>img.pathName).FirstOrDefault()),
+                imageDefault = x.OrderDetails.Select(o=>o.Product.ProductImages.Where(img=>img.isDefault==true).Select(img=> _config["Host"]+img.pathName).FirstOrDefault()),
                 productName = x.OrderDetails.Select(o => o.productName).ToList(),
                 quantity = x.OrderDetails.Select(o => o.quantity).ToList(),
                 total = x.Total,

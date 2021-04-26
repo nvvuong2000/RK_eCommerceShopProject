@@ -23,21 +23,19 @@
     <link rel="stylesheet" href="~/vendor/css/cubeportfolio.min.css">
     <link rel="stylesheet" href="~/vendor/css/wow.css">
     <link rel="stylesheet" href="~/vendor/css/LineIcons.min.css">
+    <link href="https://cdn.lineicons.com/2.0/LineIcons.css" rel="stylesheet">
     <link rel="stylesheet" href="~/book-shop/css/nouislider.min.css">
-    <link rel="stylesheet" href="~/book-shop/css/range-slider.css">
-    <!-- Slider Setting Css  -->
-    <link rel="stylesheet" href="~/book-shop/css/settings.css">
     <!-- Mega Menu  -->
     <link rel="stylesheet" href="~/book-shop/css/megamenu.css">
     <!-- StyleSheet  -->
     <link rel="stylesheet" href="~/book-shop/css/style.css">
-    @*<link rel="stylesheet" href="~/book-shop/css/style1.css">*@
     <link rel="stylesheet" href="~/book-shop/css/site.css">
     <!-- Custom Css  -->
     <link rel="stylesheet" href="~/book-shop/css/custom.css">
     <script src="https://kit.fontawesome.com/1711280b04.js" crossorigin="anonymous"></script>
+
     <style>
-       
+
 
         #toast-container > .alert {
             background-image: none !important;
@@ -56,6 +54,7 @@
         #toast-container > .alert-info:before {
             content: "\f05a";
         }
+
         #toast-container > .alert-danger:before {
             content: "\f071";
         }
@@ -64,21 +63,24 @@
         #toast-container > .alert-danger {
             color: #a94442;
         }
-        .toast-message{
-            color:white !important;
+
+        .toast-message {
+            color: white !important;
         }
+
         .toast-info {
             width: 200px !important;
             height: 20px !important;
             height: auto !important;
             position: absolute !important;
             right: 20px;
-            top:40% !important;
+            top: 40% !important;
             background-color: #35bc7a !important;
             color: #F0F0F0;
             font-family: Calibri;
             font-size: 20px;
         }
+
         .toast-danger {
             width: 200px !important;
             height: 20px !important;
@@ -104,7 +106,7 @@
         <div class="container">
             <div class="row upper-nav">
                 <div class=" text-left nav-logo">
-                    <a href="index-book-shop.html" class="navbar-brand"><img src="~/book-shop/img/logo.png" alt="img"></a>
+                    <a asp-controller="Home" asp-action="Index"class="navbar-brand"><img src="~/book-shop/img/logo.png" alt="img"></a>
                 </div>
                 <div class="ml-auto nav-mega d-flex justify-content-end align-items-center">
                     <header class="site-header" id="header">
@@ -116,10 +118,7 @@
                                 <div class="collapse navbar-collapse">
                                     <ul class="navbar-nav ml-auto">
                                         <li class="nav-item">
-                                            <a class="nav-link" href="index-book-shop.html">HOME</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="~/book-shop/contact.html">CONTACT</a>
+                                            <a class="nav-link"asp-controller="Home" asp-action="Index">HOME</a>
                                         </li>
                                         @Html.Partial("~/Views/Shared/_LoginPartial.cshtml")
                                     </ul>
@@ -135,12 +134,7 @@
                                     <ul class="navbar-nav">
 
                                         <li class="nav-item">
-                                            <a class="nav-link" href="~/book-shop/product-listing.html"> HOME</a>
-                                        </li>
-
-
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="~/book-shop/contact.html">Contact</a>
+                                            <a class="nav-link" asp-controller="Home" asp-action="Index"> HOME</a>
                                         </li>
                                     </ul>
                                 </nav>
@@ -195,7 +189,6 @@
                     <div class="banner-description">
                         <span class="small-heading animated fadeInRight delay-1s">BEST AVAILABLE</span>
                         <h1 class="w-sm-100 w-md-100 w-lg-25 animated fadeInLeft delay-1s">BOOKS <span>COLLECTION</span></h1>
-                        <a href="~/book-shop/product-listing.html" class="btn animated fadeInLeft delay-1s">SHOP NOW </a>
                     </div>
                 </div>
             </div>
@@ -275,7 +268,7 @@
             </div>
             <div class="row">
                 <div class="col-12 footer_notes">
-                    <p class="whitecolor text-center w-100 wow fadeInDown">&copy; 2020 MegaOne. Made With Love by <a class="web-link" href="http://www.themesindustry.com/" target="_blank">Themesindustry</a></p>
+                    <p class="whitecolor text-center w-100 wow fadeInDown">&copy; 2020 VavuEShop. Made With Love by <a class="web-link" href="http://www.themesindustry.com/" target="_blank">Themesindustry</a></p>
                 </div>
             </div>
         </div>
@@ -291,28 +284,13 @@
     <script src="~/vendor/js/owl.carousel.min.js"></script>
     <script src="~/vendor/js/jquery.cubeportfolio.min.js"></script>
     <script src="~/vendor/js/jquery.fancybox.min.js"></script>
-    <script src="~/vendor/js/extensions/revolution.extension.parallax.min.js"></script>
     <script src="~/vendor/js/swiper.min.js"></script>
     <script src="~/vendor/js/jquery.cubeportfolio.min.js"></script>
     <script src="~/vendor/js/wow.min.js"></script>
-    <script src="~/vendor/js/bootstrap-input-spinner.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="~/vendor/js/parallaxie.min.js"></script>
     <script src="~/vendor/js/stickyfill.min.js"></script>
-    <script src="~/book-shop/js/nouislider.min.js"></script>
 
-    <!-- Plugin Js -->
-    <!--<script src="~/vendor/js/jquery.themepunch.tools.min.js"></script>
-    <script src="~/vendor/js/jquery.themepunch.revolution.min.js"></script>-->
-    <!-- SLIDER REVOLUTION EXTENSIONS -->
-    <!--<script src="~/vendor/js/extensions/revolution.extension.actions.min.js"></script>
-    <script src="~/vendor/js/extensions/revolution.extension.carousel.min.js"></script>
-    <script src="~/vendor/js/extensions/revolution.extension.kenburn.min.js"></script>
-    <script src="~/vendor/js/extensions/revolution.extension.layeranimation.min.js"></script>
-    <script src="~/vendor/js/extensions/revolution.extension.migration.min.js"></script>
-    <script src="~/vendor/js/extensions/revolution.extension.navigation.min.js"></script>
 
-    <script src="~/vendor/js/extensions/revolution.extension.slideanims.min.js"></script>
-    <script src="~/vendor/js/extensions/revolution.extension.video.min.js"></script>-->
 </body>
 </html>

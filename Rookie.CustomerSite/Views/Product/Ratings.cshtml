@@ -44,7 +44,7 @@
                                         <th class="darkcolor">Product Id</th>
                                         <th class="darkcolor">Product</th>
                                         <th class="darkcolor">Number Rate</th>
-                                        <th class="darkcolor"></th>
+                                        <th class="darkcolor">Ratings</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -64,7 +64,7 @@
 
                                                             <div class="col-12 col-lg-10 mt-auto product-detail-cart-data">
                                                                 <div class="media-body ml-lg-3">
-                                                                    <h4 class="product-name"><a href="product-detail.html">@item.productName</a></h4>
+                                                                    <h4 class="product-name"><a href="@Url.Action("Details","Product",new { id = item.productID })">@item.productName</a></h4>
                                                                     <p class=""></p>
                                                                 </div>
                                                             </div>
@@ -94,7 +94,7 @@
                         <div class="apply_coupon">
                             <div class="row">
                                 <div class="col-12 text-left">
-                                    <a href="shop-cart.html" class="btn yellow-color-green-gradient-btn">GO BACK</a>
+                                    <a href="##" onClick="history.go(-1); return false;" class="btn btn-warning">GO BACK</a>
 
                                 </div>
 

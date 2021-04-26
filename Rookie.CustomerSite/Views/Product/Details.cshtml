@@ -24,40 +24,37 @@
                 <div class="product-body">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb text-center text-lg-left">
-                            <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-                            <li class="breadcrumb-item"><a href="javascript:void(0)">Categories</a></li>
-                            <li class="breadcrumb-item" aria-current="page"><a href="javascript:void(0)">Books</a></li>
-                            <li class="breadcrumb-item"><a class="active" href="javascript:void(0)">The Road</a></li>
+                            <li class="breadcrumb-item">@*<a href="@Html.ActionLink("Index","Home")">Home</a>*@</li>
                         </ol>
                     </nav>
                     <div class="pro-detail-sec row">
                         <div class="col-12">
                             <h4 class="pro-heading text-center text-lg-left">@Model.productName</h4>
-                            <p class="pro-text text-center text-lg-left" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap"> @Model.description
-                            </p>
                         </div>
                     </div>
                     <div class="row product-list product-detail">
 
                         <div class="col-12 col-lg-6 product-detail-slider">
-                            @for (int i = 0; i < Model.pathName.Count; i++)
-                            {
-                                <div class="wrapper">
-                                    <div class="Gallery swiper-container img-magnifier-container" id="gallery">
-                                        <div class="swiper-wrapper myimgs">
+                            <div class="wrapper">
+                                <div class="Gallery swiper-container img-magnifier-container" id="gallery">
+                                    <div class="swiper-wrapper myimgs">
+                                        @for (int i = 0; i < Model.pathName.Count; i++)
+                                        {
                                             <div class="swiper-slide"> <a href="@Model.pathName[i]" data-fancybox="@i" title="Zoom In"><img class="myimage" src="@Model.pathName[i]" alt="@Model.alt[i]"></a></div>
-
-                                        </div>
-                                    </div>
-                                    <div class="Thumbs swiper-container" id="thumbs">
-                                        <div class="swiper-wrapper">
-                                            <div class="swiper-slide"> <img src="@Model.pathName[i]" alt="thumnails"></div>
-
-                                        </div>
+                                        }
                                     </div>
                                 </div>
 
-                            }
+                                <div class="Thumbs swiper-container" id="thumbs">
+                                    <div class="swiper-wrapper">
+                                        @for (int i = 0; i < Model.pathName.Count; i++)
+                                        {
+                                            <div class="swiper-slide"> <img src="@Model.pathName[i]" alt="thumnails"></div>
+                                        }
+                                    </div>
+                                </div>
+
+                            </div>
 
                         </div>
 
@@ -126,7 +123,7 @@
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                         <li class="breadcrumb-item"><p class="d-inline">SKU: <span>@Model.Id</span></p></li>
-                                        <li class="breadcrumb-item"><span class="d-inline">Categories:<span class="comma-separtor"></span><a href="#">@Model.categoryName</a></span></li>
+                                        <li class="breadcrumb-item"><span class="d-inline">Categories:<span class="comma-separtor"></span><a href="@Url.Action("ProductFilter","Product", new { id = Model.categoryId } )"">@Model.categoryName</a></span></li>
 
                                     </ol>
                                 </nav>
@@ -135,96 +132,74 @@
                             <div class="share-product-details">
                                 <ul class="share-product-icons">
                                     <li><p>Share Link:</p></li>
-                                    <li><a href="javascript:void(0)" class="facebook-bg-hvr"><i class="fab fa-facebook-f" aria-hidden="true"></i></a></li>
-                                    <li><a href="javascript:void(0)" class="twitter-bg-hvr"><i class="fab fa-twitter" aria-hidden="true"></i></a> </li>
-                                    <li><a href="javascript:void(0)" class="linkedin-bg-hvr"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a></li>
-                                    <li><a href="javascript:void(0)" class="instagram-bg-hvr"><i class="fab fa-instagram" aria-hidden="true"></i></a></li>
+                                    <li><a href="#" class="facebook-bg-hvr"><i class="fab fa-facebook-f" aria-hidden="true"></i></a></li>
+                                    <li><a href="#" class="twitter-bg-hvr"><i class="fab fa-twitter" aria-hidden="true"></i></a> </li>
+                                    <li><a href="#" class="linkedin-bg-hvr"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a></li>
+                                    <li><a href="#" class="instagram-bg-hvr"><i class="fab fa-instagram" aria-hidden="true"></i></a></li>
                                 </ul>
                             </div>
                         </div>
-
                         <div class="col-12 mt-4 mb-4">
                             <div class="row no-gutters product-all-details">
-                                @if (Model.userId.Count == 0)
-                                {
 
-                                    <div class="alert alert-info fade show alert-dismissible" role="alert">
-                                        <strong><i class="fa fa-info-circle" aria-hidden="true"></i></strong> <b>No Review Yet</b>
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
+                                <ul class="col-12 nav nav-tabs" id="myTab" role="tablist">
+                                    <li class="col-6 nav-item">
+                                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Project Description</a>
+                                    </li>
+                                    <li class="col-6 nav-item">
+                                        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Customer Reviews (@Model.userId.Count)</a>
+                                    </li>
+                                </ul>
+                                <div class="col-12 tab-content" id="myTabContent">
+                                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                        @Model.description
                                     </div>
+                                    <div class="tab-pane fade reviews" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                                        @if (Model.userId.Count == 0)
+                                        {
 
-                                }
-                                else
-                                {
-                                    <ul class="col-12 nav nav-tabs" id="myTab" role="tablist">
-
-
-                                        <li class="col-4 nav-item">
-                                            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="true">Customer Reviews (@Model.userId.Count)</a>
-                                        </li>
-                                    </ul>
-                                    <div class="col-12 tab-content" id="myTabContent">
-
-                                        <div class="tab-pane fade reviews" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-
-                                            <div class="media">
-                                                <div class="row no-gutter">
-
-                                                    @for (int i = 0; i < Model.userId.Count; i++)
-                                                    {
-                                                        <div class="col-12 col-lg-2 p-0">
-
-                                                            <div class="row no-gutters">
-                                                                <div class="col-12 d-flex  justify-content-center">
-                                                                    <img src="img/user.jpg">
-                                                                </div>
-
-                                                            </div>
-
-                                                        </div>
-
-                                                        <div class="col-12 col-lg-10 p-0">
-                                                            <div class="media-body">
-                                                                <span class="text-center text-lg-left">@Model.dateRated[i]</span>
-                                                                <h5 class="mb-2 text-center text-lg-left">@Model.userId[i]</h5>
-
-                                                                <ul class="user-rating">
-
-                                                                    @for (int j = 0; j < 5; j++)
-                                                                    {
-                                                                        if (Model.numberRating[i] > j)
-                                                                        {
-                                                                            <li><a href="#"><i class="lni-star-filled"></i></a></li>
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            <li><a href="#"><i class="lni lni-star"></i></a></li>
-                                                                        }
-
-
-                                                                    }
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    }
-
-
-                                                </div>
+                                            <div class="alert alert-info fade show alert-dismissible" role="alert">
+                                                <strong><i class="fa fa-info-circle" aria-hidden="true"></i></strong> <b>No Review Yet</b>
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
                                             </div>
 
+                                        }
+                                        @for (int i = 0; i < Model.userId.Count; i++)
+                                        {
 
 
-                                        </div>
+                                            <span class="text-center text-lg-left d-block">@Model.dateRated[i]</span>
+                                            <h5 class="mb-2 text-center text-lg-left">  @Model.userId[i]</h5>
+                                            <p class="text-center text-lg-left">
+
+                                                <ul class="user-rating">
+                                                    @for (int j = 0; j < 5; j++)
+                                                    {
+                                                        if (Model.numberRating[i] > j)
+                                                        {
+                                                            <li><a href="#"><i style="color:yellow !important" class="lni-star-filled"></i></a></li>
+                                                        }
+                                                        else
+                                                        {
+                                                            <li><a href="#"><i style="color:yellow !important" class="lni lni-star"></i></a></li>
+                                                        }
+
+                                                    }
+                                                </ul>
+                                            </p>
+
+
+
+
+                                        }
                                     </div>
-                                }
+                                </div>
+
                             </div>
                         </div>
-
                     </div>
-
-
                 </div>
 
             </div>
