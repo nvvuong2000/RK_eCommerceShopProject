@@ -1,5 +1,6 @@
 ﻿using IdentityServer4;
 using IdentityServer4.Models;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 
 namespace RookieShop.Backend.IdentityServer
@@ -19,8 +20,9 @@ namespace RookieShop.Backend.IdentityServer
                   new ApiScope("rookieshop.api", "Rookie Shop API")
              };
 
-        public static IEnumerable<Client> Clients =>
-            new List<Client>
+        public static IEnumerable<Client> GetClients(IConfiguration configuration)
+        {
+            return new List<Client>
             {
                 // machine to machine client
                 new Client
@@ -38,12 +40,11 @@ namespace RookieShop.Backend.IdentityServer
                 {
                     ClientId = "mvc",
                     ClientSecrets = { new Secret("secret".Sha256()) },
-
                     AllowedGrantTypes = GrantTypes.Code,
 
-                    RedirectUris = { "https://localhost:44367/signin-oidc" },
+                     RedirectUris = { configuration["MyHost"] +"/signin-oidc" },
 
-                    PostLogoutRedirectUris = { "https://localhost:44367/signout-callback-oidc" },
+                    PostLogoutRedirectUris = { configuration["MyHost"] + "/signout-callback-oidc" },
 
                     AllowedScopes = new List<string>
                     {
@@ -52,7 +53,7 @@ namespace RookieShop.Backend.IdentityServer
                         "rookieshop.api"
                     },
 
-                                    
+
                 },
                 new Client
                     {
@@ -75,15 +76,20 @@ namespace RookieShop.Backend.IdentityServer
                 new Client
                 {
                     ClientId = "swagger",
+                    
                     ClientSecrets = { new Secret("secret".Sha256()) },
+                    
                     AllowedGrantTypes = GrantTypes.Code,
 
                     RequireConsent = false,
+                    
                     RequirePkce = true,
 
-                    RedirectUris =           { $"https://localhost:44341/swagger/oauth2-redirect.html" },
-                    PostLogoutRedirectUris = { $"https://localhost:44341/swagger/oauth2-redirect.html" },
-                    AllowedCorsOrigins =     { $"https://localhost:44341" },
+                    RedirectUris =           { configuration["Host"]+"/swagger/oauth2-redirect.html" },
+                    
+                    PostLogoutRedirectUris = { configuration["Host"]+"/swagger/oauth2-redirect.html" },
+                    
+                    AllowedCorsOrigins =     { configuration["Host"]},
 
                     AllowedScopes = new List<string>
                     {
@@ -93,5 +99,7 @@ namespace RookieShop.Backend.IdentityServer
                     }
                 },
             };
+        }
+
     }
 }

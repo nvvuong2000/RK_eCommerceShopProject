@@ -30,7 +30,6 @@ namespace Rookie.CustomerSite.Controllers
     public class ProductController : Controller
     {
         // GET: ProductController
-        string Baseurl = "https://localhost:44341";
 
         [HttpGet("/product/{id:int}")]
         [AllowAnonymous]

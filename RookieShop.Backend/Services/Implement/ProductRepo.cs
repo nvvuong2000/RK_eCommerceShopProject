@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using RookieShop.Backend.Data;
 using RookieShop.Backend.Models;
 using RookieShop.Backend.Services.Interface;
@@ -19,13 +20,15 @@ namespace RookieShop.Backend.Services.Implement
     public class ProductRepo : IProduct
     {
         private readonly ApplicationDbContext _context;
+        private readonly IConfiguration _config;
         private readonly IUserDF _repoUser;
         private IHostingEnvironment _hostingEnv;
-        public ProductRepo(ApplicationDbContext context, IHostingEnvironment hostingEnv, IUserDF repoUser)
+        public ProductRepo(ApplicationDbContext context, IHostingEnvironment hostingEnv, IUserDF repoUser, IConfiguration config)
         {
             _context = context;
             _hostingEnv = hostingEnv;
             _repoUser = repoUser;
+            _config = config;
         }
         public async Task<bool> addProduct([FromForm] ProductCreateRequest product)
         {
@@ -89,6 +92,7 @@ namespace RookieShop.Backend.Services.Implement
 
         public async Task<List<ProductListVM>> getListProductAsync()
         {
+            var ex = _config["Host"];
             var productList =await _context.Products.Include(p => p.ProductImages)
             .Select(x => new ProductListVM
             {
@@ -101,10 +105,7 @@ namespace RookieShop.Backend.Services.Implement
                 stock = x.stock,
                 status = x.status,
                 providerID = x.providerId,
-                
-
-
-                imgDefault = x.ProductImages.Where(img => img.isDefault == true).Select(img => "https://localhost:44341" + img.pathName).FirstOrDefault(),
+                imgDefault = x.ProductImages.Where(img => img.isDefault == true).Select(img => _config["Host"] + img.pathName).FirstOrDefault(),
             }).ToListAsync();
 
             return productList;
@@ -119,7 +120,7 @@ namespace RookieShop.Backend.Services.Implement
                 productName = x.productName,
                 unitPrice = x.unitPrice,
                 isNew = x.isNew,
-                imgDefault = x.ProductImages.Where(img => img.isDefault == true).Select(img => "https://localhost:44341" + img.pathName).FirstOrDefault()
+                imgDefault = x.ProductImages.Where(img => img.isDefault == true).Select(img => _config["Host"] + img.pathName).FirstOrDefault()
             }).Where(p => p.categoryId == id).ToListAsync();
             return productList;
         }
@@ -139,13 +140,11 @@ namespace RookieShop.Backend.Services.Implement
                 DateCreated = p.DateCreated,
                 isNew = p.isNew,
                 status = p.status,
-                pathName = p.ProductImages.Select(img => "https://localhost:44341" + @img.pathName).ToList(),
+                pathName = p.ProductImages.Select(img => _config["Host"]+@img.pathName).ToList(),
                 alt = p.ProductImages.Select(img => img.captionImage).ToList(),
                 userId = p.RattingProduct.Select(r => r.User.customerName).ToList(),
                 numberRating = p.RattingProduct.Select(r => r.numberRating).ToList(),
                 dateRated = p.RattingProduct.Select(r => r.date).ToList(),
-
-
                 rating = p.rating,
 
             }).Where(p => p.Id == id).FirstOrDefault();
@@ -313,7 +312,7 @@ namespace RookieShop.Backend.Services.Implement
                                {
                                    productID = p.Id,
                                    productName = p.productName,
-                                   imgDefault = "https://localhost:44341" + pm.pathName,
+                                   imgDefault = _config["Host"] + pm.pathName,
                                }).ToListAsync();
             var productberated = await (
                          from p in _context.Products
@@ -324,7 +323,7 @@ namespace RookieShop.Backend.Services.Implement
                          {
                              productID = p.Id,
                              productName = p.productName,
-                             imgDefault = "https://localhost:44341"+pm.pathName,
+                             imgDefault = _config["Host"]+pm.pathName,
                          }).ToListAsync();
             var NotInRecord = query.Where(p => !productberated.Any(p2 => p2.productID == p.productID)).ToList();
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using RookieShop.Backend.Data;
 using RookieShop.Backend.Models;
 using RookieShop.Backend.Services.Interface;
@@ -13,12 +14,14 @@ namespace RookieShop.Backend.Services.Implement
     public class CartRepo : ICart
     {
         private readonly ApplicationDbContext _context;
+        private readonly IConfiguration _config;
         private readonly IUserDF _repoUser;
 
-        public CartRepo(ApplicationDbContext context, IUserDF repoUser)
+        public CartRepo(ApplicationDbContext context, IUserDF repoUser, IConfiguration config )
         {
             _context = context;
             _repoUser = repoUser;
+            _config = config;
         }
         public async Task<int> FindID(int id)
         {
@@ -86,7 +89,7 @@ namespace RookieShop.Backend.Services.Implement
                 productName = x.Product.productName,
                 unitPrice = x.Product.unitPrice,
                 quantity = x.quantity,
-                pathName = x.Product.ProductImages.Where(x=>x.isDefault==true).Select(x => "https://localhost:44341"+ x.pathName).FirstOrDefault(),
+                pathName = x.Product.ProductImages.Where(x=>x.isDefault==true).Select(x => _config["Host"]+ x.pathName).FirstOrDefault(),
 
             }).ToListAsync();
             

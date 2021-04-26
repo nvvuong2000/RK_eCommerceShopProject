@@ -21,7 +21,6 @@ namespace Rookie.CustomerSite.Controllers
     [Authorize]
     public class OrderController : Controller
     {
-        string Baseurl = "https://localhost:44341/";
 
         public async Task<ActionResult> Index()
         {
