@@ -26,7 +26,7 @@ export default function DS() {
                                     <div className="service-card">
                                         <i class="fa fa-list-alt mr-3" aria-hidden="true"></i>
                                         <div className="media-body">
-                                            <h5 className="mt-0"> <Link to='/customer'>MANAGE CATEGORY</Link></h5>
+                                            <h5 className="mt-0"> <Link to='/category'>MANAGE CATEGORY</Link></h5>
                                            
                                         </div>
                                     </div>

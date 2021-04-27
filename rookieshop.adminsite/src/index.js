@@ -11,22 +11,25 @@ import { createBrowserHistory } from "history";
 import { Router } from 'react-router';
 import "react-toastify/dist/ReactToastify.css";
 import history from './history';
-
+import { store, persistedStore} from "./stores/index";
+import { PersistGate } from 'redux-persist/integration/react';
 
 // Note: this API requires redux@>=3.1.0
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || typeof (compose);
-const store = createStore(
-  rootReducer,
-  composeEnhancers(
-    applyMiddleware(thunk),
-  )
-);
+// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || typeof (compose);
+// const store = createStore(
+//   rootReducer,
+//   composeEnhancers(
+//     applyMiddleware(thunk),
+//   )
+// );
 ReactDOM.render(
-  <React.StrictMode>
+
     <Provider store={store}>
-        <App />  
-    </Provider>
-  </React.StrictMode>,
+    <PersistGate loading={null} persistor={persistedStore}>
+        <App />
+       </PersistGate>
+    </Provider>,
+  
   document.getElementById('root')
 );
 
