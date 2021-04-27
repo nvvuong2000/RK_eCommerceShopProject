@@ -27,7 +27,7 @@ export default function OrderDetailsItem(props) {
                                     <td>#{order.productId}</td>
                                     <td className="table-column-pl-0">
                                         <Link className="media align-items-center" to={`/product/${order.productId}`}>
-                                            <img className="avatar avatar-lg mr-3" src={`https://localhost:44341`+order.productImage} alt="Image Description" />
+                                            <img className="avatar avatar-lg mr-3" src={order.productImage} alt="Image Description" />
                                             <div className="media-body">
                                                 <Link to={`/product/${order.productId}`} className="text-hover-primary mb-0">{order.productName}</Link>
                                             </div>

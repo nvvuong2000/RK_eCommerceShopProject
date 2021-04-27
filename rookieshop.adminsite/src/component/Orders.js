@@ -11,16 +11,11 @@ export default function Orders() {
     useEffect(() => {
 
         dispatch(get_list_order())
-    }, [])
+    }, []);
 
-
-   // const orderList = useSelector((state) => state.order.orderList); // not re-rendering
-
-   const orderList = useSelector((state) => state.order.orderList,()=>{}); // it's re-rendering
+    const {orderList} = useSelector((state) => state.order); // it's re-rendering
     
     const list = orderList
-    console.log(list);
-
     return (
         <Fragment>
             <div className="content container-fluid">

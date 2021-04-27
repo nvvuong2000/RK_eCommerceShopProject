@@ -41,10 +41,8 @@ namespace Rookie.CustomerSite.Services.BaseServices
         {
             using (var httpClient = new HttpClient())
             {
-
-                var contentString = new StringContent(JsonConvert.SerializeObject(requestbody), Encoding.UTF8, "application/json");
                 httpClient.SetBearerToken(accessToken);
-                return await httpClient.PostAsync(endpoint, contentString);
+                return await httpClient.PostAsJsonAsync($"{APIRootUrl.BaseURL}{endpoint}", requestbody);
 
             }
 

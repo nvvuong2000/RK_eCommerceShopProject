@@ -1,0 +1,54 @@
+/*START SERVICES*/
+
+.our-services {
+    margin-top: 120px;
+}
+
+.our-services .service {
+    border: 2px solid #eeeeee;
+    padding: 25px 15px;
+    cursor: pointer;
+    transition: .6s all ease;
+}
+
+.our-services .service .media .service-card {
+    display: flex;
+}
+
+.our-services .service .media .service-card i {
+    display: block;
+}
+
+.our-services .service .media .service-card .media-body {
+
+    display: block;
+}
+
+.our-services .service:hover {
+    background-color: #62ab00;
+}
+
+.our-services .service:hover .media i,
+.our-services .service:hover .media .media-body h5,
+.our-services .service:hover .media .media-body span {
+    color: #ffffff !important;
+}
+
+.our-services .service .media i {
+    font-size: 26px;
+    color: #62ab00;
+    transition: .6s all ease;
+}
+
+.our-services .service .media .media-body h5 {
+    font-size: 14px;
+    transition: .6s all ease;
+}
+
+.our-services .service .media .media-body span {
+    font-size: 12px;
+    transition: .6s all ease;
+}
+
+
+/*END SERVICES*/

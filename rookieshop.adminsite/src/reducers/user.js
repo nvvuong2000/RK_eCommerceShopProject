@@ -3,24 +3,27 @@ import * as user from "../contains/user";
 const initialState = {
     currentUser: {},
     listUsers:[],
+    isLoginSuccess:false,
+    isLogoutSucess:false,
 };
 
 export default (state = initialState, { type, payload }) => {
     switch (type) {
         case user.LOGIN: {   
-            state.currentUser = payload;
-            return { ...state};
+ 
+            return { ...state, isLoginSuccess:true};
         }
         case user.LOGOUT: {
             return {
                 ...state,
+                isLoginSuccess:false,
                 currentUser: {},
             };
         }
         case user.GETCURRENTUSER: {       
             return {
-
-                currentUser: payload,
+                ...state, currentUser:payload
+               
             };
         }
         case user.GETLISTUSER: {

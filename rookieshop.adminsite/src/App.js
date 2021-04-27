@@ -27,18 +27,18 @@ import { get_info_user} from "./actions/user"
 import AddCategory from './component/AddEditCategory';
 
 function App() {
- 
+  
   const dispatch = useDispatch();
   const { currentUser}  = useSelector((state) => state.user);
+  const { isLoginSuccess } = useSelector((state) => state.user);
   
   
   useEffect(() => {
-    dispatch(get_info_user());
+    if (isLoginSuccess===true){
+      dispatch(get_info_user());
+    }
+  }, [isLoginSuccess]);
 
-  }, [dispatch]);
-  if (currentUser.roles == "user") {
-    history.push("/page403")
-  }
  
   return (
 

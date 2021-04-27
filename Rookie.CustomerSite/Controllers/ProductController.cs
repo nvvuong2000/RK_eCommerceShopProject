@@ -53,12 +53,12 @@ namespace Rookie.CustomerSite.Controllers
         {
             var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
             HttpResponseMessage Res = await RequestServices.GetAsync(APIProductEndPoint.Ratings, accessToken);
-                if (Res.IsSuccessStatusCode)
-                {
+            if (Res.IsSuccessStatusCode)
+            {
 
-                    var cartResponse = await Res.Content.ReadAsAsync<IEnumerable<ProductListVM>>();
-                    return View(cartResponse);
-                }
+                var cartResponse = await Res.Content.ReadAsAsync<IEnumerable<ProductListVM>>();
+                return View(cartResponse);
+            }
             TempData["ERROR"] = "ERROR";
             return View();
         }
@@ -83,9 +83,12 @@ namespace Rookie.CustomerSite.Controllers
                 TempData["RATINGS_SUCESS"] = "RATINGS_SUCESS";
                 return View("Ratings");
             }
+            else
+            {
+                TempData["ERROR"] = "ERROR";
+                return View("Ratings");
+            }
 
-            TempData["ERROR"] = "ERROR";
-            return View("Ratings");
         }
 
 
@@ -156,7 +159,7 @@ namespace Rookie.CustomerSite.Controllers
             ViewBag.ListCategory = await getListCategory();
             int pageSize = 5;
             int pageNumber = (page ?? 1);
-            var onePageOfProducts = ListProduct.ToPagedList(pageNumber,pageSize); // will only contain 10 products max because of the pageSize
+            var onePageOfProducts = ListProduct.ToPagedList(pageNumber, pageSize); // will only contain 10 products max because of the pageSize
             ViewBag.OnePageOfProducts = onePageOfProducts;
             return View();
 
