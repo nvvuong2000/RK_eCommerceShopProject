@@ -28,7 +28,7 @@ const User = {
     }
 }
 const Product = {
-    getAllProducts: async () => await axios.get("/api/Product", config),
+    getAllProducts: async () => await axios.get("/api/Product/ListProduct", config),
     getProductbyId: async (id) => await axios.get(`/api/Product/${id}`),
     addProduct: async (data) => await axios.post("/api/Product/addProduct",data,config),
     updateProduct: async (data) => await axios.put("/api/Product/",data,config),

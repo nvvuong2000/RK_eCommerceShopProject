@@ -13,6 +13,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -70,7 +71,7 @@ namespace RookieShop.Backend.Controllers
 
             if (result.stock <= 0)
             {
-                throw new Exception("Số lượng vượt quá số lượng tồn");
+                return null;
             }
             else
             {
@@ -110,9 +111,11 @@ namespace RookieShop.Backend.Controllers
             var index = await _repo.FindId(Id);
 
 
-            if (result.stock <= 0)
+            if (result.stock < quan)
             {
-                throw new Exception("Số lượng vượt quá số lượng tồn");
+
+                return null;
+                //  throw new Exception("Số lượng vượt quá số lượng tồn");
             }
             else
             {

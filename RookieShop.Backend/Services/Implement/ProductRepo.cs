@@ -96,7 +96,26 @@ namespace RookieShop.Backend.Services.Implement
         public async Task<List<ProductListVM>> getListProductAsync()
         {
             var ex = _config["Host"];
-            var productList =await _context.Products.Include(p => p.ProductImages)
+            var productList =await _context.Products.Include(p => p.ProductImages).Where(p=>p.status==true && p.stock>0)
+            .Select(x => new ProductListVM
+            {
+                productID = x.Id,
+                productName = x.productName,
+                unitPrice = x.unitPrice,
+                isNew = x.isNew,
+                categoryId = x.categoryId,
+                categoryName = x.Category.CategoryName,
+                stock = x.stock,
+                status = x.status,
+                providerID = x.providerId,
+                imgDefault = x.ProductImages.Where(img => img.isDefault == true).Select(img => _config["Host"] + img.pathName).FirstOrDefault(),
+            }).ToListAsync();
+
+            return productList;
+        }
+        public async Task<List<ProductListVM>> getListProductbyAdminAsync()
+        {
+            var productList = await _context.Products.Include(p => p.ProductImages)
             .Select(x => new ProductListVM
             {
                 productID = x.Id,

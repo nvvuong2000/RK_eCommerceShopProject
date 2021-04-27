@@ -79,6 +79,7 @@ namespace Rookie.CustomerSite.Controllers
             }
             else
             {
+                TempData["ERROR_ADD_ITEM"] = "";
                 return RedirectToAction("Index", "Home");
             }
         }
@@ -103,12 +104,13 @@ namespace Rookie.CustomerSite.Controllers
             HttpResponseMessage Res = await RequestServices.GetAsync(endpoint, accessToken);
             if (Res.IsSuccessStatusCode)
             {
+
                 TempData["UPDATE_SUCESS"] = "UPDATE_SUCESS";
                 return RedirectToAction("IndexCart", "Cart");
             }
             else
             {
-                TempData["ERROR"] = "ERROR";
+                TempData["ERROR_ADD_ITEM"] = "";
                 return RedirectToAction("Index", "Home");
             }
 

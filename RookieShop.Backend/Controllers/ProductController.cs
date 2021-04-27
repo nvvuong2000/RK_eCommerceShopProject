@@ -64,6 +64,25 @@ namespace RookieShop.Backend.Controllers
             }
 
         }
+        [HttpGet("ListProduct")]
+        [AllowAnonymous]
+        public async Task<ActionResult<ProductListVM>> GetListProductByAdmin()
+        {
+            try
+            {
+
+                var list = await _repo.getListProductbyAdminAsync();
+
+                return Ok(list.ToList());
+
+
+            }
+            catch (Exception ex)
+            {
+                return Ok(ex);
+            }
+
+        }
 
         // GET api/<Product>/5
         [HttpGet("{id}")]

@@ -115,5 +115,17 @@
         }
     </script>
     TempData.Remove("ERROR");
-
 }
+
+@if (TempData.ContainsKey("ERROR_ADD_ITEM"))
+    {
+        <script>
+            window.onload = () => {
+                $(document).ready(function () {
+                    toastr.error("Quantity > Stock");
+                });
+            }
+        </script>
+        TempData.Remove("ERROR_ADD_ITEM");
+
+ }
