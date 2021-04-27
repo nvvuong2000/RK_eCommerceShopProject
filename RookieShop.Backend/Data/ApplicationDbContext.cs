@@ -23,8 +23,8 @@ namespace RookieShop.Backend.Data
                new Provider { Id = 3, providerName = "H&M" },
                new Provider { Id = 4, providerName = "B&G" });
             modelBuilder.Entity<Category>().HasData(
-               new Category { Id = 3, categoryName = "Jacket", categoryDescription= "A jacket is a garment for the upper body, usually extending below the hips. .." },
-               new Category { Id = 4, categoryName = "Pant" , categoryDescription = "pants (North American English) are an item of clothing that might have originated in Central Asia, worn from the waist to the ankles, covering ..." });
+               new Category { Id = 3, CategoryName = "Jacket", categoryDescription= "A jacket is a garment for the upper body, usually extending below the hips. .." },
+               new Category { Id = 4, CategoryName = "Pant" , categoryDescription = "pants (North American English) are an item of clothing that might have originated in Central Asia, worn from the waist to the ankles, covering ..." });
         }
         public DbSet<Product> Products { get; set; }
 

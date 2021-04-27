@@ -16,6 +16,10 @@ namespace RookieShop.Shared
         public string description { get; set; }
         public bool status { get; set; }
         public bool isNew { get; set; }
+        
+        public DateTime DateCreated { get; set; }
+        
+        public DateTime DateUpdated { get; set; } 
         public List<IFormFile> FormFiles { get; set; }
 
 

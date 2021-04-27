@@ -29,7 +29,7 @@ namespace RookieShop.Backend.Services.Implement
             {
                 return false;
             }
-            result.categoryName = category.categoryName;
+            result.CategoryName = category.CategoryName;
             result.categoryDescription = category.categoryDescription;
             _context.Categories.Update(result);
             _context.SaveChangesAsync();

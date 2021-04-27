@@ -41,7 +41,10 @@ namespace RookieShop.Backend.Services.Implement
                 stock = product.stock,
                 unitPrice = product.unitPrice,
                 status = product.status,
-                isNew = product.isNew
+                isNew = product.isNew,
+                DateCreated = Convert.ToDateTime(DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss")),
+                DateUpated = Convert.ToDateTime(DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss")),
+
 
             };
             _context.Products.Add(newProduct);
@@ -101,7 +104,7 @@ namespace RookieShop.Backend.Services.Implement
                 unitPrice = x.unitPrice,
                 isNew = x.isNew,
                 categoryId = x.categoryId,
-                categoryName = x.Category.categoryName,
+                categoryName = x.Category.CategoryName,
                 stock = x.stock,
                 status = x.status,
                 providerID = x.providerId,
@@ -131,7 +134,7 @@ namespace RookieShop.Backend.Services.Implement
             {
                 Id = p.Id,
                 productName = p.productName,
-                categoryName = p.Category.categoryName,
+                categoryName = p.Category.CategoryName,
                 providerId = p.providerId,
                 categoryId = p.categoryId,
                 stock = p.stock,
@@ -192,7 +195,7 @@ namespace RookieShop.Backend.Services.Implement
                 productEdit.providerId = product.providerID;
                 productEdit.isNew = product.isNew;
                 productEdit.status = product.status;
-
+                product.DateUpdated = Convert.ToDateTime(DateTime.Now.ToString());
                 await _context.SaveChangesAsync();
                 if(product.FormFiles == null)
                 {

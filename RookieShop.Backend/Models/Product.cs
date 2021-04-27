@@ -30,5 +30,6 @@ namespace  RookieShop.Backend.Models
         public ICollection<ProviderProduct> ProviderProducts { get; set; }
         public ICollection<RattingProduct> RattingProduct { get; set; }
 
+      
     }
 }

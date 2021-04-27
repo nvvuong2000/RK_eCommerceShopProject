@@ -1,0 +1,19 @@
+﻿@model IList<RookieShop.Backend.Models.Category>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div class="col-12">
+    <div class="clearfix d-flex justify-content-center">
+        <div id="js-filters-blog-posts" class="cbp-l-filters-button cbp-1-filters-alignCenter">
+            <div data-filter="*" class="cbp-filter-item-active cbp-filter-item">All </div>
+            @foreach (var cat in Model)
+            {
+                <a href="@Url.Action("ProductFilter","Product", new { id = cat.Id } )" data-filter=".Classic" class="cbp-filter-item">@cat.CategoryName </a>
+
+            }
+
+        </div>
+    </div>
+</div>

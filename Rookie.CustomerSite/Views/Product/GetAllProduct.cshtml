@@ -17,18 +17,7 @@
             </div>
             <!-- END PORTFOLIO HEADING -->
             <!-- START FILTERS -->
-            <div class="col-12">
-                <div class="clearfix d-flex justify-content-center">
-                    <div id="js-filters-blog-posts" class="cbp-l-filters-button cbp-1-filters-alignCenter">
-                        <div data-filter="*" class="cbp-filter-item-active cbp-filter-item">All </div>
-                        @foreach (var i in ViewBag.ListCategory)
-                        {
-                            <a href="@Url.Action("ProductFilter","Product", new { id = i.Id } )" data-filter=".Classic" class="cbp-filter-item">@i.categoryName </a>
-                        }
-
-                    </div>
-                </div>
-            </div>
+            @await Component.InvokeAsync("CategoryMenu")
         </div>
         <!-- END FILTERS -->
         <!-- START PORTFOLIO IMAGES -->

@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { useSelector, useDispatch, } from "react-redux";
 import { Link } from "react-router-dom"
+import moment from 'moment';
 import {update_status_order} from "../actions/order"
 
 export default function OrderItem(props) {
@@ -30,7 +31,7 @@ export default function OrderItem(props) {
                             <td><Link to={`/order/${item.id}`}>#{item.id}</Link></td>
                             <td className="table-column-pl-0">
                                 <div className="media-body">
-                                    <h5 className="text-hover-primary mb-0">{item.date}</h5>
+                                    <p className="text-hover-primary mb-0">{moment(item.date).format("MM-DD-YYYY HH:mm:ss")}</p>
                                 </div>
                             </td>
                             <td>{item.userName}</td>

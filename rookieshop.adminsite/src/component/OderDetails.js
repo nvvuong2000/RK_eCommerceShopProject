@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useSelector, useDispatch, } from "react-redux";
 import { get_list_order_details } from "../actions/order"
 import OrderDetailsItem from './OrderDetailsItem';
+import moment from 'moment';
 export default function OderDetails({ match }) {
 
   const { id } = match.params;
@@ -51,7 +52,7 @@ export default function OderDetails({ match }) {
                 </span>{data.status == 2 ? "Received" : data.status == 1 ? "Delivery" : data.status == -1 ? "Canceled" : "Processing"}
 
                 <span className="ml-2 ml-sm-3">
-                  <i class="fas fa-clock"></i> {data.date}
+                  <i class="fas fa-clock"></i> {moment(data.date).format("MM-DD-YYYY HH:mm:ss")} 
                 </span>
               </div>
               <div className="mt-2">
