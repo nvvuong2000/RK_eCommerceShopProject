@@ -18,12 +18,14 @@ namespace Rookie.CustomerSite.Controllers
         public async Task<List<Category>> getList(int id)
         {
             HttpResponseMessage Res = await RequestServices.GetAsync(APICartEndPoint.GetList);
+           
             if (Res.IsSuccessStatusCode)
             {
                 var list = await Res.Content.ReadAsAsync<IEnumerable<Category>>();
 
                 return list.ToList();
             }
+
             return null;
         }
     }

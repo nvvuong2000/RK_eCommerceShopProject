@@ -6,9 +6,12 @@ import DS from './DS';
 
 export default function Banner(props) {
     const dispatch = useDispatch();
+   
     const handleLogout = () => {
+      
         dispatch(logout());
     }
+    
     return (
         <div>
             <div>
@@ -34,7 +37,7 @@ export default function Banner(props) {
                                                 <Fragment>
                                                     <li className="menu-item"><a href="#">Hello: {props.user.userName}</a></li>
                                                     <li className="menu-item">
-                                                        <Link className="menu-item" onClick={handleLogout} className="menu-item"><a href="#">Log out</a></Link>
+                                                        <Link to="/login" className="menu-item" onClick={handleLogout} className="menu-item">Log out</Link>
                                                     </li>
                                                 </Fragment>
                                             }

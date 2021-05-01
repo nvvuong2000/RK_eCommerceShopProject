@@ -13,19 +13,25 @@ namespace RookieShop.Backend.Services.Interface
 {
     public interface IProduct
     {
-        public Task<bool> addProduct([FromForm] ProductCreateRequest product);
-        public Task<bool> updateProduct(int id, [FromForm] ProductCreateRequest product);
+        public Task<bool> addProduct([FromForm] ProductRequest product);
+
+        public Task<bool> updateProduct(int id, [FromForm] ProductRequest product);
+        
         public Task<List<ProductListVM>> getListProductAsync();
-        public Task<ProductDetailsVM> getProductAsync(int? id);
+        
+        public Task<ProductDetailsVM> getProductAsync(int id);
+        
         public Task<List<ProductListVM>> getListProductbyAdminAsync();
-        public Task<List<ProductListVM>> getListProductbyCategoryID(int? id);
-        public Task<List<Product>> SortDescOrderByPrice();
-        public Task<List<Product>> SortDescAscByPrice();
-        public Task<List<Product>> SortDescOrderByName();
-        public Task<List<Product>> SortAscByName();
-        public Task<List<Product>> searchbyName(string? keyword);
-        public Task<List<ProductListVM>> getlistProductNeedRating(string userId);
+        
+        public Task<List<ProductListVM>> getListProductbyCategoryID(int id);
+              
+        public Task<List<Product>> searchByName(string keyword);
+        
+        public Task<List<ProductListVM>> getListProductNeedRating();
+        
         public Task<bool> ratingProduct(RatingProductRequest request);
+
+        public double avgRatings(int productId);
 
 
     }

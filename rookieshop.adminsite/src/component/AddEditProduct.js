@@ -8,12 +8,22 @@ import { Formik, useFormik } from "formik";
 import * as Yup from "yup";
 export default function AddProduct({ match }) {
 
+  const dispatch = useDispatch();
+
   const { id } = match.params;
 
   const isAddMode = isNaN(id);
+  
+  const getCategoryList = useSelector((state) => state.category.categoryList)
 
-  const dispatch = useDispatch();
+  let categoryList = getCategoryList;
 
+  const getProviderList = useSelector((state) => state.provider.providerList)
+
+  let providerList = getProviderList;
+
+  const product_selected = useSelector((state) => state.product.product_selected)
+  
   const [product, setProduct] = useState({
     productID: 0,
     providerId: 0,
@@ -26,92 +36,82 @@ export default function AddProduct({ match }) {
     status: true,
     pathName: []
   });
-
+  
   const [fileImages, setFileImages] = useState([]);
 
   const [formData, setFormData] = useState(new FormData());
 
-  function handleChange(evt) {
-    const value = evt.target.value;
-    setProduct({
-      ...product,
-      [evt.target.name]: value
-    });
-  }
-  const handleChangeFileImages = (e) => {
-    const files = [];
-    const formData = new FormData();
-    if (e.target.files) {
-      for (let i = 0; i < e.target.files.length; i++) {
-        files.push(URL.createObjectURL(e.target.files[i]));
-        formData.append("FormFiles", e.target.files[i], e.target.files[i].name);
-      }
-      setFileImages(files);
-
-      setProduct({ ...product, pathName: files })
-    }
-    setFormData(formData);
-  }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const formDataSubmit = formData;
-
-    formDataSubmit.append('productID', product.productID);
-    formDataSubmit.append('productName', product.productName);
-    formDataSubmit.append('description', product.description);
-    formDataSubmit.append('unitPrice', product.unitPrice);
-    formDataSubmit.append('stock', product.stock);
-    formDataSubmit.append('isNew', product.isNew);
-    formDataSubmit.append('status', product.status);
-    formDataSubmit.append('categoryID', parseInt(product.categoryId));
-    formDataSubmit.append('providerID', product.providerId);
-
-    return isAddMode
-      ? dispatch(add_product(formDataSubmit))
-      : dispatch(update_product(formDataSubmit))
-
-
-  };
+  
   useEffect(() => {
-    if (!isAddMode) {
-      dispatch(get_product_by_id(id));
-    }
-
-  }, [])
-
-  useEffect(() => {
+    
     dispatch(get_category_list());
+
     dispatch(get_provider_list());
-  }, [])
 
-  const getCategoryList = useSelector((state) => state.category.categoryList)
+    if (!isAddMode) {
+    
+      dispatch(get_product_by_id(id));
+    
+    }
 
-  let categoryList = getCategoryList.data;
-
-  const getProviderList = useSelector((state) => state.provider.providerList)
-
-  let providerList = getProviderList.data;
-
-  const product_selected = useSelector((state) => state.product.product_selected.data)
-
+  }, []);
+  
   useEffect(() => {
     if (isAddMode == false && product_selected) {
       setProduct({
         productID: product_selected.id,
+       
         providerId: product_selected.providerId,
+       
         categoryId: product_selected.categoryId,
+       
         productName: product_selected.productName,
+       
         stock: product_selected.stock,
+       
         unitPrice: product_selected.unitPrice,
+       
         description: product_selected.description,
+       
         isNew: product_selected.isNew,
+       
         status: product_selected.status,
+       
         pathName: product_selected.pathName
       })
     }
   }, [product_selected]);
+  
+  const  handleChange=(evt)=> {
+    const value = evt.target.value;
+   
+    setProduct({
+     
+      ...product,
+     
+      [evt.target.name]: value
+   
+    });
+  }
+  const handleChangeFileImages = (e) => {
+    const files = [];
+   
+    const formData = new FormData();
+   
+    if (e.target.files) {
+      for (let i = 0; i < e.target.files.length; i++) {
+   
+        files.push(URL.createObjectURL(e.target.files[i]));
+   
+        formData.append("FormFiles", e.target.files[i], e.target.files[i].name);
+      }
+   
+      setFileImages(files);
 
+      setProduct({ ...product, pathName: files })
+    }
+      setFormData(formData);
+  }
   const formik = useFormik({
     //When set to true, the form will reinitialize every time the initialValues prop changes. 
     enableReinitialize: true,
@@ -151,7 +151,6 @@ export default function AddProduct({ match }) {
     onSubmit: () => {
 
       const formDataSubmit = formData;
-
       formDataSubmit.append('productID', product.productID);
       formDataSubmit.append('productName', product.productName);
       formDataSubmit.append('description', product.description);
@@ -215,9 +214,9 @@ export default function AddProduct({ match }) {
                             <select className="js-select2-custom custom-select" size={1} id="categoryLabel" name="providerId" tabIndex={-1} aria-hidden="true" onChange={handleChange} >
                               <option value="" selected disabled hidden>Choose here</option>
                               {
-                                providerList && providerList.map(itemProvider => {
+                                providerList && providerList.map((itemProvider,index) => {
                                   return (
-                                    <option value={itemProvider.providerId} data-select2-id={156} selected={formik.values.providerId == itemProvider.providerId}> {itemProvider.providerName}
+                                    <option key={index} value={itemProvider.providerId} data-select2-id={156} selected={formik.values.providerId == itemProvider.providerId}> {itemProvider.providerName}
                                     </option>
                                   );
                                 })
@@ -238,9 +237,9 @@ export default function AddProduct({ match }) {
                             <select className="js-select2-custom custom-select" size={1} id="categoryLabel" name="categoryId" tabIndex={-1} aria-hidden="true" onChange={handleChange} >
                               <option value="" selected disabled hidden>Choose here</option>
                               {
-                                categoryList && categoryList.map(itemCate => {
+                                categoryList && categoryList.map((itemCate,index) => {
                                   return (
-                                    <option value={itemCate.id} selected={formik.values.categoryId == itemCate.id}> {itemCate.categoryName}
+                                    <option key={index} value={itemCate.id} selected={formik.values.categoryId == itemCate.id}> {itemCate.categoryName}
                                     </option>
                                   );
                                 })
@@ -276,14 +275,14 @@ export default function AddProduct({ match }) {
 
 
                         {!isAddMode ?
-                          <div class="col-sm-6">
+                          <div className="col-sm-6">
                             <div className="form-group">
                               <label htmlFor="categoryLabel" className="input-label">Status</label>
                               <select className="js-select2-custom custom-select" name="status" onChange={handleChange} size={1} id="categoryLabel" tabIndex={-1} aria-hidden="true">
 
-                                <option value={true} data-select2-id={156} selected={formik.values.status === true}> On
+                                <option key={1} value={true} data-select2-id={156} selected={formik.values.status === true}> On
                                     </option>
-                                <option value={false} data-select2-id={156} selected={formik.values.status === false}> Off
+                                <option key={2} value={false} data-select2-id={156} selected={formik.values.status === false}> Off
                                     </option>
                               </select>    </div>
                           </div> : ""}
@@ -292,14 +291,14 @@ export default function AddProduct({ match }) {
 
 
                         {!isAddMode ?
-                          <div class="col-sm-6">
+                          <div className="col-sm-6">
                             <div className="form-group">
                               <label htmlFor="categoryLabel" className="input-label">is New</label>
                               <select className="js-select2-custom custom-select" name="isNew" onChange={handleChange} size={1} id="categoryLabel" tabIndex={-1} aria-hidden="true">
 
-                                <option value={true} data-select2-id={156} selected={formik.values.isNew === true}> On
+                                <option value={true} key={1} data-select2-id={156} selected={formik.values.isNew === true}> On
                                     </option>
-                                <option value={false} data-select2-id={156} selected={formik.values.isNew === false}> Off
+                                <option value={false} key={2} data-select2-id={156} selected={formik.values.isNew === false}> Off
                                     </option>
                               </select>
                             </div>
@@ -325,7 +324,7 @@ export default function AddProduct({ match }) {
                     <div className="card-header">
                       <h4 className="card-header-title">Media</h4>
                       <div className="hs-unfold">
-                        <a className="js-hs-unfold-invoker btn btn-sm btn-ghost-secondary" href="javascript:;">
+                        <a className="js-hs-unfold-invoker btn btn-sm btn-ghost-secondary" href="#">
                           <h5 className="mb-1">Choose files to upload</h5>
                         </a>
                       </div>

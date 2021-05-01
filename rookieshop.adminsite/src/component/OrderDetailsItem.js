@@ -1,8 +1,9 @@
 import React, { Fragment } from 'react'
 import { Link } from "react-router-dom"
 export default function OrderDetailsItem(props) {
+
     const orders = props.list;
-    console.log(orders);
+
     return (
         <Fragment>
             <div>
@@ -19,9 +20,9 @@ export default function OrderDetailsItem(props) {
                         </tr>
                     </thead>
                     <tbody>
-                        {orders && orders.map(order => {
+                        {orders && orders.map((order,index) => {
                             return (
-                                <tr role="row" className="odd">
+                                <tr role="row" className="odd" key={index}>
                                     <td className="table-column-pr-0">
                                     </td>
                                     <td>#{order.productId}</td>

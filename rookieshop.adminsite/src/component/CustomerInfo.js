@@ -8,21 +8,24 @@ export default function CustomerInfo(props) {
    
     const [userInfo,setInfo]= useState({
         userName: "",
+       
         userTel:"",
+       
         userAddress:"",
     });
     useEffect(()=>{
         if (info && info[0]) {
             setInfo({
+               
                 userName: info[0].userName,
+               
                 userAddress: info[0].userAddress,
+               
                 userTel: info[0].userTel,
             })
         }
     }, [info])
     
-    
-    console.log(info);
     return (
         <Fragment>
             {userInfo &&
@@ -49,11 +52,11 @@ export default function CustomerInfo(props) {
                             </li>
                            
                             <li>
-                                <i class="fas fa-phone"/> {userInfo.userTel}
+                                <i className="fas fa-phone"/> {userInfo.userTel}
                             </li>
                             
                             <li>
-                                <i class="fas fa-home"/> {userInfo.userAddress}
+                                <i className="fas fa-home"/> {userInfo.userAddress}
                             </li>
                         
                         </ul>

@@ -1,30 +1,21 @@
 
-import React, { Fragment, useEffect } from 'react'
-import { useSelector, useDispatch, } from "react-redux";
+import React, { Fragment, useEffect } from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import {Route, Router,Switch} from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import Orders from './component/Orders'
-import Product from './component/Product'
-import Customer from './component/Customer'
-import CustomerDetails from './component/CustomerDetails'
-import AddProduct from './component/AddEditProduct'
-import OrderDetails from './component/OderDetails'
-import Error from './component/Error';
-import Login from './component/Login'
-import Banner from "./component/Banner"
-import PrivateRoute from './component/PrivateRoute'
-import Page403 from "./component/Page403"
-import Category from "./component/Category"
-import Footer from "./component/Footer"
-import history from './history';
-import {
-  Router,
-  Switch,
-  Route,
-  Link,
-  Redirect
-} from "react-router-dom";
-import { get_info_user} from "./actions/user"
+import { get_info_user } from "./actions/user";
 import AddCategory from './component/AddEditCategory';
+import AddProduct from './component/AddEditProduct';
+import Banner from "./component/Banner";
+import Category from "./component/Category";
+import Customer from './component/Customer';
+import CustomerDetails from './component/CustomerDetails';
+import Footer from "./component/Footer";
+import Login from './component/Login';
+import OrderDetails from './component/OderDetails';
+import Orders from './component/Orders';
+import Product from './component/Product';
+import history from './history';
 
 function App() {
   
@@ -48,7 +39,7 @@ function App() {
       <Router history={history}>
         <Banner user={currentUser}/>
         <Switch>
-          <PrivateRoute exact path="/orders" component={Orders} />
+          <Route exact path="/orders" component={Orders} />
           <Route  exact path="/products" component={Product} />         
           <Route  exact path="/category" component={Category} />
           <Route exact path="/category/addCategory" component={AddCategory} />
@@ -60,7 +51,6 @@ function App() {
           <Route exact path={["/product/addProduct", "/product/:id"]} render={({ match }) => <AddProduct match={match} />} />
           <Route exact path="/order/:id" render={({ match }) => <OrderDetails match={match} />} />
           <Route exact path="/login" component={Login} />
-         <Route exact path="/page403" component={Page403}></Route>
         </Switch>
         <Footer/>
       </Router>

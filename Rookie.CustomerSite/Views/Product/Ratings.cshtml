@@ -13,7 +13,7 @@
         {
             <div class="row">
 
-                <img src="~/book-shop/img/list_empty.png" />
+                <img src="~/book-shop/img/empty.png" />
             </div>
 
 
@@ -32,7 +32,10 @@
                 <div class="col-12 col-md-12  cart_table wow fadeInUp animated" data-wow-delay="300ms" style="visibility: visible; animation-delay: 300ms; animation-name: fadeInUp;">
                     @if (Model.Count <= 0)
                     {
-                        <div></div>
+                        <div class="row">
+
+                            <img src="~/book-shop/img/empty.png" />
+                        </div>
                     }
                     else
                     {
@@ -51,7 +54,7 @@
                                     @foreach (var item in Model)
                                     {
                                         <tr>
-                                            <td>@item.productID</td>
+                                            <td>@item.ProductId</td>
                                             <td>
                                                 <div class="d-table product-detail-cart">
 
@@ -59,12 +62,12 @@
                                                         <div class="row no-gutters">
 
                                                             <div class="col-12 col-lg-2 product-detail-cart-image">
-                                                                <a class="shopping-product" href="javascript:void(0)"><img src="@item.imgDefault" alt="Generic placeholder image"></a>
+                                                                <a class="shopping-product" href="javascript:void(0)"><img src="@item.ImgDefault" alt="Generic placeholder image"></a>
                                                             </div>
 
                                                             <div class="col-12 col-lg-10 mt-auto product-detail-cart-data">
                                                                 <div class="media-body ml-lg-3">
-                                                                    <h4 class="product-name"><a href="@Url.Action("Details","Product",new { id = item.productID })">@item.productName</a></h4>
+                                                                    <h4 class="product-name"><a href="@Url.Action("Details","Product",new { id = item.ProductId })">@item.ProductName</a></h4>
                                                                     <p class=""></p>
                                                                 </div>
                                                             </div>
@@ -74,14 +77,14 @@
                                             </td>
                                             @using (Html.BeginForm("PostRatings", "Product", FormMethod.Post))
                                             {
-                                                <input type="hidden" name="id" value="@item.productID" />
+                                                <input type="hidden" name="id" value="@item.ProductId" />
                                                 <td>
                                                     <div class="star-rating">
-                                                        <input type="radio" name="stars-@item.productID" value="5" />
-                                                        <input type="radio" name="stars-@item.productID" value="4" />
-                                                        <input type="radio" name="stars-@item.productID" value="3" checked />
-                                                        <input type="radio" name="stars-@item.productID" value="2" />
-                                                        <input type="radio" name="stars-@item.productID" value="1" />
+                                                        <input type="radio" name="stars-@item.ProductId" value="5" />
+                                                        <input type="radio" name="stars-@item.ProductId" value="4" />
+                                                        <input type="radio" name="stars-@item.ProductId" value="3" checked />
+                                                        <input type="radio" name="stars-@item.ProductId" value="2" />
+                                                        <input type="radio" name="stars-@item.ProductId" value="1" />
                                                     </div>
                                                 </td>
                                                 <td class="text-center"><button class="btn-close" type="submit"><i class="lni lni-reload"></i></button></td>
@@ -106,6 +109,6 @@
             <!-- END SHOP CART TABLE -->
         }
 
-        </div>
+    </div>
 </div>
 <!-- END SHOP CART SECTION-->

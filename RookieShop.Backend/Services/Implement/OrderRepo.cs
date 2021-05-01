@@ -16,114 +16,171 @@ namespace RookieShop.Backend.Services.Implement
     public class OrderRepo : IOrder
     {
         private readonly ApplicationDbContext _context;
+       
         private readonly IUserDF _repoUser;
+        
         private readonly IConfiguration _config;
 
         public OrderRepo(ApplicationDbContext context, IUserDF repoUser, IConfiguration config)
         {
             _context = context;
+           
             _repoUser = repoUser;
+            
             _config = config;
         }
+
+        // this method for the customer can watch order list 
+       
         public async Task<List<OrderVm>> myOrderList()
         {
-            var listOrder = await _context.Order.Include(o => o.OrderDetails).Include(o=>o.OrderDetails).Where(x => x.userId == _repoUser.getUserID()).Select(x=>new OrderVm {
+            var listOrder = await _context.Order.Include(o => o.OrderDetails).Include(o=>o.OrderDetails).Where(x => x.UserId == _repoUser.getUserID()).Select(x=>new OrderVm {
                 Id = x.Id,
-                productName = x.OrderDetails.Select(o=>o.productName).ToList(),
-                quantity = x.OrderDetails.Select(o => o.quantity).ToList(),
-                total = x.Total,
-                status = x.status,
-                unitPrice = x.OrderDetails.Select(o=>o.unitPrice).ToList(),
-                date = x.dateOrdered,
+               
+                ProductName = x.OrderDetails.Select(o=>o.ProductName).ToList(),
+                
+                Quantity = x.OrderDetails.Select(o => o.Quantity).ToList(),
+                
+                Total = x.Total,
+                
+                Status = x.Status,
+                
+                UnitPrice = x.OrderDetails.Select(o=>o.UnitPrice).ToList(),
+                
+                Date = x.DateOrdered,
 
             }).ToListAsync();
+           
             return listOrder;
         }
+        // this method for the admin can watch order list and information of customer
         public async Task<List<OrderVm>> getOrderListofCus(string id)
         {
-            var listOrder = await _context.Order.Include(o => o.OrderDetails).Include(o => o.OrderDetails).Include(o => o.User).Where(x => x.userId.Equals(id)).Select(x => new OrderVm
+            var listOrder = await _context.Order.Include(o => o.OrderDetails).Include(o => o.OrderDetails).Include(o => o.User).Where(x => x.UserId.Equals(id)).Select(x => new OrderVm
             {
                 Id = x.Id,
-                productName = x.OrderDetails.Select(o => o.productName).ToList(),
-                quantity = x.OrderDetails.Select(o => o.quantity).ToList(),
-                total = x.Total,
-                status = x.status,
-                unitPrice = x.OrderDetails.Select(o => o.unitPrice).ToList(),
-                date = x.dateOrdered,
-                UserId = x.userId,
-                UserName = x.User.customerName,
-                UserAddress = x.User.address,
+                
+                ProductName = x.OrderDetails.Select(o => o.ProductName).ToList(),
+                
+                Quantity = x.OrderDetails.Select(o => o.Quantity).ToList(),
+                
+                Total = x.Total,
+                
+                Status = x.Status,
+                
+                UnitPrice = x.OrderDetails.Select(o => o.UnitPrice).ToList(),
+                
+                Date = x.DateOrdered,
+                
+                UserId = x.UserId,
+                
+                UserName = x.User.CustomerName,
+                
+                UserAddress = x.User.Address,
+                
                 UserTel = x.User.PhoneNumber,
 
             }).ToListAsync();
+            
             return listOrder;
         }
+        
+        // this method get order details of order
         public async Task<OrderVm> getorDetailsbyOrderId(int id)
         {
             var listOrder = await _context.Order.Include(o => o.OrderDetails).Include(o => o.User).Where(x=>x.Id == id).Select(x => new OrderVm
             {
-                Id = x.Id,
-                productID = x.OrderDetails.Select(o=>o.productId).ToList(),
-                imageDefault = x.OrderDetails.Select(o=>o.Product.ProductImages.Where(img=>img.isDefault==true).Select(img=> _config["Host"]+img.pathName).FirstOrDefault()),
-                productName = x.OrderDetails.Select(o => o.productName).ToList(),
-                quantity = x.OrderDetails.Select(o => o.quantity).ToList(),
-                total = x.Total,
-                status = x.status,
-                unitPrice = x.OrderDetails.Select(o => o.unitPrice).ToList(),
-                date = x.dateOrdered,
-                UserId = x.userId,
-                UserName = x.User.customerName,
-                UserAddress = x.User.address,
+                Id = x.Id,             
+                
+                ProductID = x.OrderDetails.Select(o=>o.ProductId).ToList(),              
+                
+                ImageDefault = x.OrderDetails.Select(o=>o.Product.ProductImages.Where(img=>img.IsDefault==true).Select(img=> _config["Host"]+img.PathName).FirstOrDefault()),
+                
+                ProductName = x.OrderDetails.Select(o => o.ProductName).ToList(),
+                
+                Quantity = x.OrderDetails.Select(o => o.Quantity).ToList(),
+                
+                Total = x.Total,
+                
+                Status = x.Status,
+                
+                UnitPrice = x.OrderDetails.Select(o => o.UnitPrice).ToList(),
+                
+                Date = x.DateOrdered,
+                
+                UserId = x.UserId,
+                
+                UserName = x.User.CustomerName,
+                
+                UserAddress = x.User.Address,
+                
                 UserTel = x.User.PhoneNumber,
 
 
             }).FirstOrDefaultAsync();
+            
             return listOrder;
         }
-        public async Task<Order> myOrderListbyId(int id)
-        {
-            var result = _context.Order.Where(od => od.Id == id).FirstOrDefault();
-            return result;
-        }
+
+        // this method for the admin update status order of customer
 
         public bool updateSttOrdrerAd(StatusOrderRequest statusRequest )
         {
-            var order = _context.Order.Where(od => od.Id == statusRequest.orderId).FirstOrDefault();
+            var order = _context.Order.Where(od => od.Id == statusRequest.OrderId).FirstOrDefault();
+           
             if (order == null)
             {
                 return false;
             }
-            order.status = statusRequest.statusId;
+            order.Status = statusRequest.StatusId;
 
             _context.Order.Update(order);
+            
             _context.SaveChanges();
+            
             return true;
         }
+
+
+        // this method for the customer update status order and customer can evaluated product after
 
         public bool updateSttOrdrerCs(int Id)
         {
             var order = _context.Order.Where(od => od.Id == Id).FirstOrDefault();
+            
             if (order == null)
             {
                 return false;
             }
-            order.status = 2;
+            order.Status = 2;
+            
             _context.Order.Update(order);
+            
             _context.SaveChanges();
+            
             return true;
         }
 
-        public async  Task<List<OrderVm>> getAllOrder()
+        // this method for the admin can watch all order list of all customer 
+
+        public async Task<List<OrderVm>> getAllOrder()
         {
             var listOrder = await _context.Order.Include(o => o.OrderDetails).Include(o => o.User).Select(x => new OrderVm
             {
+                
                 Id = x.Id,
-                total = x.Total,
-                status = x.status,
-                date = x.dateOrdered,
-                UserId = x.userId,
-                UserName = x.User.customerName,
+                
+                Total = x.Total,
+                
+                Status = x.Status,
+                
+                Date = x.DateOrdered,
+                
+                UserId = x.UserId,
+                
+                UserName = x.User.CustomerName,
             }).ToListAsync();
+            
             return listOrder;
         }
     }

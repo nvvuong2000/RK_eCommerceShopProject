@@ -7,15 +7,21 @@ using System.Threading.Tasks;
 namespace  RookieShop.Backend.Models
 {
     public class OrderDetails
-
     {
         public int Id { get; set; }
-        public int orderId { get; set; }
-        public int productId { get; set; }
-        public string productName { get; set; }
-        public int quantity { get; set; }
-        public decimal unitPrice { get; set; }
+        
+        public int OrderId { get; set; }
+        
+        public int ProductId { get; set; }
+        
+        public string ProductName { get; set; }
+        
+        public int Quantity { get; set; }
+        
+        public decimal UnitPrice { get; set; }
+        
         public Order Order { get; set; }
+        
         public Product Product { get; set; }
     }
 }

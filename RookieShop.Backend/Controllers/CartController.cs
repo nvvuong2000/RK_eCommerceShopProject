@@ -25,184 +25,78 @@ namespace RookieShop.Backend.Controllers
     [Authorize("Bearer")]
     public class CartController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IUserDF _repoUser;
+
         private readonly ICart _repo;
-        public CartController(ApplicationDbContext context, IUserDF repoUser, ICart repo)
+        public CartController(ICart repo)
         {
-            _context = context;
-            _repoUser = repoUser;
+
             _repo = repo;
         }
         [HttpGet]
-   
+
         public async Task<List<CartVM>> Index()
         {
-            try
-            {
 
-                var list = await _repo.myCart();
+            var list = await _repo.myCart();
 
-
-                return list;
-
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
+            return list;
         }
-        [HttpGet("add/{id}")]  
-        public async Task<IActionResult> Buy(int id)
+        [HttpGet("add/{id}")]
+        public async Task<bool> Buy(int id)
 
         {
-            // Kiểm tra UserId hiện tại
-            var Userid = _repoUser.getUserID();
 
-            // Lấy danh sách sản phẩm trong giỏ hàng
-            var listItem = await _context.Carts.Where(x => x.userId.Equals(_repoUser.getUserID())).ToListAsync();
+            var result = await _repo.AddProductIntoCart(id);
 
-            // Lấy product theo Id
-            var result = _context.Products.FirstOrDefault(x => x.Id == id);
+            return result;
 
-            // Kiểm tra sản phẩm có trong giỏ hàng chưa?
-
-            var index = await _repo.FindId(id);
-
-            if (result.stock <= 0)
-            {
-                return null;
-            }
-            else
-            {
-                if (index != -1)
-                {
-
-                    // Nếu có sản phẩm thì tăng số lượng lên 1
-                    listItem[index].quantity = listItem[index].quantity + 1;
-                    _context.Carts.Update(listItem[index]);
-                }
-                else
-                {
-
-                    if (result == null)
-                    {
-                        return NotFound();
-                    }
-                    // Tạo mới 1 đối tượng cart
-                    var newItem = new Cart { productId = id, quantity = 1, unitPrice = result.unitPrice, userId = Userid };
-                    _context.Carts.Add(newItem);
-                }
-            }
-            await _context.SaveChangesAsync();
-            return Ok(StatusCodes.Status200OK);
 
 
         }
-        [HttpGet("addquantity/{Id}/number/{quan}/isUpdate/{isUpdate}")]  
+
+
+
+        [HttpGet("addquantity/{Id}/number/{quan}/isUpdate/{isUpdate}")]
         public async Task<IActionResult> AddQuantity(int Id, int quan, bool isUpdate)
         {
 
+            var result = await _repo.addorupdateMulProduct(Id, quan, isUpdate);
+            return Ok(result);
 
-            var listItem = await _context.Carts.Where(x => x.userId.Equals(_repoUser.getUserID())).ToListAsync();
-
-            var result = _context.Products.FirstOrDefault(x => x.Id == Id);
-
-            var index = await _repo.FindId(Id);
-
-
-            if (result.stock < quan)
-            {
-
-                return null;
-                //  throw new Exception("Số lượng vượt quá số lượng tồn");
-            }
-            else
-            {
-                if (index != -1)
-                {
-                    if (isUpdate == true)
-                    {
-                        listItem[index].quantity = quan;
-
-                    }
-                    else
-                    {
-                        listItem[index].quantity = listItem[index].quantity + quan;
-
-                    }
-                    _context.Carts.Update(listItem[index]);
-
-                }
-                else
-                {
-
-                    if (result == null)
-                    {
-                        return NotFound();
-                    }
-
-                    var newItem = new Cart { productId = Id, quantity = quan, unitPrice = result.unitPrice, userId = _repoUser.getUserID() };
-                    _context.Carts.Add(newItem);
-                }
-                await _context.SaveChangesAsync();
-                return Ok(StatusCodes.Status200OK);
-
-            }
         }
 
         [HttpGet("total")]
+
         public async Task<decimal> TotalBill()
         {
-            try
-            {
 
-                var result = await _repo.TotalBill();
+            var result = await _repo.TotalBill();
 
+            return result;
 
-                return result;
-
-            }
-            catch (Exception ex)
-            {
-                return 0;
-            }
         }
 
         [HttpGet("remove/{id}")]
         public async Task<IActionResult> Remove(int id)
         {
 
-            try
-            {
 
-                var result = await _repo.RemoveItem(id);
+            var result = await _repo.RemoveItem(id);
 
+            return Ok(result);
 
-                return Ok(StatusCodes.Status200OK);
-
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
 
 
         }
         [HttpGet("checkout")]
         public async Task<IActionResult> Checkout()
         {
-            try
-            {
-                var result = await _repo.Checkout();
 
-                return Ok(StatusCodes.Status200OK);
+            var result = await _repo.Checkout();
 
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
+            return Ok(result);
+
+
         }
     }
 

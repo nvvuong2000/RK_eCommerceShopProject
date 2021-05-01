@@ -1,9 +1,13 @@
 import * as order from "../contains/order";
 
 const initialState = {
+  
     orderlistofcustomer:[],
+   
     orderDetails:[],
+   
     orderList:[],
+   
     statusOrder:{}
 };
 
@@ -12,12 +16,14 @@ export default (state = initialState, { type, payload }) => {
         case order.ORDERLISTOFCUS: {
 
             state.orderlistofcustomer = payload;
+            
             return { ...state };
 
         }
         case order.ORDERDETAILS: {
 
             state.orderDetails = payload;
+           
             return { ...state };
 
         }
@@ -30,25 +36,12 @@ export default (state = initialState, { type, payload }) => {
         case order.UPDATESTATUSORDER: {
 
             const index = state.orderList.findIndex((x) => x.id === payload.orderId);
+            
             state.orderList[index].status = parseInt(payload.statusId);
-            console.log(index)
+            
             return {
                 ...state,
             };
-   
-            // const {orderList} = state;
-
-            // console.log(orderList);
-
-            // const index = state.orderList.findIndex((x) => x.id == payload.orderId);
-
-            // const item = {...orderList[index]};
-                    
-            // item.status = parseInt(payload.statusId);
-                       
-            // orderList[index] = item;
-
-           // return { ...state, };
 
         }
         default:

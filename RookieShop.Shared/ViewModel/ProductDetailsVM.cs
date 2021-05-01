@@ -1,30 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace RookieShop.Shared.ViewModel
 {
     public class ProductDetailsVM
     {
         public int Id { get; set; }
-        public int providerId { get; set; }
+        public int ProviderId { get; set; }
 
-        public int categoryId { get; set; }
+        public int CategoryId { get; set; }
 
-        public string productName { get; set; }
-        public int stock { get; set; }
-        public decimal unitPrice { get; set; }
-        public string description { get; set; }
-        public string categoryName { get; set; }
+        public string ProductName { get; set; }
+        public int Stock { get; set; }
+        public decimal UnitPrice { get; set; }
+        public string Description { get; set; }
+        public string CategoryName { get; set; }
         public DateTime DateCreated { get; set; }
-        public bool isNew { get; set; }
-        public bool status { get; set; }
-        public double rating { get; set; }
-        public List<int> numberRating { get; set; }
-        public List<string> userId { get; set; }
-        public List<string> alt { get; set; }
-        public List<DateTime> dateRated { get; set; }
-        public List<string> pathName { get; set; }
+        public bool IsNew { get; set; }
+        public bool Status { get; set; }
+        public double Rating { get; set; }
+        public List<int> NumberRating { get; set; }
+        public List<string> UserId { get; set; }
+        public List<string> Alt { get; set; }
+        public List<DateTime> DateRated { get; set; }
+        public List<string> PathName { get; set; }
 
     }
 }

@@ -5,15 +5,19 @@ import moment from 'moment';
 import {update_status_order} from "../actions/order"
 
 export default function OrderItem(props) {
-    console.log(props.list);
-    useEffect(() => console.log('value changed!'),[props.list]);
-    const list  = props.list;
-    console.log(list);
+    
+
     const dispatch = useDispatch();
+    
+    useEffect(() =>{},[props.list]);
+ 
+    const list  = props.list;
+    
     const handleChange = (value,id) => {
         let data =
         {
             "orderId": id,
+          
             "statusId": value
         }
 
@@ -40,7 +44,7 @@ export default function OrderItem(props) {
 
                             <td>
                                 {(item.status == 0) ?
-                                    <select class="js-select2-custom" id={item.id} onChange={(e)=>handleChange(e.target.value,item.id)} key={item.id} >
+                                    <select className="js-select2-custom" id={item.id} onChange={(e)=>handleChange(e.target.value,item.id)} key={item.id} >
                                         <option name="status" value="1">Delivery</option>
                                         <option name="status" value="0" selected >Processing</option>
                                         <option name="status" value="-1">Cancel</option>

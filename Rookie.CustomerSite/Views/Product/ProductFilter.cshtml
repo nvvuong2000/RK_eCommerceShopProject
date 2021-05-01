@@ -18,14 +18,14 @@
                         <ul>
                             @foreach (var i in ViewBag.ListCategory)
                             {
-                                
-                                    <li><a href="@Url.Action("ProductFilter","Product", new { id = i.Id } )"> @i.CategoryName </a><span></span></li>
-                                }
 
-                               
-                            </ul>
+                                <li><a href="@Url.Action("ProductFilter","Product", new { id = i.Id } )"> @i.CategoryName </a><span></span></li>
+                            }
+
+
+                        </ul>
                     </div>
-            
+
                 </div>
             </div>
             <!-- END STICKY NAV -->
@@ -38,19 +38,19 @@
                     <div class="col-12 product-listing-heading">
                         <div class="sort-select-list d-flex ">
                             <label class="mr-2">Sort By:</label>
-                          
-                            @using (Html.BeginForm("ProductFilter", "Product", FormMethod.Post))
-                                {
-                                    <fieldset>
-                                        <select name="flag" id="flag" onchange="this.form.submit()">
-                                           
-                                 
-                                            <option value="Asc-Price" >Sort by price: low to high</option>
-                                            <option value="Desc-Price">Sort by price: high to low</option>
 
-                                        </select>
-                                    </fieldset>
-                                }
+                            @using (Html.BeginForm("ProductFilter", "Product", FormMethod.Post))
+                            {
+                                <fieldset>
+                                    <select name="flag" id="flag" onchange="this.form.submit()">
+
+
+                                        <option value="Asc-Price">Sort by price: low to high</option>
+                                        <option value="Desc-Price">Sort by price: high to low</option>
+
+                                    </select>
+                                </fieldset>
+                            }
                         </div>
 
                     </div>
@@ -65,18 +65,18 @@
                             {
                                 <div class="col-12 col-md-6 col-lg-4 manage-color-hover wow slideInUp" data-wow-delay=".2s">
                                     <div class="product-item owl-theme product-listing-carousel owl-carousel">
-                                        <div class="item p-item-img" >
-                                            <img src="@item.imgDefault" alt="images">
+                                        <div class="item p-item-img">
+                                            <img src="@item.ImgDefault" alt="images">
                                             <div class="text-center d-flex justify-content-center align-items-center">
-                                                <a class="listing-cart-icon" href="@Url.Action("AddProduct","Cart", new { id = item.productID})">
+                                                <a class="listing-cart-icon" href="@Url.Action("AddProduct","Cart", new { id = item.ProductId})">
                                                     <i class="fa fa-shopping-cart"></i>
                                                 </a>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="p-item-detail" style="margin-top:20px">
-                                        <h4 class="text-center p-item-name"><a href="@Url.Action("Details","Product",new { id = item.productID })">@item.productName</a></h4>
-                                        <p class="text-center p-item-price">$ @item.unitPrice</p>
+                                        <h4 class="text-center p-item-name"><a href="@Url.Action("Details","Product",new { id = item.ProductId })">@item.ProductName</a></h4>
+                                        <p class="text-center p-item-price">$ @item.UnitPrice</p>
                                     </div>
                                 </div>
 

@@ -30,7 +30,7 @@ namespace RookieShop.Backend.Data
                 Email = "admin@gmail.com",
                 EmailConfirmed = true,
                 PhoneNumber = "0869295974",
-                customerName = "admin@gmail.com",
+                CustomerName = "admin@gmail.com",
                 PhoneNumberConfirmed = true
             };
             if (userManager.Users.Count(u => u.Email == defaultUser.Email) == 0)

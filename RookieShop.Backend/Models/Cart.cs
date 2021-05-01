@@ -10,15 +10,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace RookieShop.Backend.Models
 {
     public class Cart
-    {
-      
-     
-        public string userId { get; set; }
-     
-        public int productId { get; set; }
-        public int quantity { get; set; }
-        public decimal unitPrice { get; set; }
+    {   
+        public string UserId { get; set; }   
+        
+        public int ProductId { get; set; }
+
+        public int Quantity { get; set; }
+
+        public decimal UnitPrice { get; set; }
+
         public User User { get; set; }
+
         public Product Product { get; set; }
         
 

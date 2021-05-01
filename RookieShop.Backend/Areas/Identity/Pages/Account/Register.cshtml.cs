@@ -100,15 +100,10 @@ namespace RookieShop.Backend.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             { 
-                var user = new User { address = Input.Address, UserName=Input.Email, Email = Input.Email, customerName = Input.FullName, PhoneNumber = Input.PhoneNumber };
+                var user = new User { Address = Input.Address, UserName=Input.Email, Email = Input.Email, CustomerName = Input.FullName, PhoneNumber = Input.PhoneNumber };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-                    //if (!_roleManager.RoleExistsAsync("admin").Result)
-                    //{
-                    //    _logger.LogInformation("Role admin exits in db.");
-                    //    // await _roleManager.CreateAsync(new IdentityRole("admin"));
-                    //}
                     await _userManager.AddToRoleAsync(user,"user");
                     _logger.LogInformation("User created a new account with password.");
 
@@ -140,8 +135,6 @@ namespace RookieShop.Backend.Areas.Identity.Pages.Account
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
-
-            // If we got this far, something failed, redisplay form
             return Page();
         }
     }

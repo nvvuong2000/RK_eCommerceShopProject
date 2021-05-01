@@ -7,11 +7,11 @@ namespace RookieShop.Shared.ViewModel
    public  class CartVM
     {
         public int Id { get; set; }
-        public string productName { get; set; }
+        public string ProductName { get; set; }
      
-        public int quantity { get; set; }
-        public decimal unitPrice { get; set; }
-        public string description { get; set; }
-       public string pathName { get; set; }
+        public int Quantity { get; set; }
+        public decimal UnitPrice { get; set; }
+        public string Description { get; set; }
+       public string PathName { get; set; }
     }
 }

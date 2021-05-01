@@ -21,142 +21,77 @@ namespace RookieShop.Backend.Controllers
     [Authorize("Bearer")]
     public class OrderController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IUserDF _repoUser;
+
         private readonly IOrder _repo;
 
-        public OrderController(ApplicationDbContext context, IUserDF repoUser, IOrder repo)
+        public OrderController(IOrder repo)
         {
-            _context = context;
+
             _repo = repo;
-            _repoUser = repoUser;
+
         }
         [HttpGet]
         [Authorize(Roles = "user")]
         public async Task<ActionResult<IEnumerable<OrderVm>>> GetMyListOrder()
         {
-            try
-            {
 
-                var list = await _repo.myOrderList();
+            var list = await _repo.myOrderList();
 
+            return list;
 
-                return list;
-
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-
-
-            }
         }
+        
+        
         [HttpGet("/getorderlist")]
         [Authorize(Roles = "admin")]
         public async Task<ActionResult<IEnumerable<OrderVm>>> GetListOrder()
         {
-            try
-            {
+            var list = await _repo.getAllOrder();
 
-                var list = await _repo.getAllOrder();
-
-
-                return list;
-
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
+            return list;
 
 
-            }
         }
+      
+        
         [HttpGet("{id}")]
         [Authorize(Roles = "user")]
         public async Task<ActionResult<OrderVm>> GetOrderbyID(int id)
         {
-            try
-            {
+            var list = await _repo.getorDetailsbyOrderId(id);
 
-                var list = await _repo.getorDetailsbyOrderId(id);
-
-
-                return Ok(list);
-
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-
-
-            }
+            return Ok(list);
         }
+        
+        
         [HttpGet("listOrder/{id}")]
         [Authorize(Roles = "user")]
         public async Task<ActionResult<OrderVm>> GetListOrderbyuserID(string id)
         {
+            var list = await _repo.getOrderListofCus(id);
+
+            return Ok(list);
 
 
-            try
-            {
-
-                var list = await _repo.getOrderListofCus(id);
-
-
-                return Ok(list);
-
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-
-
-            }
         }
         [HttpGet("updateSttOrder/{id}")]
         [Authorize(Roles = "user")]
         public bool UpdateSttOdCs(int id)
         {
 
-            
-            try
-            {
+            var result = _repo.updateSttOrdrerCs(id);
 
-                var result = _repo.updateSttOrdrerCs(id);
-
-
-                return result;
-
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-
-
-            }
+            return result;
         }
+       
+        
         [HttpPost("updateSttOrderad")]
         [Authorize(Roles = "admin")]
         public bool UpdateSttOdAd(StatusOrderRequest statusRequest)
         {
+            var result = _repo.updateSttOrdrerAd(statusRequest);
 
-
-            try
-            {
-
-                var result = _repo.updateSttOrdrerAd(statusRequest);
-
-
-                return result;
-
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-
-
-            }
+            return result;
         }
-
     }
 }

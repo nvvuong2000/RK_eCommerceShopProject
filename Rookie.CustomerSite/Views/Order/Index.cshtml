@@ -58,16 +58,16 @@
                                                             <div class="col-12 col-lg-10 mt-auto product-detail-cart-data">
                                                                 <div class="media-body ml-lg-3">
 
-                                                                    @if (item.productName.Count == 1)
+                                                                    @if (item.ProductName.Count == 1)
                                                                     {
-                                                                        <p class="product-des">
-                                                                            <br>@item.quantity[0] <br><span>x @item.productName[0] </span>
-                                                                        </p>
+                                                                    <p class="product-des">
+                                                                        <strong>@item.Quantity[0] </strong>x<span> @item.ProductName[0] </span>
+                                                                    </p>
                                                                     }
                                                                     else
                                                                     {
                                                                         <p class="product-des">
-                                                                            <strong>@item.quantity[0] </strong>x<span> @item.productName[0] </span>
+                                                                            <strong>@item.Quantity[0] </strong>x<span> @item.ProductName[0] </span>
                                                                             <span>.... more</span>
                                                                         </p>
                                                                     }
@@ -79,30 +79,30 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                @if (item.status == 0)
+                                                @if (item.Status == 0)
                                                 {
                                                     <h4 class="text-center amount">PROCCESSING</h4>
                                                 }
-                                                @if (item.status == 1)
+                                                @if (item.Status == 1)
                                                 {
                                                     <h4 class="text-center amount">TRANSPORTING</h4>
                                                 }
-                                                @if (item.status == 2)
+                                                @if (item.Status == 2)
                                                 {
                                                     <h4 class="text-center amount">RECEVIED</h4>
                                                 }
-                                                @if (item.status == -1)
+                                                @if (item.Status == -1)
                                                 {
                                                     <h4 class="text-center amount">CANCELED</h4>
                                                 }
                                             </td>
                                             <td>
-                                                <h4 class="text-center amount">@item.total</h4>
+                                                <h4 class="text-center amount">@item.Total</h4>
                                             </td>
 
 
                                             <td class="text-center"><a href="/order/@item.Id"><i class="lni-eye"></i></a></td>
-                                            @if (item.status == 1)
+                                            @if (item.Status == 1)
                                             {
                                                 <td class="text-center"><a href="@Url.Action("updateStatusOrder", "Order", new { id = item.Id })" class="btn btn-outline-danger"> Đã nhận được hàng</a></td>
                                             }
@@ -124,8 +124,7 @@
                 </div>
 
                 <!-- END SHOP CART TABLE -->
-
             }
-            </div>
         </div>
-<!-- END SHOP CART SECTION-->
+    </div>
+    <!-- END SHOP CART SECTION-->

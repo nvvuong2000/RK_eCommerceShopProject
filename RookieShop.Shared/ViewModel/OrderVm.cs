@@ -7,14 +7,14 @@ namespace RookieShop.Shared.ViewModel
    public  class OrderVm
     {
         public int Id { get; set; }
-        public List<int> productID { get; set; }
-        public List<string> productName { get; set; }
-        public List<int> quantity { get; set; }
-        public List<decimal> unitPrice { get; set; }
-        public IEnumerable<string> imageDefault { get; set; }
-        public DateTime date { get; set; }
-        public decimal total { get; set; }
-        public int status { get; set; }
+        public List<int> ProductID { get; set; }
+        public List<string> ProductName { get; set; }
+        public List<int> Quantity { get; set; }
+        public List<decimal> UnitPrice { get; set; }
+        public IEnumerable<string> ImageDefault { get; set; }
+        public DateTime Date { get; set; }
+        public decimal Total { get; set; }
+        public int Status { get; set; }
         public string UserId { get; set; }
         public string UserName { get; set; }
         public string UserAddress { get; set; }

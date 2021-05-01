@@ -1,17 +1,18 @@
-import React, { Fragment, useEffect } from 'react'
-import { useSelector, useDispatch, } from "react-redux";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { get_category_list } from "../actions/category"
+import { get_category_list } from "../actions/category";
 import CategoryList from './CategoryList';
-import ProductList from './ProductList';
 export default function Product() {
     const dispatch = useDispatch();
+   
     useEffect(() => {
 
         dispatch(get_category_list())
     }, [])
     const getCategoryList = useSelector((state) => state.category.categoryList)
-    let categoryList = getCategoryList.data;
+
+    let categoryList = getCategoryList;
     return (
         <div>
             {/* Content */}
@@ -31,12 +32,12 @@ export default function Product() {
                     {/* Nav Scroller */}
                     <div className="js-nav-scroller hs-nav-scroller-horizontal">
                         <span className="hs-nav-scroller-arrow-prev" style={{ display: 'none' }}>
-                            <a className="hs-nav-scroller-arrow-link" href="javascript:;">
+                            <a className="hs-nav-scroller-arrow-link" href="#">
                                 <i className="tio-chevron-left" />
                             </a>
                         </span>
                         <span className="hs-nav-scroller-arrow-next" style={{ display: 'none' }}>
-                            <a className="hs-nav-scroller-arrow-link" href="javascript:;">
+                            <a className="hs-nav-scroller-arrow-link" href="#">
                                 <i className="tio-chevron-right" />
                             </a>
                         </span>
@@ -53,7 +54,6 @@ export default function Product() {
                 </div>
                 {/* End Page Header */}
              
-
                 {/* Card */}
                 <div className="card">
                     {/* Header */}

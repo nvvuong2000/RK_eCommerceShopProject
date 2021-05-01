@@ -10,6 +10,6 @@ namespace RookieShop.Shared.ViewModel
         public string UserName { get; set; }
         public string UserAddress { get; set; }
         public string UserTel { get; set; }
-        public string roles { get; set; }
+        public string Roles { get; set; }
     }
 }

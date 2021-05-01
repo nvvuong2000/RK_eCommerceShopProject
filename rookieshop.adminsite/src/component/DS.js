@@ -24,7 +24,7 @@ export default function DS() {
                             <div className="service">
                                 <div className="media">
                                     <div className="service-card">
-                                        <i class="fa fa-list-alt mr-3" aria-hidden="true"></i>
+                                        <i className="fa fa-list-alt mr-3" aria-hidden="true"></i>
                                         <div className="media-body">
                                             <h5 className="mt-0"> <Link to='/category'>MANAGE CATEGORY</Link></h5>
                                            
@@ -37,7 +37,7 @@ export default function DS() {
                             <div className="service">
                                 <div className="media">
                                     <div className="service-card">
-                                        <i class="fas fa-box-open mr-3"></i>
+                                        <i className="fas fa-box-open mr-3"></i>
                                         <div className="media-body">
                                             <h5 className="mt-0">
                                                 <Link to='/orders'> MANAGE ORDER</Link>

@@ -6,7 +6,7 @@ namespace RookieShop.Shared.Repo
 {
     public class CategoryRequest
     {
-        public string categoryName { get; set; }
-        public string categoryDescription { get; set; }
+        public string CategoryName { get; set; }
+        public string CategoryDescription { get; set; }
     }
 }

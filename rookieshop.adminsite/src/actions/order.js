@@ -31,7 +31,7 @@ export const get_list_order = () => async (dispatch) => {
     
         dispatch({
             type: types.GETALLORDERLIST,
-            payload: data.data,
+            payload: data,
         });
 
     } catch (error) {

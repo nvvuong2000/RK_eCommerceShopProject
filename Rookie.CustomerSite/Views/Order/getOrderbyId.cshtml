@@ -16,43 +16,43 @@
                         </div>
                         <div class="col-6 col-md">
                             <h6 class="text-charcoal mb-0 w-100">Date</h6>
-                            <p class="text-pebble mb-0 w-100 mb-2 mb-md-0">@Model.date</p>
+                            <p class="text-pebble mb-0 w-100 mb-2 mb-md-0">@Model.Date</p>
                         </div>
                         <div class="col-6 col-md">
                             <h6 class="text-charcoal mb-0 w-100">Total</h6>
-                            <p class="text-pebble mb-0 w-100 mb-2 mb-md-0">$ @Model.total</p>
+                            <p class="text-pebble mb-0 w-100 mb-2 mb-md-0">$ @Model.Total</p>
                         </div>
                         <div class="col-6 col-md">
-                                <h6 class="text-charcoal mb-0 w-100">Shipped To</h6>
-                                <p class="text-pebble mb-0 w-100 mb-2 mb-md-0">@Model.UserAddress</p>
-                            </div>
-                       
+                            <h6 class="text-charcoal mb-0 w-100">Shipped To</h6>
+                            <p class="text-pebble mb-0 w-100 mb-2 mb-md-0">@Model.UserAddress</p>
+                        </div>
+
                     </div>
 
                 </div>
                 <div class="list-group-item p-3 bg-white">
                     <div class="row">
-                        @for (int i = 0; i < Model.productName.Count; i++)
+                        @for (int i = 0; i < Model.ProductName.Count; i++)
                         {
 
-                                <div class="col-3 col-md-1 img-product">
-                                    <img class="img-fluid pr-3" src="@Model.imageDefault.ToList()[i]" alt="">
-                                </div>
-                                <div class="col-9 col-md-8 pr-0 pr-md-3">
-                                    <h6 class="text-charcoal mb-2 mb-md-1">
-                                        <a href="@Url.Action("Details","Product",new { id = Model.productID[i] })" class="text-charcoal">@Model.quantity[i]  x @Model.productName[i]</a>
+                        <div class="col-3 col-md-1 img-product">
+                            <img class="img-fluid pr-3" src="@Model.ImageDefault.ToList()[i]" alt="">
+                        </div>
+                        <div class="col-9 col-md-8 pr-0 pr-md-3">
+                            <h6 class="text-charcoal mb-2 mb-md-1">
+                                <a href="@Url.Action("Details","Product",new { id = Model.ProductID[i] })" class="text-charcoal">@Model.Quantity[i]  x @Model.ProductName[i]</a>
 
-                                    </h6>
-                                    <ul class="list-unstyled text-pebble mb-2 small">
-                                        <li class="">
-                                            <b>Sub Total:</b>  @Convert.ToDecimal(Convert.ToInt32(@Model.quantity[i]) * @Convert.ToDecimal(@Model.unitPrice[i]))
-                                        </li>
+                            </h6>
+                            <ul class="list-unstyled text-pebble mb-2 small">
+                                <li class="">
+                                    <b>Sub Total:</b>  @Convert.ToDecimal(Convert.ToInt32(@Model.Quantity[i]) * @Convert.ToDecimal(@Model.UnitPrice[i]))
+                                </li>
 
-                                    </ul>
-                                </div>
-                                <div class="col-12 col-md-3 hidden-sm-down">
+                            </ul>
+                        </div>
+                        <div class="col-12 col-md-3 hidden-sm-down">
 
-                                </div>
+                        </div>
                         }
                     </div>
                 </div>

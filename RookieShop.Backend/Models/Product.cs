@@ -10,24 +10,35 @@ namespace  RookieShop.Backend.Models
     public class Product
     {
         public int Id { get; set; }
-        public int providerId { get; set; }
-       
-        public int categoryId { get; set; }
 
-        public string productName { get; set; }
-        public int stock { get; set; }
-        public decimal unitPrice { get; set; }
-        public string description { get; set; }
+        public int ProviderId { get; set; }
+       
+        public int CategoryId { get; set; }
+
+        public string ProductName { get; set; }
+        
+        public int Stock { get; set; }
+        
+        public decimal UnitPrice { get; set; }
+        
+        public string Description { get; set; }
         
         public DateTime DateCreated { get; set; }
+        
         public DateTime DateUpated { get; set; }
-        public bool isNew { get; set; }
-        public bool status { get; set; }
-        public double rating { get; set; }
+        
+        public bool IsNew { get; set; }
+        
+        public bool Status { get; set; }
+        
+        public double Rating { get; set; }
     
         public Category Category { get; set; }
+       
         public ICollection<ProductImages> ProductImages {get;set;}
+        
         public ICollection<ProviderProduct> ProviderProducts { get; set; }
+        
         public ICollection<RattingProduct> RattingProduct { get; set; }
 
       

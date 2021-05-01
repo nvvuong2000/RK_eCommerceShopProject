@@ -20,83 +20,63 @@ namespace RookieShop.Backend.Controllers
     public class CategoryController : Controller
     {
         private readonly ICategory _repo;
-        // GET: CategoryController
         public CategoryController(ICategory repo)
         {
             _repo = repo;
         }
 
-        // POST: CategoryController/Create
+
         [HttpPost]
         [Authorize(Roles = "admin")]
-        public async Task<bool> Create(CategoryRequest category)
+        public async Task<ActionResult<CategoryRequest>> Create(CategoryRequest category)
         {
-            try
+            Category newItem = new Category()
             {
-                Category newItem = new Category()
-                {
-                    CategoryName = category.categoryName,
-                    categoryDescription = category.categoryDescription,
-                };
-                return await _repo.addCategory(newItem);
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
+                CategoryName = category.CategoryName,
+
+                CategoryDescription = category.CategoryDescription,
+            };
+
+            var result = await _repo.addCategory(newItem);
+
+            return Ok(result);
         }
-        
+
         // POST: CategoryController/Create
         [HttpPut]
         [Authorize(Roles = "admin")]
 
-        public async Task<bool> Edit(Category category)
+        public async Task<ActionResult<Category>> Edit(Category category)
         {
-            try
-            {
-               
-                return await _repo.updateCategory(category);
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
+            var result = await _repo.updateCategory(category);
+
+            return Ok(result);
         }
 
         [HttpGet]
         [AllowAnonymous]
         public async Task<List<Category>> Get()
         {
-            try
-            {
 
-                return await _repo.getListCategory();
-            }
-            catch (Exception ex)
-            {
-                 throw new Exception(ex.Message);
-            }
+            return await _repo.GetCategoryList();
+
         }
         [HttpGet("{id}")]
         [AllowAnonymous]
         public async Task<ActionResult<Category>> GetbyID(int id)
         {
-            try
+            var category = await _repo.getCategorybyID(id);
+
+            if (category == null)
             {
 
-                var category =  await  _repo.getCategorybyID(id);
-                if (category == null)
-                {
-                    HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.NotFound);
-                    return Ok(result);
-                }
-                return Ok(category);
+                HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.NotFound);
+
+                return Ok(result);
             }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+            return Ok(category);
         }
+
 
     }
 }

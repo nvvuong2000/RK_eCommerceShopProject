@@ -29,7 +29,7 @@
                     </nav>
                     <div class="pro-detail-sec row">
                         <div class="col-12">
-                            <h4 class="pro-heading text-center text-lg-left">@Model.productName</h4>
+                            <h4 class="pro-heading text-center text-lg-left">@Model.ProductName</h4>
                         </div>
                     </div>
                     <div class="row product-list product-detail">
@@ -38,18 +38,18 @@
                             <div class="wrapper">
                                 <div class="Gallery swiper-container img-magnifier-container" id="gallery">
                                     <div class="swiper-wrapper myimgs">
-                                        @for (int i = 0; i < Model.pathName.Count; i++)
+                                        @for (int i = 0; i < Model.PathName.Count; i++)
                                         {
-                                            <div class="swiper-slide"> <a href="@Model.pathName[i]" data-fancybox="@i" title="Zoom In"><img class="myimage" src="@Model.pathName[i]" alt="@Model.alt[i]"></a></div>
+                                            <div class="swiper-slide"> <a href="@Model.PathName[i]" data-fancybox="@i" title="Zoom In"><img class="myimage" src="@Model.PathName[i]" alt="@Model.Alt[i]"></a></div>
                                         }
                                     </div>
                                 </div>
 
                                 <div class="Thumbs swiper-container" id="thumbs">
                                     <div class="swiper-wrapper">
-                                        @for (int i = 0; i < Model.pathName.Count; i++)
+                                        @for (int i = 0; i < Model.PathName.Count; i++)
                                         {
-                                            <div class="swiper-slide"> <img src="@Model.pathName[i]" alt="thumnails"></div>
+                                            <div class="swiper-slide"> <img src="@Model.PathName[i]" alt="thumnails"></div>
                                         }
                                     </div>
                                 </div>
@@ -62,12 +62,12 @@
                             <div class="share-product-details">
 
                                 <ul class="user-rating" style="color:yellow">
-                                    <li><a href="#" style="color:black">@Model.rating</a></li>
+                                    <li><a href="#" style="color:black">@Model.Rating</a></li>
                                     @for (var i = 1; i <= 5; i++)
                                     {
-                                        if (Model.rating < i)
+                                        if (Model.Rating < i)
                                         {
-                                            if ((Math.Round(Model.rating, 1) == i))
+                                            if ((Math.Round(Model.Rating, 1) == i))
                                             {
                                                 <li><a href="#" class="star"><i class="lni lni-star-half"></i></a></li>
 
@@ -84,12 +84,12 @@
                                             <li><a href="#" class="star"><i class="lni-star-filled"></i></a></li>
                                         }
                                     }
-                                    <li style="color:black">by @Model.userId.Count() reviewed </li>
+                                    <li style="color:black">by @Model.UserId.Count() reviewed </li>
                                 </ul>
                             </div>
                             <div class="product-single-price">
-                                <h4><span class="real-price">@Model.unitPrice</span> <span></span></h4>
-                                <p class="pro-description">@Model.description</p>
+                                <h4><span class="real-price">@Model.UnitPrice</span> <span></span></h4>
+                                <p class="pro-description">Stock:@Model.Stock</p>
                             </div>
 
                             <div class="product-checklist">
@@ -123,7 +123,7 @@
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                         <li class="breadcrumb-item"><p class="d-inline">SKU: <span>@Model.Id</span></p></li>
-                                        <li class="breadcrumb-item"><span class="d-inline">Categories:<span class="comma-separtor"></span><a href="@Url.Action("ProductFilter","Product", new { id = Model.categoryId } )"">@Model.categoryName</a></span></li>
+                                        <li class="breadcrumb-item"><span class="d-inline">Categories:<span class="comma-separtor"></span><a href="@Url.Action("ProductFilter","Product", new { id = Model.CategoryId } )" ">@Model.CategoryName</a></span></li>
 
                                     </ol>
                                 </nav>
@@ -147,15 +147,15 @@
                                         <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Project Description</a>
                                     </li>
                                     <li class="col-6 nav-item">
-                                        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Customer Reviews (@Model.userId.Count)</a>
+                                        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Customer Reviews (@Model.UserId.Count)</a>
                                     </li>
                                 </ul>
                                 <div class="col-12 tab-content" id="myTabContent">
                                     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                        @Model.description
+                                        @Model.Description
                                     </div>
                                     <div class="tab-pane fade reviews" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-                                        @if (Model.userId.Count == 0)
+                                        @if (Model.UserId.Count == 0)
                                         {
 
                                             <div class="alert alert-info fade show alert-dismissible" role="alert">
@@ -166,18 +166,18 @@
                                             </div>
 
                                         }
-                                        @for (int i = 0; i < Model.userId.Count; i++)
+                                        @for (int i = 0; i < Model.UserId.Count; i++)
                                         {
 
 
-                                            <span class="text-center text-lg-left d-block">@Model.dateRated[i]</span>
-                                            <h5 class="mb-2 text-center text-lg-left">  @Model.userId[i]</h5>
+                                            <span class="text-center text-lg-left d-block">@Model.DateRated[i]</span>
+                                            <h5 class="mb-2 text-center text-lg-left">  @Model.UserId[i]</h5>
                                             <p class="text-center text-lg-left">
 
                                                 <ul class="user-rating">
                                                     @for (int j = 0; j < 5; j++)
                                                     {
-                                                        if (Model.numberRating[i] > j)
+                                                        if (Model.NumberRating[i] > j)
                                                         {
                                                             <li><a href="#"><i style="color:yellow !important" class="lni-star-filled"></i></a></li>
                                                         }

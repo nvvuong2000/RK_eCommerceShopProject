@@ -5,31 +5,40 @@ import OrderDetailsItem from './OrderDetailsItem';
 import moment from 'moment';
 export default function OderDetails({ match }) {
 
-  const { id } = match.params;
-
   const dispatch = useDispatch();
+
+  const orderList = useSelector((state) => state.order.orderDetails);
+
+
+  let data = orderList;
+
+
+  const { id } = match.params;
 
   useEffect(() => {
 
     dispatch(get_list_order_details(id))
   }, [])
 
-  const orderList = useSelector((state) => state.order.orderDetails);
-
-  let data = orderList.data;
-
-  const getList = (data) => {
-    var list = [];
-    if (data) {
-      for (var i = 0; i < data.productName.length; i++) {
-        list.push({ productName: data.productName[i], productQuantity: data.quantity[i], productunitPrice: data.unitPrice[i], productImage: data.imageDefault[i], productId: data.productID[i] })
-      }
-      return list
-    }
-  }
   useEffect(() => {
 
   }, [data]);
+
+
+  const getList = (data) => {
+   
+    var list = [];
+   
+    if (data) {
+     
+      for (var i = 0; i < data.productName.length; i++) {
+      
+        list.push({ productName: data.productName[i], productQuantity: data.quantity[i], productunitPrice: data.unitPrice[i], productImage: data.imageDefault[i], productId: data.productID[i] })
+      }
+     
+      return list;
+    }
+  }
 
   const list = getList(data);
   
@@ -52,7 +61,7 @@ export default function OderDetails({ match }) {
                 </span>{data.status == 2 ? "Received" : data.status == 1 ? "Delivery" : data.status == -1 ? "Canceled" : "Processing"}
 
                 <span className="ml-2 ml-sm-3">
-                  <i class="fas fa-clock"></i> {moment(data.date).format("MM-DD-YYYY HH:mm:ss")} 
+                  <i className="fas fa-clock"></i> {moment(data.date).format("MM-DD-YYYY HH:mm:ss")}
                 </span>
               </div>
               <div className="mt-2">
@@ -73,7 +82,7 @@ export default function OderDetails({ match }) {
               <div className="row justify-content-md-end mb-3">
                 <div className="col-md-8 col-lg-7">
                   <div className="row text-sm-right">
-                    <dt className="col-sm-10">Amount paid:<span class="ml-4">{data.total}</span></dt>
+                    <dt className="col-sm-10">Amount paid:<span className="ml-4">{data.total}</span></dt>
 
                   </div>
                 </div>

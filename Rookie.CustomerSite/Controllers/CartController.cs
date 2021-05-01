@@ -52,7 +52,9 @@ namespace Rookie.CustomerSite.Controllers
                 if (Res.IsSuccessStatusCode)
                 {
                     var cartResponse = await Res.Content.ReadAsAsync<IEnumerable<CartVM>>();
+                    
                     ViewBag.Total = total;                
+                    
                     return View(cartResponse);
                 }
                 else
@@ -71,16 +73,24 @@ namespace Rookie.CustomerSite.Controllers
 
             HttpResponseMessage Res = await RequestServices.GetAsync(APICartEndPoint.InsertToCart + id.ToString(), accessToken);
 
-            if (Res.IsSuccessStatusCode)
+            if (Res.StatusCode.ToString().Equals(HttpStatusCode.Unauthorized.ToString()))
             {
-                TempData["ADD_SUCESS"] = "ADD_SUCESS";
-
-                return RedirectToAction("IndexCart", "Cart");
+                return RedirectToAction("SignIn", "Account");
             }
             else
             {
-                TempData["ERROR_ADD_ITEM"] = "";
-                return RedirectToAction("Index", "Home");
+                if (Res.IsSuccessStatusCode)
+                {
+                    TempData["ADD_SUCESS"] = "ADD_SUCESS";
+
+                    return RedirectToAction("IndexCart", "Cart");
+                }
+                else
+                {
+                    TempData["ERROR_ADD_ITEM"] = "";
+                  
+                    return RedirectToAction("Index", "Home");
+                }
             }
         }
 
@@ -88,10 +98,13 @@ namespace Rookie.CustomerSite.Controllers
         public async Task<ActionResult> Add(IFormCollection form)
         {
             int Id = Convert.ToInt32(form["id"]);
+            
             int quantity = Convert.ToInt32(form["quantity"]);
+          
             bool isUpdate = Convert.ToBoolean(form["isUpdate"]);
 
             string endpoint = "";
+           
             if (isUpdate == true)
             {
                 endpoint = "Cart/addquantity/" + Id.ToString() + "/number/" + quantity.ToString() + "/isUpdate/true";
@@ -100,36 +113,72 @@ namespace Rookie.CustomerSite.Controllers
             {
                 endpoint = "Cart/addquantity/" + Id.ToString() + "/number/" + quantity.ToString() + "/isUpdate/false";
             }
+            
             var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
+            
             HttpResponseMessage Res = await RequestServices.GetAsync(endpoint, accessToken);
-            if (Res.IsSuccessStatusCode)
-            {
 
-                TempData["UPDATE_SUCESS"] = "UPDATE_SUCESS";
-                return RedirectToAction("IndexCart", "Cart");
+            if (Res.StatusCode.ToString().Equals(HttpStatusCode.Unauthorized.ToString()))
+            {
+                return RedirectToAction("SignIn", "Account");
+                TempData["EXPIRE"] = "";
+
+                return RedirectToAction("Index", "Home");
             }
             else
             {
-                TempData["ERROR_ADD_ITEM"] = "";
-                return RedirectToAction("Index", "Home");
-            }
+                if (Res.IsSuccessStatusCode)
+                {
+                   var responseBodyAsText = await Res.Content.ReadAsStringAsync();
+                    if (!responseBodyAsText.Equals("false"))
+                    {
+                        TempData["UPDATE_SUCESS"] = "UPDATE_SUCESS";
 
+                        return RedirectToAction("IndexCart", "Cart");
+                    }
+                    else
+                    {
+                        TempData["ERROR_ADD_ITEM"] = "";
+
+                        return RedirectToAction("Index", "Home");
+                    }
+                    
+                }
+                else
+                {
+                    TempData["ERROR_ADD_ITEM"] = "";
+
+                    return RedirectToAction("Index", "Home");
+                }
+               
+            }
         }
 
         [HttpGet("/cart/remove/{id}")]
         public async Task<ActionResult> RemoveItem(int id)
         {
             var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
+           
             HttpResponseMessage Res = await RequestServices.GetAsync(APICartEndPoint.DeleteFromCart + id.ToString(), accessToken);
-            if (Res.IsSuccessStatusCode)
+
+            if (Res.StatusCode.ToString().Equals(HttpStatusCode.Unauthorized.ToString()))
             {
-                TempData["REMOVE_SUCESS"] = "REMOVE_SUCESS";
-                return RedirectToAction("IndexCart", "Cart");
+                return RedirectToAction("SignIn", "Account");
             }
             else
             {
-                TempData["ERROR"] = "ERROR";
-                return View();
+                if (Res.IsSuccessStatusCode)
+                {
+                    TempData["REMOVE_SUCESS"] = "REMOVE_SUCESS";
+                   
+                    return RedirectToAction("IndexCart", "Cart");
+                }
+                else
+                {
+                    TempData["ERROR"] = "ERROR";
+                    
+                    return View();
+                }
             }
 
         }
@@ -137,8 +186,11 @@ namespace Rookie.CustomerSite.Controllers
         public async Task<Decimal> Total()
         {
             decimal total = 0;
+            
             var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
+            
             HttpResponseMessage Res = await RequestServices.GetAsync(APICartEndPoint.Total, accessToken);
+           
             if (Res.IsSuccessStatusCode)
             {
                 total = await Res.Content.ReadAsAsync<decimal>();
@@ -150,15 +202,30 @@ namespace Rookie.CustomerSite.Controllers
         public async Task<IActionResult> Checkout()
         {
             var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
+         
             HttpResponseMessage Res = await RequestServices.GetAsync(APICartEndPoint.Checkout, accessToken);
-            if (Res.IsSuccessStatusCode)
+            
+            if (Res.StatusCode.ToString().Equals(HttpStatusCode.Unauthorized.ToString()))
             {
-                TempData["CHECKOUT_SUCESS"] = "CHECKOUT_SUCESS";
-                return RedirectToAction("Index", "Order");
-
+                return RedirectToAction("SignIn", "Account");
             }
-            TempData["ERROR"] = "ERROR";
-            return RedirectToAction("IndexCart", "Cart");
+            else
+            {
+                if (Res.IsSuccessStatusCode)
+                {
+                    TempData["CHECKOUT_SUCESS"] = "CHECKOUT_SUCESS";
+
+                    return RedirectToAction("Index", "Order");
+
+                }
+                else
+                {
+                    TempData["ERROR"] = "ERROR";
+
+                    return RedirectToAction("IndexCart", "Cart");
+
+                }
+            }
         }
     }
 }

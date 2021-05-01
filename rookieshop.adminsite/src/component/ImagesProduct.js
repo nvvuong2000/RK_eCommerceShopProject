@@ -1,18 +1,16 @@
 import React from 'react'
 
 export default function ImagesProduct(props) {
+
     let imageList = props.list
-    console.log(imageList);
 
     return (
         <div className="card-body">
             {/* Gallery */}
-            <div id="fancyboxGallery" className="js-fancybox row justify-content-sm-center gx-2" data-hs-fancybox-options="{
-                 &quot;selector&quot;: &quot;#fancyboxGallery .js-fancybox-item&quot;
-               }">
+            <div id="fancyboxGallery" className="js-fancybox row justify-content-sm-center gx-2">
                 {imageList && imageList.map((item,index) => {
                     return(
-                        <div className="col-6 col-sm-4 col-md-3 mb-3 mb-lg-5">
+                        <div className="col-6 col-sm-4 col-md-3 mb-3 mb-lg-5" key={index}>
 
                             {/* Card */}
                             <div className="card card-sm">

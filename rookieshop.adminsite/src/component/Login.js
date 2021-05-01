@@ -6,9 +6,13 @@ import { useHistory } from "react-router-dom";
 import { Formik, useFormik } from "formik";
 import * as Yup from "yup";
 export default function Login() {
+
+  const dispatch = useDispatch();
+  
   const { currentUser } = useSelector((state) => state.user);
-  const [isAuthencation, setisAuthencation] = useState(false);
+
   let history = useHistory();
+  
   if (currentUser) {
 
     if (currentUser.roles == "admin") {
@@ -19,30 +23,46 @@ export default function Login() {
 
   }
 
-  const dispatch = useDispatch();
+
+  
   const [data, setData] = useState({
+  
     email: "",
+  
     password: "",
   });
   function handleChange(evt) {
+   
     const value = evt.target.value;
+   
     setData({
+   
       ...data,
+   
       [evt.target.name]: value
+   
     });
   }
   const formik = useFormik({
     //When set to true, the form will reinitialize every time the initialValues prop changes. 
     enableReinitialize: true,
+    
     initialValues: {
+     
       email: data.email,
+     
       password: data.password,
     },
+   
     validationSchema: Yup.object({
+   
       email: Yup.string().email(),
+   
       password: Yup.string().required().min(8),
     }),
+   
     onSubmit: () => {
+     
       dispatch(login(data))
     }
   });

@@ -7,16 +7,17 @@ export default function CustomerDetails({ match }) {
 
     const { id } = match.params;
 
-
     const dispatch = useDispatch();
+   
     useEffect(() => {
 
         dispatch(get_list_order_of_customer(id))
     }, [])
+
     const orderList = useSelector((state) => state.order.orderlistofcustomer)
-    let data = orderList.data;
-    console.log(data);
-  
+
+    let data = orderList;
+
 
     return (
         <div>

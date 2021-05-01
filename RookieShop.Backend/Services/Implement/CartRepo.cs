@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using RookieShop.Backend.Data;
 using RookieShop.Backend.Models;
@@ -14,128 +15,165 @@ namespace RookieShop.Backend.Services.Implement
     public class CartRepo : ICart
     {
         private readonly ApplicationDbContext _context;
+
         private readonly IConfiguration _config;
+
         private readonly IUserDF _repoUser;
 
         public CartRepo(ApplicationDbContext context, IUserDF repoUser, IConfiguration config )
         {
             _context = context;
+
             _repoUser = repoUser;
+
             _config = config;
         }
-        public async Task<int> FindID(int id)
-        {
-            
-            var listItem = await _context.Carts.Where(x => x.userId == _repoUser.getUserID()).ToListAsync();
-
-            for (int i = 0; i < listItem.Count; i++)
-            {
-
-                if (listItem[i].productId == id)
-                {
-                    return i;
-                }
-            }
-            return -1;
-        }
-
+        
+  
         public async Task<bool> AddProductIntoCart(int id)
         {
-            var listItem = await _context.Carts.Where(x => x.userId == _repoUser.getUserID()).ToListAsync();
-            var result = _context.Products.FirstOrDefault(x => x.Id == id);
-            if (result.stock <= 0)
-            {
-                throw new Exception("Hết hàng");
+            // Check Current User
 
-            }
-            else if (result == null)
+            var Userid = _repoUser.getUserID();
+
+            // Get list product in cart's customer 
+
+            var listItem = await _context.Carts.Where(x => x.UserId.Equals(_repoUser.getUserID())).ToListAsync();
+
+            // Search product by product id in product list  then get some property of product
+
+            var result = _context.Products.FirstOrDefault(x => x.Id == id);
+
+            // Check whether products are in the shopping cart?
+
+            var index = await FindProductByIdInCart(id);
+
+            // if produtc not exits in product list false
+
+            if (result == null)
             {
-                throw new Exception("Không tìm thấy");
+                return false;
             }
-           
             else
             {
-                var index = await FindID(id);
-                if (index != -1)
+                // if stock of product less 0 then return false
+
+                if (result.Stock <= 0)
                 {
-                    listItem[index].quantity = listItem[index].quantity + 1;
-                    _context.Carts.Update(listItem[index]);
+
+                    return false;
+
                 }
                 else
                 {
+                    // In case: product is exists in cart
 
-                    var newItem = new Cart { productId = id, quantity = 1, unitPrice = result.unitPrice, userId = _repoUser.getUserID() };
-                  
-                    _context.Carts.Add(newItem);
-                    await _context.SaveChangesAsync();
+                    if (index != -1)
+                    {
 
+                        // Increase quantity of product by 1
 
+                        listItem[index].Quantity = listItem[index].Quantity + 1;
+
+                        //  and update this product in cart 
+
+                        _context.Carts.Update(listItem[index]);
+                    }
+
+                    // In case: product is not exists in cart
+
+                    else
+                    {
+
+                        // create new item in cart
+
+                        var newItem = new Cart { ProductId = id, Quantity = 1, UnitPrice = result.UnitPrice, UserId = Userid };
+
+                        // add item  in cart
+
+                        _context.Carts.Add(newItem);
+                    }
                 }
-                    result.stock = result.stock - 1;
-                    _context.Products.Update(result);
-                    await _context.SaveChangesAsync();
-                
             }
+            // save
+
+            await _context.SaveChangesAsync();
+
             return true;
+
         }
+
+
+        // This method get list cart item;
 
         public async Task<List<CartVM>> myCart()
         {
-            var list = await _context.Carts.Include(c => c.Product).Include(c=>c.Product.ProductImages).Where(c => c.userId.Equals(_repoUser.getUserID())).Select(x => new CartVM
-
-
+            var list = await _context.Carts.Include(c => c.Product).Include(c=>c.Product.ProductImages).Where(c => c.UserId.Equals(_repoUser.getUserID())).Select(x => new CartVM
             {
-                Id = x.productId,
-                productName = x.Product.productName,
-                unitPrice = x.Product.unitPrice,
-                quantity = x.quantity,
-                pathName = x.Product.ProductImages.Where(x=>x.isDefault==true).Select(x => _config["Host"]+ x.pathName).FirstOrDefault(),
+                Id = x.ProductId,
+
+                ProductName = x.Product.ProductName,
+
+                UnitPrice = x.Product.UnitPrice,
+
+                Quantity = x.Quantity,
+
+                PathName = x.Product.ProductImages.Where(x=>x.IsDefault==true).Select(x => _config["Host"]+ x.PathName).FirstOrDefault(),
 
             }).ToListAsync();
-            
-           
-           
+
             return list;
         }
 
+        // This method remove item in customer's cart ;
+
         public async Task<bool> RemoveItem(int id)
         {
-            var listItem = await _context.Carts.Where(x => x.userId == _repoUser.getUserID()).ToListAsync();
+            var listItem = await _context.Carts.Where(x => x.UserId == _repoUser.getUserID()).ToListAsync();
+
             var result = _context.Products.FirstOrDefault(x => x.Id == id);
 
-            int index = await FindID(id);
+            int index = await FindProductByIdInCart(id);
+
             if (index == -1)
             {
                 return false ;
 
             }
             _context.Carts.Remove(listItem[index]);
+
             await _context.SaveChangesAsync();
+
             return true;
         }
 
+        // This method return total money in customer's cart
         public async  Task<decimal> TotalBill()
         {
             decimal total = 0;
-            var listItem = await _context.Carts.Where(x => x.userId == _repoUser.getUserID()).ToListAsync();
+
+            var listItem = await _context.Carts.Where(x => x.UserId == _repoUser.getUserID()).ToListAsync();
 
             for (int i = 0; i < listItem.Count; i++)
             {
 
-                total += listItem[i].unitPrice * listItem[i].quantity;
+                total += listItem[i].UnitPrice * listItem[i].Quantity;
             }
+
             return total;
         }
 
-        public async Task<int> FindId(int id)
+        // This method return index of product in customer'cart; if exits return index else return -1;
+
+        public async Task<int> FindProductByIdInCart(int id)
         {
 
-            var listItem = await _context.Carts.Where(x => x.userId == _repoUser.getUserID()).ToListAsync();
+            var listItem = await _context.Carts.Where(x => x.UserId == _repoUser.getUserID()).ToListAsync();
 
             for (int i = 0; i < listItem.Count; i++)
             {
 
-                if (listItem[i].productId == id)
+                if (listItem[i].ProductId == id)
                 {
                     return i;
                 }
@@ -143,51 +181,143 @@ namespace RookieShop.Backend.Services.Implement
             return -1;
         }
 
+        // This method create new order for customer and remove item in cart if checkout  finishe
         public async Task<bool> Checkout()
         {
-            var listItem = await _context.Carts.Where(x => x.userId == _repoUser.getUserID()).ToListAsync();
+            // get list item in cart's customer
+
+            var listItem = await _context.Carts.Where(x => x.UserId == _repoUser.getUserID()).ToListAsync();
+
+            // create new order 
 
             var order = new Order()
             {
-                userId = _repoUser.getUserID(),
-                dateOrdered = DateTime.Now,
-                status = 0,
+                UserId = _repoUser.getUserID(),
+
+                DateOrdered = DateTime.Now,
+
+                Status = 0,
+
                 Total = await TotalBill(),
             };
+
+            // add order
+
             _context.Order.Add(order);
+
+            // save order
+
             await _context.SaveChangesAsync();
+
+
+            // create order details  of order above
 
             for (int i = 0; i < listItem.Count; i++)
             {
-                var result = _context.Products.FirstOrDefault(x => x.Id == listItem[i].productId);
+                var result = _context.Products.FirstOrDefault(x => x.Id == listItem[i].ProductId);
 
                 Random random = new Random();
+
                 int randomNumber = random.Next(0, 1000);
+
                 var orderItem = new OrderDetails()
                 {
 
-                  //  Id = randomNumber,
-                    orderId = order.Id,
-                    productId = listItem[i].productId,
-                    quantity = listItem[i].quantity,
-                    unitPrice = listItem[i].unitPrice,
-                    productName = result.productName,
+                    OrderId = order.Id,
+
+                    ProductId = listItem[i].ProductId,
+
+                    Quantity = listItem[i].Quantity,
+
+                    UnitPrice = listItem[i].UnitPrice,
+
+                    ProductName = result.ProductName,
                 };
              
+                // and remove item in customer's cart
+
                 _context.Carts.Remove(listItem[i]);
+
                 await _context.SaveChangesAsync();
-                result.stock = result.stock - listItem[i].quantity;
+
+                // update quantity of product in store
+
+                result.Stock = result.Stock - listItem[i].Quantity;
                
                 _context.Products.Update(result);
+                
+                // save 
+                
                 await _context.SaveChangesAsync();
+
                 _context.OrderDetails.Add(orderItem);
+
                 await _context.SaveChangesAsync();
 
             }
 
             return true;
+        }
+
+        // this method can add multiple quantity of product in page product details or update quantity of product in your cart;
+
+        public async Task<bool> addorupdateMulProduct(int Id, int quan, bool isUpdate)
+        {
+            var listItem = await _context.Carts.Where(x => x.UserId.Equals(_repoUser.getUserID())).ToListAsync();
+
+            var result = _context.Products.FirstOrDefault(x => x.Id == Id);
+
+            var index = await FindProductByIdInCart(Id);
+
+            if (result == null)
+            {
+                return false;
+            }
+            else
+            {
+                if (result.Stock < quan)
+                {
+
+                    return false;
+                }
+                else
+                {
+                    if (index != -1)
+                    {
+                        // update quantity of product in cart
+
+                        if (isUpdate == true)
+                        {
+                            listItem[index].Quantity = quan;
+
+                        }
+                        // add multiple quantity of product in cart
+                        else
+                        {
+                            listItem[index].Quantity = listItem[index].Quantity + quan;
+
+                        }
+                        _context.Carts.Update(listItem[index]);
+
+                    }
+
+                    // if this product not exist in cart, create new this item in cart
+
+                    else
+                    {
+
+                        var newItem = new Cart { ProductId = Id, Quantity = quan, UnitPrice = result.UnitPrice, UserId = _repoUser.getUserID() };
+
+                        _context.Carts.Add(newItem);
+                    }
+                    // save
+                    await _context.SaveChangesAsync();
 
 
+                }
+
+                return true;
+            }
         }
     }
 }

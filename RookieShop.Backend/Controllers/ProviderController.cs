@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RookieShop.Backend.Data;
+using RookieShop.Backend.Services.Interface;
 using RookieShop.Shared.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -15,33 +16,21 @@ namespace RookieShop.Backend.Controllers
     [Authorize("Bearer")]
     public class ProviderController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
-        public ProviderController(ApplicationDbContext context)
+        private readonly IProvider _repo;
+        public ProviderController(IProvider repo)
         {
-            _context = context;
+            _repo = repo;
 
         }
         [HttpGet]
         [AllowAnonymous]
-        public async Task<List<ProviderVM>> Index()
+        public async Task<IActionResult> Index()
         {
-            try
-            {
+           
+                var providerList = await _repo.GetProviderList();
 
-                var providerList =  await _context.Providers.Select(p => new ProviderVM
-                {
-                    providerId = p.Id,
-                    providerName = p.providerName,
-                }).ToListAsync();
+                return Ok(providerList);
 
-
-                return providerList;
-
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
         }
     }
 }

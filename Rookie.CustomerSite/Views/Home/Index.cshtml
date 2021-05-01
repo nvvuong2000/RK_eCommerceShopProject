@@ -39,19 +39,19 @@
                     @foreach (var item in Model)
                     {
                         <div class="cbp-item Classic Fantasy">
-                            <a class="portfolio-circle-cart" href="@Url.Action("AddProduct","Cart", new { id = item.productID})">
+                            <a class="portfolio-circle-cart" href="@Url.Action("AddProduct","Cart", new { id = item.ProductId})">
                                 <i class="fa fa-shopping-cart"></i>
                             </a>
                             <div class="cbp-caption-defaultWrap  owl-theme sync-portfolio-carousel owl-carousel">
-                                <div class="item"> <a href="book-shop\img\book-1.jpg" class="cbp-caption" data-fancybox="gallery1" data-title="Book 1"><img src="@item.imgDefault" alt="Book 1"></a></div>
+                                <div class="item"> <a href="book-shop\img\book-1.jpg" class="cbp-caption" data-fancybox="gallery1" data-title="Book 1"><img src="@item.ImgDefault" alt="Book 1"></a></div>
 
                             </div>
                             <div class="row">
                                 <div class="col-12 text-center">
-                                    <div class="cbp-l-grid-blog-title"><a href="@Url.Action("Details","Product",new { id = item.productID })" target="_blank" class="portfolio-title">@item.productName</a></div>
+                                    <div class="cbp-l-grid-blog-title"><a href="@Url.Action("Details","Product",new { id = item.ProductId })" target="_blank" class="portfolio-title">@item.ProductName</a></div>
                                 </div>
                                 <div class="col-12 text-center">
-                                    <div class="cbp-l-grid-blog-desc portfolio-des">$ @item.unitPrice</div>
+                                    <div class="cbp-l-grid-blog-desc portfolio-des">$ @item.UnitPrice</div>
                                 </div>
                             </div>
                         </div>

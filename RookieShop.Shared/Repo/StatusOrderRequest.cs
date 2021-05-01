@@ -6,7 +6,7 @@ namespace RookieShop.Shared.Repo
 {
     public class StatusOrderRequest
     {
-        public int orderId { get; set; }
-        public int statusId { get; set; }
+        public int OrderId { get; set; }
+        public int StatusId { get; set; }
     }
 }

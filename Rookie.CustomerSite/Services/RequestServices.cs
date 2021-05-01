@@ -42,6 +42,7 @@ namespace Rookie.CustomerSite.Services.BaseServices
             using (var httpClient = new HttpClient())
             {
                 httpClient.SetBearerToken(accessToken);
+               
                 return await httpClient.PostAsJsonAsync($"{APIRootUrl.BaseURL}{endpoint}", requestbody);
 
             }

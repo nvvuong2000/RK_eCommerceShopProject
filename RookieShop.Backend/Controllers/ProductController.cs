@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using RookieShop.Backend.Data;
 using RookieShop.Backend.Models;
 using RookieShop.Backend.Services.Interface;
@@ -15,11 +13,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Web;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Net.Http;
-using Microsoft.AspNetCore.Cors;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -33,55 +28,30 @@ namespace RookieShop.Backend.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProduct _repo;
-        private readonly ApplicationDbContext _context;
-        private readonly IUserDF _repoUser;
-        private IHostingEnvironment _hostingEnv;
 
-        public ProductController(IUserDF repoUser, IProduct repo, IHostingEnvironment hostingEnv)
+        public ProductController(IProduct repo)
         {
 
-            _repoUser = repoUser;
             _repo = repo;
-            _hostingEnv = hostingEnv;
+
         }
         // GET: api/<Product>
         [HttpGet]
         [AllowAnonymous]
         public async Task<ActionResult<ProductListVM>> GetAsync()
         {
-            try
-            {
-                
-                var list = await _repo.getListProductAsync();
+            var list = await _repo.getListProductAsync();
 
-                return Ok(list.ToList());
-
-
-            }
-            catch (Exception ex)
-            {
-                return Ok(ex);
-            }
+            return Ok(list);
 
         }
         [HttpGet("ListProduct")]
         [AllowAnonymous]
         public async Task<ActionResult<ProductListVM>> GetListProductByAdmin()
         {
-            try
-            {
+            var list = await _repo.getListProductbyAdminAsync();
 
-                var list = await _repo.getListProductbyAdminAsync();
-
-                return Ok(list.ToList());
-
-
-            }
-            catch (Exception ex)
-            {
-                return Ok(ex);
-            }
-
+            return Ok(list);
         }
 
         // GET api/<Product>/5
@@ -92,10 +62,10 @@ namespace RookieShop.Backend.Controllers
             try
             {
                 var list = await _repo.getProductAsync(id);
+
                 if (list == null)
                 {
-                    HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.NotFound);
-                    return Ok(result);
+                    return Ok(null);
                 }
 
                 return Ok(list);
@@ -111,15 +81,13 @@ namespace RookieShop.Backend.Controllers
 
         [HttpPost("addProduct")]
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> addProduct([FromForm] ProductCreateRequest product)
+        public async Task<IActionResult> addProduct([FromForm] ProductRequest product)
         {
             try
             {
                 var result = await _repo.addProduct(product);
 
-                return Ok(StatusCodes.Status201Created);
-
-
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -130,16 +98,15 @@ namespace RookieShop.Backend.Controllers
         // PUT api/<Product>/5
         [HttpPut]
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> Put([FromForm] ProductCreateRequest product)
+        public async Task<IActionResult> Put([FromForm] ProductRequest product)
         {
             try
             {
-                var id = product.productID;
+                var id = product.ProductId;
+
                 var result = await _repo.updateProduct(id, product);
 
-                return Ok(StatusCodes.Status202Accepted);
-
-
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -147,165 +114,46 @@ namespace RookieShop.Backend.Controllers
             }
 
         }
-        [HttpGet("deleteFile")]
-        [Authorize(Roles = "admin")]
-        public bool DeleteFile(string file)
-        {
 
-            string webRootPath = _hostingEnv.WebRootPath;
-            var fullPath = Path.Combine(webRootPath, file);
-
-
-            if (System.IO.File.Exists(fullPath))
-            {
-                System.IO.File.Delete(fullPath);
-
-            }
-            return true;
-        }
-        [HttpGet("sortDescbyPrice")]
-        [AllowAnonymous]
-        public async Task<ActionResult<Product>> sortDescbyPrice()
-        {
-            try
-            {
-                var list = await _repo.SortDescOrderByPrice();
-
-                return Ok(list);
-
-
-            }
-            catch (Exception ex)
-            {
-                return Ok(ex);
-            }
-
-        }
-        [HttpGet("sortAscbyPrice")]
-        [AllowAnonymous]
-        public async Task<ActionResult<Product>> sortAscbyPrice()
-        {
-            try
-            {
-                var list = await _repo.SortDescAscByPrice();
-
-                return Ok(list);
-
-
-            }
-            catch (Exception ex)
-            {
-                return Ok(ex);
-            }
-        }
-        [HttpGet("sortDescbyName")]
-        [AllowAnonymous]
-        public async Task<ActionResult<Product>> sortDescbyName()
-        {
-            try
-            {
-                var list = await _repo.SortDescOrderByName();
-
-                return Ok(list);
-
-
-            }
-            catch (Exception ex)
-            {
-                return Ok(ex);
-            }
-
-        }
-        [HttpGet("sortAscbyName")]
-        [AllowAnonymous]
-        public async Task<ActionResult<Product>> sortAscbyName()
-        {
-            try
-            {
-                var list = await _repo.SortAscByName();
-
-                return Ok(list);
-
-
-            }
-            catch (Exception ex)
-            {
-                return Ok(ex);
-            }
-
-        }
         [HttpPost("search")]
         [AllowAnonymous]
         public async Task<ActionResult<Product>> search(string keyword)
         {
-            try
-            {
-                var product = await _repo.searchbyName(keyword);
+            var list = await _repo.searchByName(keyword);
 
-                return Ok(product);
-
-
-            }
-            catch (Exception ex)
-            {
-                return Ok(ex);
-            }
+            return Ok(list);
 
         }
         [HttpGet("/getID/{id}")]
         [AllowAnonymous]
         public async Task<ActionResult<ProductListVM>> getProductsbyCategoryId(int id)
         {
-            try
-            {
-                var productslist = await _repo.getListProductbyCategoryID(id);
+            var productlist = await _repo.getListProductbyCategoryID(id);
 
-                return Ok(productslist);
-
-
-            }
-            catch (Exception ex)
-            {
-                return Ok(ex);
-            }
+            return Ok(productlist);
 
         }
+
         [HttpGet("rating")]
+
         [Authorize(Roles = "user")]
         public async Task<List<ProductListVM>> rating()
         {
-            try
-            {
 
-                var userId = _repoUser.getUserID();
-                var product = await _repo.getlistProductNeedRating(userId);
-                return product;
+            var list = await _repo.getListProductNeedRating();
 
-
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
+            return list;
 
         }
         [HttpPost("rating")]
         [Authorize(Roles = "user")]
         public async Task<IActionResult> rattingRequest(RatingProductRequest request)
         {
-            try
-            {
+            var result = await _repo.ratingProduct(request);
+
+            return Ok(result);
 
 
-                var product = await _repo.ratingProduct(request);
-                return Ok(StatusCodes.Status200OK);
-
-
-            }
-            catch (Exception ex)
-            {
-                throw new(ex.Message);
-            }
 
         }
 

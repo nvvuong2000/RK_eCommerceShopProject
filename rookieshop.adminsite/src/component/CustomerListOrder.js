@@ -1,8 +1,10 @@
 import React, { Fragment } from 'react'
 import OrderList from "./OrderList"
 export default function CustomerListOrder(props) {
+  
     const list = props.list
-    console.log(list)
+  
+  
     return (
         <Fragment>
 

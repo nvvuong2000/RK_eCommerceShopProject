@@ -15,15 +15,16 @@ export default function CategoryList(props) {
                             <th></th>
                         </tr>
                     </thead>
-                    {props.list && props.list.map(item => {
+                    <tbody>
+                    {props.list && props.list.map((item,index) => {
                         return (
-                            <tbody>
-                                <tr role="row" className="odd">
+                            
+                                <tr role="row" className="odd" key={index}>
                                     <td className="table-column-pr-0">
                                     </td>
                                     <td>#{item.id}                 
                                     </td>
-                                    <td class="text-hover-primary mb-0">{item.categoryName}</td>
+                                    <td className="text-hover-primary mb-0">{item.categoryName}</td>
                                     <td>{item.categoryDescription}</td>
                                     <td>
                                         <div className="btn-group" role="group">
@@ -31,9 +32,10 @@ export default function CategoryList(props) {
                                         </div>
                                     </td>
                                 </tr>
-                            </tbody>
+                            
                         );
                     })}
+                    </tbody>
                 </table>
             </div>
         </div>

@@ -50,6 +50,7 @@ namespace RookieShop.Backend
             services.AddTransient<IUserDF, UserRepo>();
             services.AddTransient<ICart, CartRepo>();
             services.AddTransient<IOrder, OrderRepo>();
+            services.AddTransient<IProvider, ProviderRepo>();
             services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();

@@ -15,49 +15,35 @@ namespace RookieShop.Backend.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize("Bearer")]
- 
+
     public class UserController : ControllerBase
     {
         private readonly IUserDF _repo;
-        private readonly ApplicationDbContext _context;
-        public UserController(ApplicationDbContext context, IUserDF repo)
+        public UserController(IUserDF repo)
         {
             _repo = repo;
-            _context = context;
+
         }
         [HttpGet]
         public IActionResult Index()
         {
-            try
-            {
-
                 string userId = _repo.getUserID();
+
                 return Ok(userId);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
         }
         [HttpGet("infoUser")]
         public async Task<IActionResult> infoUser()
         {
-            try
-            {
-
                 var user = await _repo.getInfoUser();
+
                 return Ok(user);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
         }
         [HttpGet("listUser")]
         public async Task<ActionResult<IList<UserListInfo>>> ListinfoUser()
         {
-                var user = await _repo.getListUser();
-                return Ok(user);
+            var user = await _repo.getListUser();
+
+            return Ok(user);
         }
     }
 }

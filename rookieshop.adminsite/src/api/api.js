@@ -28,27 +28,28 @@ const User = {
     }
 }
 const Product = {
-    getAllProducts: async () => await axios.get("/api/Product/ListProduct", config),
-    getProductbyId: async (id) => await axios.get(`/api/Product/${id}`),
-    addProduct: async (data) => await axios.post("/api/Product/addProduct",data,config),
-    updateProduct: async (data) => await axios.put("/api/Product/",data,config),
+    getAllProducts: async () => await axios.get("/api/Product/ListProduct", config).then(r => { return r.data }),
+    
+    getProductbyId: async (id) => await axios.get(`/api/Product/${id}`).then(r => { return r.data }),
+    addProduct: async (data) => await axios.post("/api/Product/addProduct", data, config).then(r => { return r.data }),
+    updateProduct: async (data) => await axios.put("/api/Product/", data, config).then(r => { return r.data }),
 }
 const Category = {
-    getAllCategory: async () => await axios.get("/api/Category", config),
-    addNewCategory: async (data) => await axios.post("/api/Category", data, config),
-    getCategorybyID: async (id) => await axios.get(`/api/Category/${id}`,config),
-    updateCategory: async (data) => await axios.put(`/api/Category`, data,config)
+    getAllCategory: async () => await axios.get("/api/Category", config).then(r => { return r.data }),
+    addNewCategory: async (data) => await axios.post("/api/Category", data, config).then(r => { return r.data }),
+    getCategorybyID: async (id) => await axios.get(`/api/Category/${id}`, config).then(r => { return r.data }),
+    updateCategory: async (data) => await axios.put(`/api/Category`, data, config).then(r => { return r.data }),
   
 }
 const Order = {
-    getListOrderofCustomer: async (id) => await axios.get(`/api/Order/listOrder/${id}`, config),
-    getListOrderDetails: async (id) => await axios.get(`/api/Order/${id}`, config),
-    getOrderList: async (id) => await axios.get(`/getorderlist`, config),
-    updateStatusOrder: async (data) => await axios.post(`/api/Order/updateSttOrderad`, data, config),
+    getListOrderofCustomer: async (id) => await axios.get(`/api/Order/listOrder/${id}`, config).then(r => { return r.data }),
+    getListOrderDetails: async (id) => await axios.get(`/api/Order/${id}`, config).then(r => { return r.data }),
+    getOrderList: async (id) => await axios.get(`/getorderlist`, config).then(r => { return r.data }),
+    updateStatusOrder: async (data) => await axios.post(`/api/Order/updateSttOrderad`, data, config).then(r => { return r.data }),
     
 }
 const Provider = {
-    getListProvider: async () => await axios.get("/api/Provider", config),
+    getListProvider: async () => await axios.get("/api/Provider", config).then(r => { return r.data }),
 
 }
 

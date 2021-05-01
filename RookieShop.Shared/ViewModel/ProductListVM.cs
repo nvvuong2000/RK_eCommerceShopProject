@@ -6,17 +6,16 @@ namespace RookieShop.Shared.ViewModel
 {
     public class ProductListVM
     {
-        public int productID { get; set; }
-        public string productName { get; set; }
-        public decimal unitPrice { get; set; }
-        public int stock { get; set; }
-        public bool status { get; set; }
-        public bool isNew { get; set; }
-        public string imgDefault { get; set; }
-        public int categoryId { get; set; }
-        public string categoryName { get; set; }
-        public int providerID{ get; set; }
-        public int count { get; set; }
-        //public ICollection<ProductImages> ProductImages { get; set; }
+        public int ProductId { get; set; }
+        public string ProductName { get; set; }
+        public decimal UnitPrice { get; set; }
+        public int Stock { get; set; }
+        public bool Status { get; set; }
+        public bool IsNew { get; set; }
+        public string ImgDefault { get; set; }
+        public int CategoryId { get; set; }
+        public string CategoryName { get; set; }
+        public int ProviderId{ get; set; }
+
     }
 }

@@ -20,44 +20,74 @@ namespace RookieShop.Backend.Services.Implement
     public class ProductRepo : IProduct
     {
         private readonly ApplicationDbContext _context;
+
         private readonly IConfiguration _config;
+
         private readonly IUserDF _repoUser;
+
         private IHostingEnvironment _hostingEnv;
-        public ProductRepo(ApplicationDbContext context, IHostingEnvironment hostingEnv, IUserDF repoUser, IConfiguration config)
+
+        public ProductRepo(ApplicationDbContext context, IUserDF repoUser, IHostingEnvironment hostingEnv, IConfiguration config)
         {
             _context = context;
+
             _hostingEnv = hostingEnv;
+
             _repoUser = repoUser;
+
             _config = config;
+
+
         }
-        public async Task<bool> addProduct([FromForm] ProductCreateRequest product)
+
+        // This method add new product;
+
+        public async Task<bool> addProduct([FromForm] ProductRequest product)
         {
             var newProduct = new Product()
             {
-                categoryId = product.categoryID,
-                productName = product.productName,
-                providerId = product.providerID,
-                description = product.description,
-                stock = product.stock,
-                unitPrice = product.unitPrice,
-                status = product.status,
-                isNew = product.isNew,
+                CategoryId = product.CategoryId,
+
+                ProductName = product.ProductName,
+
+                ProviderId = product.ProviderId,
+
+                Description = product.Description,
+
+                Stock = product.Stock,
+
+                UnitPrice = product.UnitPrice,
+
+                Status = product.Status,
+
+                IsNew = product.IsNew,
+
                 DateCreated = Convert.ToDateTime(DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss")),
+
                 DateUpated = Convert.ToDateTime(DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss")),
-
-
             };
+            // add product 
+
             _context.Products.Add(newProduct);
+            // save product
+
             await _context.SaveChangesAsync();
+
             var productId = newProduct.Id;
             try
             {
+                // Save Image list of product
 
                 foreach (var formFile in product.FormFiles)
                 {
+                    // Random to avoid the same name 
+
                     Random getrandom = new Random();
+
                     int random = getrandom.Next(1, 99999);
-                    string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", random.ToString()+formFile.FileName);
+
+                    string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", random.ToString() + formFile.FileName);
+
                     if (formFile.Length > 0)
                     {
                         using (var stream = new FileStream(path, FileMode.Create))
@@ -66,18 +96,24 @@ namespace RookieShop.Backend.Services.Implement
 
                         }
                     }
+                    // create new image product
                     var ProductImage = new ProductImages
                     {
                         ProductID = productId,
-                        
-                        pathName = Path.Combine("/images/" + random.ToString()+ formFile.FileName),
 
-                        isDefault=  product.FormFiles.IndexOf(formFile) == 0 ? true: false,
+                        PathName = Path.Combine("/images/" + random.ToString() + formFile.FileName),
 
-                        captionImage = "Hình ảnh minh họa cho sản phẩm " + product.productName,
+                        IsDefault = product.FormFiles.IndexOf(formFile) == 0 ? true : false,
+
+                        CaptionImage = "The image illustrates the product " + product.ProductName,
 
                     };
+                    // add image product
+
                     _context.ProductImages.Add(ProductImage);
+
+                    // save 
+
                     await _context.SaveChangesAsync();
 
                 }
@@ -89,165 +125,220 @@ namespace RookieShop.Backend.Services.Implement
                 return false;
             }
 
-            return true;
-
         }
+
+        // this method get product list for user with product availability: status is true and stock > 0
 
         public async Task<List<ProductListVM>> getListProductAsync()
         {
-            var ex = _config["Host"];
-            var productList =await _context.Products.Include(p => p.ProductImages).Where(p=>p.status==true && p.stock>0)
+            var productList = await _context.Products.Include(p => p.ProductImages).Where(p => p.Status == true && p.Stock > 0)
+
             .Select(x => new ProductListVM
             {
-                productID = x.Id,
-                productName = x.productName,
-                unitPrice = x.unitPrice,
-                isNew = x.isNew,
-                categoryId = x.categoryId,
-                categoryName = x.Category.CategoryName,
-                stock = x.stock,
-                status = x.status,
-                providerID = x.providerId,
-                imgDefault = x.ProductImages.Where(img => img.isDefault == true).Select(img => _config["Host"] + img.pathName).FirstOrDefault(),
+                ProductId = x.Id,
+
+                ProductName = x.ProductName,
+
+                UnitPrice = x.UnitPrice,
+
+                IsNew = x.IsNew,
+
+                CategoryId = x.CategoryId,
+
+                CategoryName = x.Category.CategoryName,
+
+                Stock = x.Stock,
+
+                Status = x.Status,
+
+                ProviderId = x.ProviderId,
+
+                ImgDefault = x.ProductImages.Where(img => img.IsDefault == true).Select(img => _config["Host"] + img.PathName).FirstOrDefault(),
             }).ToListAsync();
 
             return productList;
         }
+
+        // this method get product list for admin
+
         public async Task<List<ProductListVM>> getListProductbyAdminAsync()
         {
             var productList = await _context.Products.Include(p => p.ProductImages)
             .Select(x => new ProductListVM
             {
-                productID = x.Id,
-                productName = x.productName,
-                unitPrice = x.unitPrice,
-                isNew = x.isNew,
-                categoryId = x.categoryId,
-                categoryName = x.Category.CategoryName,
-                stock = x.stock,
-                status = x.status,
-                providerID = x.providerId,
-                imgDefault = x.ProductImages.Where(img => img.isDefault == true).Select(img => _config["Host"] + img.pathName).FirstOrDefault(),
+                ProductId = x.Id,
+
+                ProductName = x.ProductName,
+
+                UnitPrice = x.UnitPrice,
+
+                IsNew = x.IsNew,
+
+                CategoryId = x.CategoryId,
+
+                CategoryName = x.Category.CategoryName,
+
+                Stock = x.Stock,
+
+                Status = x.Status,
+
+                ProviderId = x.ProviderId,
+
+                ImgDefault = x.ProductImages.Where(img => img.IsDefault == true).Select(img => _config["Host"] + img.PathName).FirstOrDefault(),
+
             }).ToListAsync();
 
             return productList;
         }
 
-        public async Task<List<ProductListVM>> getListProductbyCategoryID(int? id)
+        // this method get product list by category Id
+        public async Task<List<ProductListVM>> getListProductbyCategoryID(int id)
         {
             var productList = await _context.Products.Include(p => p.ProductImages).Select(x => new ProductListVM
             {
-                categoryId = x.categoryId,
-                productID = x.Id,
-                productName = x.productName,
-                unitPrice = x.unitPrice,
-                isNew = x.isNew,
-                imgDefault = x.ProductImages.Where(img => img.isDefault == true).Select(img => _config["Host"] + img.pathName).FirstOrDefault()
-            }).Where(p => p.categoryId == id).ToListAsync();
+                CategoryId = x.CategoryId,
+
+                ProductId = x.Id,
+
+                ProductName = x.ProductName,
+
+                UnitPrice = x.UnitPrice,
+
+                IsNew = x.IsNew,
+
+                ImgDefault = x.ProductImages.Where(img => img.IsDefault == true).Select(img => _config["Host"] + img.PathName).FirstOrDefault()
+
+            }).Where(p => p.CategoryId == id).ToListAsync();
+
             return productList;
         }
 
-        public async Task<ProductDetailsVM> getProductAsync(int? id)
+        // this method get product by product Id ,images list and  list rating of product 
+
+        public async Task<ProductDetailsVM> getProductAsync(int id)
         {
             var product = _context.Products.Include(p => p.ProductImages).Include(p => p.Category).Include(p => p.RattingProduct).Select(p => new ProductDetailsVM()
             {
                 Id = p.Id,
-                productName = p.productName,
-                categoryName = p.Category.CategoryName,
-                providerId = p.providerId,
-                categoryId = p.categoryId,
-                stock = p.stock,
-                unitPrice = p.unitPrice,
-                description = p.description,
+
+                ProductName = p.ProductName,
+
+                CategoryName = p.Category.CategoryName,
+
+                ProviderId = p.ProviderId,
+
+                CategoryId = p.CategoryId,
+
+                Stock = p.Stock,
+
+                UnitPrice = p.UnitPrice,
+
+                Description = p.Description,
+
                 DateCreated = p.DateCreated,
-                isNew = p.isNew,
-                status = p.status,
-                pathName = p.ProductImages.Select(img => _config["Host"]+@img.pathName).ToList(),
-                alt = p.ProductImages.Select(img => img.captionImage).ToList(),
-                userId = p.RattingProduct.Select(r => r.User.customerName).ToList(),
-                numberRating = p.RattingProduct.Select(r => r.numberRating).ToList(),
-                dateRated = p.RattingProduct.Select(r => r.date).ToList(),
-                rating = p.rating,
+
+                IsNew = p.IsNew,
+
+                Status = p.Status,
+
+                PathName = p.ProductImages.Select(img => _config["Host"] + @img.PathName).ToList(),
+
+                Alt = p.ProductImages.Select(img => img.CaptionImage).ToList(),
+
+                UserId = p.RattingProduct.Select(r => r.User.CustomerName).ToList(),
+
+                NumberRating = p.RattingProduct.Select(r => r.NumberRating).ToList(),
+
+                DateRated = p.RattingProduct.Select(r => r.Date).ToList(),
+
+                Rating = p.Rating,
 
             }).Where(p => p.Id == id).FirstOrDefault();
 
             if (product == null)
             {
                 return null;
-                
             }
 
-            
             return product;
 
         }
+        // This method is update some property of product and update all image list if at least 1 image is changed ;
 
-        public async Task<List<Product>> SortDescAscByPrice()
-        {
-
-            var productList = await _context.Products.Include(p => p.ProductImages).ToListAsync();
-            return productList;
-        }
-
-
-        public async Task<List<Product>> SortDescOrderByPrice()
-        {
-
-            var productList = await _context.Products.Include(p => p.ProductImages).OrderByDescending(p => p.unitPrice).ToListAsync();
-            return productList;
-        }
-
-        public async Task<bool> updateProduct(int id, [FromForm] ProductCreateRequest product)
+        public async Task<bool> updateProduct(int id, [FromForm] ProductRequest product)
         {
             var productEdit = await _context.Products.Include(img => img.ProductImages).Where(p => p.Id == id).FirstOrDefaultAsync();
+
             if (productEdit == null)
             {
                 return false;
             }
             else
             {
-                productEdit.productName = product.productName;
-                productEdit.categoryId = product.categoryID;
-                productEdit.description = product.description;             
-                productEdit.unitPrice = product.unitPrice;
-                productEdit.stock = product.stock;
-                productEdit.providerId = product.providerID;
-                productEdit.isNew = product.isNew;
-                productEdit.status = product.status;
+                productEdit.ProductName = product.ProductName;
+
+                productEdit.CategoryId = product.CategoryId;
+
+                productEdit.Description = product.Description;
+
+                productEdit.UnitPrice = product.UnitPrice;
+
+                productEdit.Stock = product.Stock;
+
+                productEdit.ProviderId = product.ProviderId;
+
+                productEdit.IsNew = product.IsNew;
+
+                productEdit.Status = product.Status;
+
                 product.DateUpdated = Convert.ToDateTime(DateTime.Now.ToString());
+
                 await _context.SaveChangesAsync();
-                if(product.FormFiles == null)
+
+                // if no change images list return state update success
+
+                if (product.FormFiles == null)
                 {
                     return true;
                 }
                 else
                 {
+                    // else : remove all old images list
+
                     try
                     {
                         var productImagesEdit = productEdit.ProductImages.ToList();
+
                         if (productImagesEdit != null)
                         {
                             for (int i = 0; i < productImagesEdit.Count; i++)
                             {
-                                if (DeleteFile(productImagesEdit[i].pathName) == true)
+                                if (DeleteFile(productImagesEdit[i].PathName) == true)
                                 {
                                     var img = await _context.ProductImages.FindAsync(productImagesEdit[i].ID);
+
                                     if (img == null)
                                     {
                                         return false;
                                     }
 
                                     _context.ProductImages.Remove(img);
+
                                     await _context.SaveChangesAsync();
                                 }
                             }
 
                         }
+                        // and add new images list 
+
                         foreach (var formFile in product.FormFiles)
                         {
                             Random getrandom = new Random();
+
                             int random = getrandom.Next(1, 99999);
+
                             string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", random.ToString() + formFile.FileName);
+
                             if (formFile.Length > 0)
                             {
                                 using (var stream = new FileStream(path, FileMode.Create))
@@ -260,13 +351,15 @@ namespace RookieShop.Backend.Services.Implement
                             {
                                 ProductID = id,
 
-                                pathName = Path.Combine("/images/" + random.ToString() + formFile.FileName),
+                                PathName = Path.Combine("/images/" + random.ToString() + formFile.FileName),
 
-                                isDefault = product.FormFiles.IndexOf(formFile) == 0 ? true : false,
-                                captionImage = "Hình ảnh minh họa cho sản phẩm " + product.productName,
+                                IsDefault = product.FormFiles.IndexOf(formFile) == 0 ? true : false,
+                                CaptionImage = "The image illustrates the product" + product.ProductName,
 
                             };
+                            // add 
                             _context.ProductImages.Add(ProductImage);
+                            // save
                             await _context.SaveChangesAsync();
                         }
                         return true;
@@ -275,105 +368,146 @@ namespace RookieShop.Backend.Services.Implement
                     {
                         return false;
                     }
-               
-
                 }
-               
-
-                return true;
 
             }
         }
 
-        public Task<bool> updateProduct(int? id, ProductCreateRequest product)
-        {
-            throw new NotImplementedException();
-        }
+        // This method will delete file image in root image
+
         public bool DeleteFile(string file)
         {
 
             string webRootPath = _hostingEnv.WebRootPath;
+
             var fullPath = Path.Combine(webRootPath, file);
 
 
             if (System.IO.File.Exists(fullPath))
             {
                 System.IO.File.Delete(fullPath);
-
             }
+
             return true;
         }
 
-        public async Task<List<Product>> SortDescOrderByName()
+        // this medthod search product by name with name product has containt the keyword
+        public async Task<List<Product>> searchByName(string keyword)
         {
-            var productList = await _context.Products.Include(p => p.ProductImages).OrderByDescending(p => p.productName).ToListAsync();
-            return productList;
-        }
+            var product = await _context.Products.Include(p => p.ProductImages).Where(p => p.ProductName.Contains(keyword)).OrderByDescending(p => p.ProductName).ToListAsync();
 
-        public async Task<List<Product>> SortAscByName()
-        {
-            var productList = await _context.Products.Include(p => p.ProductImages).ToListAsync();
-            return productList;
-        }
-
-        public async Task<List<Product>> searchbyName(string keyword)
-        {
-            var product =await  _context.Products.Include(p => p.ProductImages).Where(p => p.productName.Contains(keyword)).OrderByDescending(p => p.productName).ToListAsync();
             return product;
         }
 
-        public async Task<List<ProductListVM>> getlistProductNeedRating(string userId)
+        // this method return list product need evaluated with coditions: customer was recevied the order 
+
+        public async Task<List<ProductListVM>> getListProductNeedRating()
         {
+            // a query get list product when the order have status was recevied (include a result query productberated under)
+
+            string userID = _repoUser.getUserID();
 
             var query = await (from od in _context.OrderDetails
-                               join o in _context.Order on od.orderId equals o.Id
-                               join p in _context.Products on od.productId equals p.Id
+
+                               join o in _context.Order on od.OrderId equals o.Id
+
+                               join p in _context.Products on od.ProductId equals p.Id
+
                                join pm in _context.ProductImages on p.Id equals pm.ProductID
-                               where (o.status == 2 && pm.isDefault == true && o.userId.Equals(userId))
+
+                               // status is 2 is means customer was recevied the order
+
+                               where (o.Status == 2 && pm.IsDefault == true && o.UserId.Equals(userID))
+
                                select new ProductListVM
                                {
-                                   productID = p.Id,
-                                   productName = p.productName,
-                                   imgDefault = _config["Host"] + pm.pathName,
+                                   ProductId = p.Id,
+
+                                   ProductName = p.ProductName,
+
+                                   ImgDefault = _config["Host"] + pm.PathName,
+
                                }).ToListAsync();
+
+
+            // query  get list product be rated by cusomter before
+
             var productberated = await (
                          from p in _context.Products
+
                          join pm in _context.ProductImages on p.Id equals pm.ProductID
-                         join pr in _context.RattingProduct on p.Id equals pr.productID
-                         where (pm.isDefault == true && pr.userID.Equals(userId))
+
+                         join pr in _context.RattingProduct on p.Id equals pr.ProductId
+
+                         where (pm.IsDefault == true && pr.UserId.Equals(userID))
+
                          select new ProductListVM
                          {
-                             productID = p.Id,
-                             productName = p.productName,
-                             imgDefault = _config["Host"]+pm.pathName,
+
+                             ProductId = p.Id,
+
+                             ProductName = p.ProductName,
+
+                             ImgDefault = _config["Host"] + pm.PathName,
+
                          }).ToListAsync();
-            var NotInRecord = query.Where(p => !productberated.Any(p2 => p2.productID == p.productID)).ToList();
+
+            // and list product has not been evaluated
+
+            var NotInRecord = query.Where(p => !productberated.Any(p2 => p2.ProductId == p.ProductId)).ToList();
 
             return NotInRecord;
         }
 
+        // this medthod evaluated for product 
+
         public async Task<bool> ratingProduct(RatingProductRequest request)
         {
+            // create new ratings
+
             Random getrandom = new Random();
+
             int random = getrandom.Next(1, 999);
+
             var rating = new RattingProduct()
             {
                 Id = random,
-                userID = _repoUser.getUserID(),
-                productID = request.productId,
-                numberRating = request.numberRating,
+
+                UserId = _repoUser.getUserID(),
+
+                ProductId = request.ProductId,
+
+                NumberRating = request.NumberRating,
 
             };
+            // add
+
             _context.RattingProduct.Add(rating);
+            // save
+
             _context.SaveChanges();
-            int totalStar = _context.RattingProduct.Where(r=>r.productID==request.productId).Sum(r => r.numberRating);
-            int number = _context.RattingProduct.Where(r => r.productID == request.productId).Count();
-            double avg = totalStar / number;
-            var product = _context.Products.Where(p => p.Id == request.productId).FirstOrDefault();
-            product.rating = avg;
+
+            // after save then update ratings for this product     
+
+            var product = _context.Products.Where(p => p.Id == request.ProductId).FirstOrDefault();
+
+            product.Rating = avgRatings(request.ProductId);
+
             _context.SaveChanges();
+
             return true;
 
+        }
+
+        public double avgRatings(int productId)
+        {
+            int totalStar = _context.RattingProduct.Where(r => r.ProductId == productId).Sum(r => r.NumberRating);
+
+            int number = _context.RattingProduct.Where(r => r.ProductId == productId).Count();
+
+            double avg = totalStar / number;
+
+            return avg;
         }
     }
 

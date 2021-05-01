@@ -5,58 +5,70 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { add_category, get_Category_by_Id, update_category } from "../actions/category"
 
+export default function AddCategory({ match}) {
 
-export default function AddCategory({ match, history }) {
+    const dispatch = useDispatch();
+
     const { id } = match.params;
 
     const isAddMode = isNaN(id);
 
-    const dispatch = useDispatch();
+    const categorySelected = useSelector(state => state.category.categoryselected);
+
+    console.log(categorySelected);
 
     const [Category, setCategory] = useState({
+    
         categoryName: "",
+    
         categoryDescription: "",
+    
     });
 
-    const handleChange = (e) => {
-        const value = e.target.value;
-        setCategory({
-            ...Category,
-            [e.target.name]: value
-        });
-    }
-
-
     useEffect(() => {
-
-        dispatch(get_Category_by_Id(id))
-    }, []);
-
-    useEffect(() => {
+      
         if (!isAddMode) {
+           
             dispatch(get_Category_by_Id(id))
         }
     }, []);
 
-    const categorySelected = useSelector(state => state.category.categoryselected.data);
-
     useEffect(() => {
         if (isAddMode == false && categorySelected) {
+         
             setCategory({
+               
                 categoryName: categorySelected.categoryName,
+               
                 categoryDescription: categorySelected.categoryDescription,
             })
 
         }
     }, [categorySelected]);
 
+    const handleChange = (e) => {
+
+        const value = e.target.value;
+
+        setCategory({
+
+            ...Category,
+
+            [e.target.name]: value
+        });
+    }
+    
     const formik = useFormik({
         //When set to true, the form will reinitialize every time the initialValues prop changes. 
+      
         enableReinitialize: true, // important
         initialValues: {
+            
             categoryName: Category.categoryName,
+           
             categoryDescription: Category.categoryDescription,
         },
+
         validationSchema: Yup.object({
             categoryName: Yup.string()
                 .min(3, "Category Name required mininum 3 characters")
@@ -70,13 +82,18 @@ export default function AddCategory({ match, history }) {
         onSubmit: () => {
             
             var data = {
+                
                 Id: id,
+                
                 categoryName: Category.categoryName,
+                
                 categoryDescription: Category.categoryDescription,
             }
             
             return isAddMode
+                
                 ? dispatch(add_category(Category))
+                
                 : dispatch(update_category(data))
         }
     });
@@ -117,7 +134,7 @@ export default function AddCategory({ match, history }) {
                                                     <p style={{ color: "red" }}>{formik.errors.categoryName}</p>
                                                 )}
                                             </div>
-                                            <div class="form-group">
+                                            <div className="form-group">
                                                 <textarea name="categoryDescription" id="categoryDescription" onChange={handleChange} value={formik.values.categoryDescription} rows="10" placeholder="Please type description of product"></textarea>
                                                 {formik.errors.categoryDescription &&
                                                     formik.touched.categoryDescription && (
@@ -125,8 +142,8 @@ export default function AddCategory({ match, history }) {
                                                     )}
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <button type="submit" class="btn btn-danger">{isAddMode ? "Add" : "Edit"} </button>
+                                        <div className="form-group">
+                                            <button type="submit" className="btn btn-danger">{isAddMode ? "Add" : "Edit"} </button>
                                         </div>
                                     </div>
                                 </div>

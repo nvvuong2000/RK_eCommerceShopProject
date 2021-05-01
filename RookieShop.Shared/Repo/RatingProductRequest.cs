@@ -7,7 +7,7 @@ namespace RookieShop.Shared.Repo
     public class RatingProductRequest
     {
    
-        public int productId { get; set; }
-        public int numberRating { get; set; }
+        public int ProductId { get; set; }
+        public int NumberRating { get; set; }
     }
 }

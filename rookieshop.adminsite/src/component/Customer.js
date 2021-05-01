@@ -2,13 +2,22 @@ import React,{useEffect} from 'react'
 import CustomerList from "./CustomerList";
 import {get_list_user} from "../actions/user"
 import { useSelector, useDispatch, } from "react-redux";
+
+
 export default function Customer() {
     const dispatch = useDispatch();
+   
     useEffect(() => {
+   
         dispatch(get_list_user());
       
     }, []);
+   
+   
     const users = useSelector((state) => state.user.listUsers);
+    
+    
+    
     return (
         <div>
             {/* Content */}

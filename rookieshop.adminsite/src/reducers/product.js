@@ -20,15 +20,12 @@ export default (state = initialState, { type, payload }) => {
 
         }
         case product.ADD_PRODUCT: {
-            console.log(payload);
-         
-          //  state.product_selected = payload;
+
             return { ...state };
 
         }
         case product.UPDATE_PRODUCT: {
-            console.log(payload);
-           // state.product_selected = payload;
+
             return { ...state };
 
         }
