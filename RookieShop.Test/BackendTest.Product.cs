@@ -1,15 +1,20 @@
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Moq;
 using RookieShop.Backend.Controllers;
 using RookieShop.Backend.Models;
+using RookieShop.Backend.Services.Implement;
 using RookieShop.Backend.Services.Interface;
 using RookieShop.Shared;
 using RookieShop.Shared.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
@@ -17,105 +22,229 @@ using Xunit;
 
 namespace RookieShop.Test
 {
-    public class UnitTest1
+    [Collection("ProjectCollection")]
+    public class UnitTest1 : IClassFixture<sqliteInMemoryFixture>
     {
+        private readonly sqliteInMemoryFixture _fixture;
 
-        private  List<ProductListVM> GetListProductTest()
+        private IHostingEnvironment _hostingEnv;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public UnitTest1(sqliteInMemoryFixture fixture)
         {
-            var sessions = new List<ProductListVM>();
-            sessions.Add(new ProductListVM()
-            {
+            _fixture = fixture;
+            _fixture.CreateDatabase();
 
-                productID = 3,
-                providerID = 3,
-                productName = "Sad Story 3",
-                unitPrice = 1000,
-                categoryId = 4,
-                isNew = false,
-
-
-            });
-            sessions.Add(new ProductListVM()
-            {
-
-                productID = 4,
-                providerID = 3,
-                productName = "Sad Story 4",
-                unitPrice = 1000,
-                categoryId = 4,
-                isNew = false,
-            });
-
-            return  sessions;
         }
         [Fact]
-        public async Task ProductGet_ReturnCountWithAListProduct()
+        public async Task Get_List_Product()
         {
-            // Arrange
 
-            var mockUser = new Mock<IUserDF>();
-            var mockHosting = new Mock<IHostingEnvironment>();
-            var mockProduct = new Mock<IProduct>();
-            int expectCount = 2;
-            mockProduct.Setup(repo => repo.getListProductAsync()).Returns(Task.FromResult(GetListProductTest()));
-            var controller = new ProductController(mockUser.Object, mockProduct.Object, mockHosting.Object);
-            // Act
-            var result = await controller.GetAsync();
-            // Assert
-            Assert.IsType<OkObjectResult>(result.Result);
-            var actionResult = Assert.IsType<OkObjectResult>(result.Result);
-            var listProduct = actionResult.Value as List<ProductListVM>;
-            Assert.Equal(listProduct.Count(), expectCount);
+            //Arrange
+            var dbContext = _fixture.Context;
+
+            dbContext.Products.Add(new Product { ProductName = "Book 2", Stock = 3, CategoryId = 3, ProviderId = 3, UnitPrice = 1000, Description = "new book", IsNew = true, Status = true, });
+
+            dbContext.SaveChanges();
+
+            var configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json")
+            .Build();
+
+            var _repoUser = IUserServiesMock.UserServices();
+
+            var productRepo = new ProductRepo(dbContext, _repoUser, _hostingEnv, configuration);
+
+            var productController = new ProductController(productRepo);
+
+            var expected = 1;
+
+            //Act
+
+            var result = await productController.GetAsync();
+
+            //Assert
+            var resultValue = Assert.IsType<OkObjectResult>(result.Result);
+
+            Assert.NotEmpty(resultValue.Value as IEnumerable<ProductListVM>);
+
+            var productList = resultValue.Value as IEnumerable<ProductListVM>;
+
+            var countProductList = productList.Count();
+
+            Assert.Equal(countProductList, expected);
         }
         [Fact]
-        public async Task ProductPost_AddProduct_retrunStatusCode201_whenProductValid()
+        public async Task Add_Product_When_Value_Valid()
         {
-            // Arrange
-            var product = new ProductCreateRequest
-            {
-                providerID = 5,
-                productName = "Sad Story 5",
-                unitPrice = 1000,
-                categoryID = 4,
-                isNew = false,
-                status = true,
-                stock = 1000,
-            };
-            var mockUser = new Mock<IUserDF>();
-            var mockHosting = new Mock<IHostingEnvironment>();
-            var mockProduct = new Mock<IProduct>();
-            var controller = new ProductController(mockUser.Object, mockProduct.Object, mockHosting.Object);
-            // Act
-            var result = await controller.addProduct(product);
-            // Assert
-            Assert.IsType<OkObjectResult>(result);
-            var okObjectResult = result as OkObjectResult;
-            var statusCode = okObjectResult.Value;
-            Assert.Equal(201, statusCode);
+            //Arrange
+            var dbContext = _fixture.Context;
 
+            dbContext.Products.Add(new Product { ProductName = "Book 2", Stock = 3, CategoryId = 3, ProviderId = 3, UnitPrice = 1000, Description = "new book", IsNew = true, Status = true, });
+
+            dbContext.SaveChanges();
+
+            var configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json")
+            .Build();
+
+            var _repoUser = IUserServiesMock.UserServices();
+
+            var productRepo = new ProductRepo(dbContext, _repoUser, _hostingEnv, configuration);
+
+            var productController = new ProductController(productRepo);
+            var expected = true;
+            IFormFile file = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("This is a image file")), 0, 0, "img", "imageBook1.png");
+
+            IFormFile file2 = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("This is a image file")), 0, 0, "img", "imageBook1-2.png");
+
+            List<IFormFile> list = new List<IFormFile>();
+            
+            list.Add(file);
+           
+            list.Add(file2);
+
+            //Act
+            var result = productController.addProduct(new ProductRequest { ProductName = "Book 2", Stock = 3, CategoryId = 3, ProviderId = 3, UnitPrice = 1000, Description = "new book", IsNew = true, Status = true, FormFiles = list });
+
+            //Assert
+            var resultValue = Assert.IsType<OkObjectResult>(result.Result);
+
+            Assert.True(resultValue.Value.Equals(true));
+        }
+       
+        [Fact]
+        public async Task Update_Product_When_Value_Valid()
+        {
+            var dbContext = _fixture.Context;
+
+
+            dbContext.Products.Add(new Product { ProductName = "Book 2", Stock = 3, CategoryId = 3, ProviderId = 3, UnitPrice = 1000, Description = "new book", IsNew = true, Status = true, });
+
+            dbContext.SaveChanges();
+
+            var configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json")
+            .Build();
+
+            var _repoUser = IUserServiesMock.UserServices();
+
+            var productRepo = new ProductRepo(dbContext, _repoUser, _hostingEnv, configuration);
+
+            var productController = new ProductController(productRepo);
+
+            var expected = true;
+
+            var result = productController.Put(new ProductRequest { ProductId = 1, ProductName = "Book 1", Stock = 3, CategoryId = 3, ProviderId = 3, UnitPrice = 1000, Description = "new book", IsNew = true, Status = true, });
+
+            var resultValue = Assert.IsType<OkObjectResult>(result.Result);
+
+            Assert.True(resultValue.Value.Equals(expected));
+        }
+
+        [Theory]
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(3)]
+        public async Task Get_Product_By_ID__When_ID_Valid(int id)
+        {
+            //Arrange
+            var dbContext = _fixture.Context;
+
+
+            dbContext.Products.Add(new Product { ProductName = "Book 2", Stock = 3, CategoryId = 3, ProviderId = 3, UnitPrice = 1000, Description = "new book 1", IsNew = true, Status = true, });
+            dbContext.Products.Add(new Product { ProductName = "Book 3", Stock = 13, CategoryId = 3, ProviderId = 3, UnitPrice = 500, Description = "new book 2", IsNew = true, Status = true, });
+            dbContext.SaveChanges();
+
+            var configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json")
+            .Build();
+
+            var _repoUser = IUserServiesMock.UserServices();
+
+            var productRepo = new ProductRepo(dbContext, _repoUser, _hostingEnv, configuration);
+
+            var productController = new ProductController(productRepo);
+            
+            //Act
+
+            var result = productController.Get(id);
+
+            //Assert
+            var resultValue = Assert.IsType<OkObjectResult>(result.Result.Result);
+
+            var product = resultValue.Value as ProductDetailsVM;
+
+            Assert.True(product.Id.Equals(id));
+        }
+
+        [Theory]
+        [InlineData("Book 2")]
+        public async Task Search_Product_By_Name(string keyword)
+        {
+            //Arrange
+            var dbContext = _fixture.Context;
+            dbContext.Products.Add(new Product { ProductName = "Book 2", Stock = 3, CategoryId = 3, ProviderId = 3, UnitPrice = 1000, Description = "new book 1", IsNew = true, Status = true, });
+            dbContext.Products.Add(new Product { ProductName = "Book 3", Stock = 13, CategoryId = 3, ProviderId = 3, UnitPrice = 500, Description = "new book 2", IsNew = true, Status = true, });
+            dbContext.SaveChanges();
+
+            var configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json")
+            .Build();
+
+            var _repoUser = IUserServiesMock.UserServices();
+
+            var productRepo = new ProductRepo(dbContext, _repoUser, _hostingEnv, configuration);
+
+            var productController = new ProductController(productRepo);
+            //Act
+            var result = productController.search(keyword);
+
+            //Assert
+            var resultValue = Assert.IsType<OkObjectResult>(result.Result.Result);
+
+            var product = resultValue.Value as List<Product> ;
+
+           Assert.Equal(product[0].ProductName, keyword);
         }
         [Theory]
-        [InlineData(3)]
-        [InlineData(4)]
-        public async Task ProductsGet_ReturnsProductDetailsWhenGetIdproductExits(int id)
+        [InlineData("Booook")]
+        [InlineData("Booook1111111")]
+        public async Task Seach_Product_by_Name_When_KeyWord_NotExits_in_ProductList(string keyword)
         {
-            // Arrange
-            var mockUser = new Mock<IUserDF>();
-            var mockHosting = new Mock<IHostingEnvironment>();
-            var mockProduct = new Mock<IProduct>();
-            
-            mockProduct.Setup(repo => repo.getProductAsync(id)).ReturnsAsync(GetListProductTest().Select(p => new ProductDetailsVM { Id = p.productID, productName = p.productName }).FirstOrDefault(s => s.Id == id));
-            var controller = new ProductController(mockUser.Object, mockProduct.Object, mockHosting.Object);
-            // Act
-           var result = await controller.Get(id);
-            // Assert
-            var okObjectResult = Assert.IsType<OkObjectResult>(result.Result);
-            var model = okObjectResult.Value as ProductDetailsVM;
-            Assert.Equal(id, model.Id);
+            //Arrange
+            var dbContext = _fixture.Context;
+            dbContext.Products.Add(new Product { ProductName = "Book 2", Stock = 3, CategoryId = 3, ProviderId = 3, UnitPrice = 1000, Description = "new book 1", IsNew = true, Status = true, });
+            dbContext.Products.Add(new Product { ProductName = "Book 3", Stock = 13, CategoryId = 3, ProviderId = 3, UnitPrice = 500, Description = "new book 2", IsNew = true, Status = true, });
+            dbContext.SaveChanges();
 
+            var configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json")
+            .Build();
 
+            var _repoUser = IUserServiesMock.UserServices();
+
+            var productRepo = new ProductRepo(dbContext, _repoUser, _hostingEnv, configuration);
+
+            var productController = new ProductController(productRepo);
+            //Act
+
+            var result = productController.search(keyword);
+
+            //Assert
+            var resultValue = Assert.IsType<OkObjectResult>(result.Result.Result);
+
+            var product = resultValue.Value as List<Product>;
+
+            Assert.Equal(product.Count(),0);
         }
-    
-
     }
 }
+
+
