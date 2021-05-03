@@ -20,11 +20,15 @@ namespace RookieShop.Backend.Data
             modelBuilder.Entity<ProviderProduct>().HasKey(sc => new { sc.ProductId, sc.ProviderId });
             modelBuilder.Entity<RattingProduct>().HasKey(sc => new { sc.ProductId, sc.UserId, sc.Id });
             modelBuilder.Entity<Provider>().HasData(
-               new Provider { Id = 3, ProviderName = "H&M" },
-               new Provider { Id = 4, ProviderName = "B&G" });
+               new Provider { Id = 3, ProviderName = "NXB Kim Dong" },
+               new Provider { Id = 4, ProviderName = " NXB Tuoi Tre" },
+               new Provider { Id = 5, ProviderName = "NXB Giao Duc" },
+               new Provider { Id = 6, ProviderName = "NXB Giao Duc" },
+               new Provider { Id = 7, ProviderName = "NXB Tong Hop HCM" });
             modelBuilder.Entity<Category>().HasData(
-               new Category { Id = 3, CategoryName = "Jacket", CategoryDescription= "A jacket is a garment for the upper body, usually extending below the hips. .." },
-               new Category { Id = 4, CategoryName = "Pant" , CategoryDescription = "pants (North American English) are an item of clothing that might have originated in Central Asia, worn from the waist to the ankles, covering ..." });
+               new Category { Id = 3, CategoryName = "Foreign", CategoryDescription = "Foreign language books are original books produced in foreign countries" },
+               new Category { Id = 4, CategoryName = "Cookbooks", CategoryDescription = "a book containing recipes and other information about the preparation and cooking of food." },
+               new Category { Id = 5, CategoryName = "Comics", CategoryDescription = "causing or meant to cause laughter." });
         }
         public DbSet<Product> Products { get; set; }
 

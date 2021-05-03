@@ -4,7 +4,12 @@
 *@
 @{
 }
-
+<style>
+    .item{
+        height:230px!important;
+        width:200px!important;
+    }
+</style>
 <!--Product Line Up Start -->
 <div class="product-listing">
     <div class="container">
@@ -43,8 +48,7 @@
                             {
                                 <fieldset>
                                     <select name="flag" id="flag" onchange="this.form.submit()">
-
-
+                                        <option >Choose</option>
                                         <option value="Asc-Price">Sort by price: low to high</option>
                                         <option value="Desc-Price">Sort by price: high to low</option>
 
@@ -66,7 +70,7 @@
                                 <div class="col-12 col-md-6 col-lg-4 manage-color-hover wow slideInUp" data-wow-delay=".2s">
                                     <div class="product-item owl-theme product-listing-carousel owl-carousel">
                                         <div class="item p-item-img">
-                                            <img src="@item.ImgDefault" alt="images">
+                                            <img class="img-fluid" src="@item.ImgDefault" alt="images">
                                             <div class="text-center d-flex justify-content-center align-items-center">
                                                 <a class="listing-cart-icon" href="@Url.Action("AddProduct","Cart", new { id = item.ProductId})">
                                                     <i class="fa fa-shopping-cart"></i>
@@ -81,10 +85,6 @@
                                 </div>
 
                             }
-
-
-
-
 
                         </div>
                         <!-- END DISPLAY PRODUCT -->

@@ -1,9 +1,11 @@
-import React, { Fragment } from 'react'
+import React, { Fragment,useEffect } from 'react'
 import { Link } from "react-router-dom"
 
 
 export default function ProductList(props) {
 
+    useEffect(() => {
+    }, [props])
     return (
         <div>
             <table id="datatable" className="table table-borderless table-thead-bordered table-nowrap table-align-middle card-table dataTable no-footer">
@@ -45,10 +47,8 @@ export default function ProductList(props) {
 
                                 <td>
                                     <label className="toggle-switch toggle-switch-sm" htmlFor="stocksCheckbox1">
-                                        <input type="checkbox" className="toggle-switch-input" id={`status-${item.productId}`} name={`status-${item.productID}`} defaultChecked={item.status === true ? "checked" : ""} />
-                                        <span className="toggle-switch-label">
-                                            <span className="toggle-switch-indicator" />
-                                        </span>
+                                        <input type="checkbox" className="toggle-switch-input" id={`status-${item.productId}`} name={`status-${item.productID}`} defaultChecked={item.status === true } />
+                                        <td>{item.status===true?"On":"Off"}</td>
                                     </label>
                                 </td>
                                 <td>

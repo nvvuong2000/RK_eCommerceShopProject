@@ -56,11 +56,7 @@ namespace RookieShop.Backend.Areas.Identity.Pages.Account
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
-            [Required]
-
-            [Display(Name = "UserName")]
-
-            public string UserName { get; set; }
+          
 
             [Display(Name = "Phone Number")]
             [DataType(DataType.PhoneNumber)]

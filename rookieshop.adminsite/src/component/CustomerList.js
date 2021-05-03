@@ -39,7 +39,7 @@ export default function CustomerList(props) {
                                         <td>{item.userEmail}</td>
                                         <td>{item.userPhone}</td>
                                         <td>{item.countOrder}</td>
-                                        <td>{item.totalOrder}</td>
+                                        <td>{Number((item.totalOrder).toFixed(1)).toLocaleString()}</td>
                                     </tr>
                                 );
                             })}

@@ -10,7 +10,7 @@ export default function OderDetails({ match }) {
   const orderList = useSelector((state) => state.order.orderDetails);
 
 
-  let data = orderList;
+  let data = orderList.data;
 
 
   const { id } = match.params;
@@ -82,7 +82,7 @@ export default function OderDetails({ match }) {
               <div className="row justify-content-md-end mb-3">
                 <div className="col-md-8 col-lg-7">
                   <div className="row text-sm-right">
-                    <dt className="col-sm-10">Amount paid:<span className="ml-4">{data.total}</span></dt>
+                    <dt className="col-sm-10">Amount paid:<span className="ml-4">{Number((data.total).toFixed(1)).toLocaleString()}</span></dt>
 
                   </div>
                 </div>

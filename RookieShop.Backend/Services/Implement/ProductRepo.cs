@@ -380,7 +380,7 @@ namespace RookieShop.Backend.Services.Implement
 
             string webRootPath = _hostingEnv.WebRootPath;
 
-            var fullPath = Path.Combine(webRootPath, file);
+            var fullPath = Path.Combine(webRootPath+ file);
 
 
             if (System.IO.File.Exists(fullPath))
@@ -479,6 +479,8 @@ namespace RookieShop.Backend.Services.Implement
 
                 NumberRating = request.NumberRating,
 
+                Date = Convert.ToDateTime(DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss")),
+
             };
             // add
 
@@ -505,7 +507,7 @@ namespace RookieShop.Backend.Services.Implement
 
             int number = _context.RattingProduct.Where(r => r.ProductId == productId).Count();
 
-            double avg = totalStar / number;
+            double avg = (double)totalStar / number;
 
             return avg;
         }

@@ -21,6 +21,7 @@ export default (state = initialState, { type, payload }) => {
 
         }
         case order.ORDERDETAILS: {
+            console.log(payload);
 
             state.orderDetails = payload;
            

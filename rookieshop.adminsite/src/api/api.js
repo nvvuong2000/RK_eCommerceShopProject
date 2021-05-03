@@ -43,7 +43,7 @@ const Category = {
 }
 const Order = {
     getListOrderofCustomer: async (id) => await axios.get(`/api/Order/listOrder/${id}`, config).then(r => { return r.data }),
-    getListOrderDetails: async (id) => await axios.get(`/api/Order/${id}`, config).then(r => { return r.data }),
+    getListOrderDetails: async (id) => await axios.get(`/api/Order/${id}`, config),
     getOrderList: async (id) => await axios.get(`/getorderlist`, config).then(r => { return r.data }),
     updateStatusOrder: async (data) => await axios.post(`/api/Order/updateSttOrderad`, data, config).then(r => { return r.data }),
     

@@ -156,21 +156,21 @@ namespace RookieShop.Backend.Migrations
 
             modelBuilder.Entity("RookieShop.Backend.Models.Cart", b =>
                 {
-                    b.Property<int>("productId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<string>("userId")
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("quantity")
+                    b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("unitPrice")
+                    b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("productId", "userId");
+                    b.HasKey("ProductId", "UserId");
 
-                    b.HasIndex("userId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Carts");
                 });
@@ -182,10 +182,10 @@ namespace RookieShop.Backend.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("categoryDescription")
+                    b.Property<string>("CategoryDescription")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("categoryName")
+                    b.Property<string>("CategoryName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -196,14 +196,20 @@ namespace RookieShop.Backend.Migrations
                         new
                         {
                             Id = 3,
-                            categoryDescription = "A jacket is a garment for the upper body, usually extending below the hips. ..",
-                            categoryName = "Jacket"
+                            CategoryDescription = "Foreign language books are original books produced in foreign countries",
+                            CategoryName = "Foreign"
                         },
                         new
                         {
                             Id = 4,
-                            categoryDescription = "pants (North American English) are an item of clothing that might have originated in Central Asia, worn from the waist to the ankles, covering ...",
-                            categoryName = "Pant"
+                            CategoryDescription = "a book containing recipes and other information about the preparation and cooking of food.",
+                            CategoryName = "Cookbooks"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CategoryDescription = "causing or meant to cause laughter.",
+                            CategoryName = "Comics"
                         });
                 });
 
@@ -214,21 +220,21 @@ namespace RookieShop.Backend.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime>("DateOrdered")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Total")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTime>("dateOrdered")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("status")
-                        .HasColumnType("int");
-
-                    b.Property<string>("userId")
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("userId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Order");
                 });
@@ -240,26 +246,26 @@ namespace RookieShop.Backend.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("orderId")
+                    b.Property<int>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<int>("productId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<string>("productName")
+                    b.Property<string>("ProductName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("quantity")
+                    b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("unitPrice")
+                    b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("orderId");
+                    b.HasIndex("OrderId");
 
-                    b.HasIndex("productId");
+                    b.HasIndex("ProductId");
 
                     b.ToTable("OrderDetails");
                 });
@@ -271,42 +277,42 @@ namespace RookieShop.Backend.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DateUpated")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("categoryId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("description")
+                    b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("isNew")
+                    b.Property<bool>("IsNew")
                         .HasColumnType("bit");
 
-                    b.Property<string>("productName")
+                    b.Property<string>("ProductName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("providerId")
+                    b.Property<int>("ProviderId")
                         .HasColumnType("int");
 
-                    b.Property<double>("rating")
+                    b.Property<double>("Rating")
                         .HasColumnType("float");
 
-                    b.Property<bool>("status")
+                    b.Property<bool>("Status")
                         .HasColumnType("bit");
 
-                    b.Property<int>("stock")
+                    b.Property<int>("Stock")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("unitPrice")
+                    b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("categoryId");
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
                 });
@@ -318,17 +324,17 @@ namespace RookieShop.Backend.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ProductID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("captionImage")
+                    b.Property<string>("CaptionImage")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("isDefault")
+                    b.Property<bool>("IsDefault")
                         .HasColumnType("bit");
 
-                    b.Property<string>("pathName")
+                    b.Property<string>("PathName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductID")
+                        .HasColumnType("int");
 
                     b.HasKey("ID");
 
@@ -344,16 +350,16 @@ namespace RookieShop.Backend.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("address")
+                    b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("email")
+                    b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("providerName")
+                    b.Property<string>("ProviderName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("tel")
+                    b.Property<string>("Tel")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -364,50 +370,65 @@ namespace RookieShop.Backend.Migrations
                         new
                         {
                             Id = 3,
-                            providerName = "H&M"
+                            ProviderName = "NXB Kim Dong"
                         },
                         new
                         {
                             Id = 4,
-                            providerName = "B&G"
+                            ProviderName = " NXB Tuoi Tre"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ProviderName = "NXB Giao Duc"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            ProviderName = "NXB Giao Duc"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            ProviderName = "NXB Tong Hop HCM"
                         });
                 });
 
             modelBuilder.Entity("RookieShop.Backend.Models.ProviderProduct", b =>
                 {
-                    b.Property<int>("productId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<int>("providerId")
+                    b.Property<int>("ProviderId")
                         .HasColumnType("int");
 
-                    b.HasKey("productId", "providerId");
+                    b.HasKey("ProductId", "ProviderId");
 
-                    b.HasIndex("providerId");
+                    b.HasIndex("ProviderId");
 
                     b.ToTable("ProviderProduct");
                 });
 
             modelBuilder.Entity("RookieShop.Backend.Models.RattingProduct", b =>
                 {
-                    b.Property<int>("productID")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<string>("userID")
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Id")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("date")
+                    b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("numberRating")
+                    b.Property<int>("NumberRating")
                         .HasColumnType("int");
 
-                    b.HasKey("productID", "userID", "Id");
+                    b.HasKey("ProductId", "UserId", "Id");
 
-                    b.HasIndex("userID");
+                    b.HasIndex("UserId");
 
                     b.ToTable("RattingProduct");
                 });
@@ -420,8 +441,17 @@ namespace RookieShop.Backend.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Avatar")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -463,15 +493,6 @@ namespace RookieShop.Backend.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("address")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("avatar")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("customerName")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -541,13 +562,13 @@ namespace RookieShop.Backend.Migrations
                 {
                     b.HasOne("RookieShop.Backend.Models.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("productId")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("RookieShop.Backend.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("userId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -560,7 +581,7 @@ namespace RookieShop.Backend.Migrations
                 {
                     b.HasOne("RookieShop.Backend.Models.User", "User")
                         .WithMany("Orders")
-                        .HasForeignKey("userId");
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -569,13 +590,13 @@ namespace RookieShop.Backend.Migrations
                 {
                     b.HasOne("RookieShop.Backend.Models.Order", "Order")
                         .WithMany("OrderDetails")
-                        .HasForeignKey("orderId")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("RookieShop.Backend.Models.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("productId")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -588,7 +609,7 @@ namespace RookieShop.Backend.Migrations
                 {
                     b.HasOne("RookieShop.Backend.Models.Category", "Category")
                         .WithMany("Products")
-                        .HasForeignKey("categoryId")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -610,13 +631,13 @@ namespace RookieShop.Backend.Migrations
                 {
                     b.HasOne("RookieShop.Backend.Models.Product", "Product")
                         .WithMany("ProviderProducts")
-                        .HasForeignKey("productId")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("RookieShop.Backend.Models.Provider", "Provider")
                         .WithMany("ProviderProducts")
-                        .HasForeignKey("providerId")
+                        .HasForeignKey("ProviderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -629,13 +650,13 @@ namespace RookieShop.Backend.Migrations
                 {
                     b.HasOne("RookieShop.Backend.Models.Product", "Product")
                         .WithMany("RattingProduct")
-                        .HasForeignKey("productID")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("RookieShop.Backend.Models.User", "User")
                         .WithMany("RattingProduct")
-                        .HasForeignKey("userID")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

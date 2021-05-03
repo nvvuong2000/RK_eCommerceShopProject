@@ -199,7 +199,7 @@ export default function AddProduct({ match }) {
                     </div>
                     <div className="card-body">
                       <div className="form-group">
-                        <label htmlFor="productNameLabel" className="input-label">Name <i className="tio-help-outlined text-body ml-1" data-toggle="tooltip" data-placement="top" title data-original-title="Products are the goods or services you sell." /></label>
+                        <label htmlFor="productNameLabel" className="input-label">Name </label>
                         <input type="text" className="form-control" onChange={handleChange} value={formik.values.productName} name="productName" id="productName" placeholder="Shirt, t-shirts, etc." aria-label="Shirt, t-shirts, etc." />
                         {formik.errors.productName && formik.touched.productName && (
                           <p style={{ color: "red" }}>{formik.errors.productName}</p>

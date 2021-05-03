@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react'
 import {Link } from "react-router-dom"
+import moment from 'moment';
 export default function OrderList(props) {
     const order= props.order;
     return (
@@ -12,7 +13,7 @@ export default function OrderList(props) {
                         </span>
                         <div className="ml-3">
                             <h5 className="mb-0"><Link to={`/order/${order.id}`}>#{order.id}</Link></h5>
-                            <small>{order.date}</small>
+                            <small>{moment(order.date).format("MM-DD-YYYY HH:mm:ss")}</small>
                         </div>
                     </div>
                 </td>
@@ -25,7 +26,7 @@ export default function OrderList(props) {
                         </div>
                     </div>
                 </td>
-                <td className="table-column-right-aligned">{order.total}</td>
+                <td className="table-column-right-aligned">{Number((order.total).toFixed(1)).toLocaleString()}</td>
             </tr>
         </Fragment>
     )

@@ -36,7 +36,7 @@ export default function OrderDetailsItem(props) {
                                     </td>
                                     <td>{order.productQuantity}</td>
                                     <td>{order.productunitPrice}</td>
-                                    <td>{order.productQuantity * order.productunitPrice}</td>
+                                    <td>{Number((order.productQuantity * order.productunitPrice).toFixed(1)).toLocaleString()}</td>
                                 </tr>
                             );
                         })}
