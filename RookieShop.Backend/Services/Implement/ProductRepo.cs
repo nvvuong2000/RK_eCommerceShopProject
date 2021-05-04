@@ -86,13 +86,14 @@ namespace RookieShop.Backend.Services.Implement
 
                     int random = getrandom.Next(1, 99999);
 
+
                     string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", random.ToString() + formFile.FileName);
 
                     if (formFile.Length > 0)
                     {
                         using (var stream = new FileStream(path, FileMode.Create))
                         {
-                            formFile.CopyToAsync(stream);
+                            formFile.CopyTo(stream);
 
                         }
                     }
@@ -343,7 +344,7 @@ namespace RookieShop.Backend.Services.Implement
                             {
                                 using (var stream = new FileStream(path, FileMode.Create))
                                 {
-                                    formFile.CopyToAsync(stream);
+                                    formFile.CopyTo(stream);
 
                                 }
                             }

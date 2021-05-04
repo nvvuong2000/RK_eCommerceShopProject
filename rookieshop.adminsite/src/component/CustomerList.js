@@ -29,10 +29,9 @@ export default function CustomerList(props) {
                                         </td>
                                         <td><Link to={`/customer/${item.userId}`} >#{i+1}</Link> </td>
                                         <td className="table-column-pl-0">
-                                            <a className="media align-items-center" href="ecommerce-product-details.html">
-                                                <img className="avatar avatar-lg mr-3" src={item.avatar == null ? "https://localhost:44341/images/default-user.jpg":`${item.avatar}`} alt="Avatar" />
+                                            <a className="media align-items-center" href="#">                                              
                                                 <div className="media-body">
-                                                    <Link to={`/customer/${item.userId}`} className="text-hover-primary mb-0">{item.userName}</Link>
+                                                    <Link to={`/customer/${item.userId}`} className="text-hover-primary mb-0">{item.fullName}</Link>
                                                 </div>
                                             </a>
                                         </td>

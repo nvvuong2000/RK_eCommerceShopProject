@@ -5,12 +5,16 @@ import { success, error as err } from "../notify/index";
 export const login = (value) => async (dispatch) => {
     try { 
         const data = await api.User.login(value)
-        localStorage.setItem("__token", 'Bearer' + ` ${data.access_token}`);
+        await localStorage.setItem("__token", `Bearer ${data.access_token}`);
         dispatch({
             type: types.LOGIN,
             payload:"",      
         });
-        history.push("/");
+        
+        setTimeout(() => {
+            history.push("/");
+        }, 1000);
+       
     } catch (error) {
         err(error);
     }

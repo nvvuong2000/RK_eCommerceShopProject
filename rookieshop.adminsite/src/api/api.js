@@ -1,7 +1,6 @@
 import axios from "axios";
-axios.defaults.baseURL = "https://localhost:44341";
 
-
+axios.defaults.baseURL = "https://backend89c3e3aa12e0476482808fe47b1a625a.azurewebsites.net";
 
 const config = {
     headers: { Authorization: localStorage.getItem("__token") }
@@ -21,7 +20,11 @@ const User = {
     },
     get_info_user: async () => {
         var url = "/api/User/infoUser";
-        return await axios.get(url, config).then(r => { return r.data });
+        var token = localStorage.getItem("__token");
+        if(token){
+            axios.defaults.headers.common["Authorization"] = token;
+        }
+        return await axios.get(url).then(r => { return r.data });
     },
     getlistuser :async(data)=>{
         return await axios.get("/api/User/listUser", config).then(r => { return r.data });

@@ -15,7 +15,6 @@ export default function AddCategory({ match}) {
 
     const categorySelected = useSelector(state => state.category.categoryselected);
 
-    console.log(categorySelected);
 
     const [Category, setCategory] = useState({
     

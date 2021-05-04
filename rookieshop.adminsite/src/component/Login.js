@@ -74,7 +74,7 @@ export default function Login() {
     <main id="content" role="main" className="main">
       {/* Content */}
       <div className="container py-5 py-sm-7">
-        <a className="d-flex justify-content-center mb-5" href="index.html">
+        <a className="d-flex justify-content-center mb-5" href="#">
           <img className="z-index-2" src="https://upload.wikimedia.org/wikipedia/commons/1/14/Logo_Vavu.png" alt="Image Description" style={{ width: '8rem' }} />
         </a>
         <div className="row justify-content-center">

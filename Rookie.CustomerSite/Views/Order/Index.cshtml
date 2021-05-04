@@ -104,7 +104,7 @@
                                             <td class="text-center"><a href="/order/@item.Id"><i class="lni-eye"></i></a></td>
                                             @if (item.Status == 1)
                                             {
-                                                <td class="text-center"><a href="@Url.Action("updateStatusOrder", "Order", new { id = item.Id })" class="btn btn-outline-danger"> Đã nhận được hàng</a></td>
+                                                <td class="text-center"><a href="@Url.Action("updateStatusOrder", "Order", new { id = item.Id })" class="btn btn-outline-danger"> Received</a></td>
                                             }
 
                                         </tr>

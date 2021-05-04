@@ -29,7 +29,7 @@ export default function Product() {
                             <h1 className="page-header-title">Products <span className="badge badge-soft-dark ml-2" /></h1>
                         </div>
                         <div className="col-sm-auto">
-                            <Link to={`/product/addProduct`} className="btn btn-primary" href="ecommerce-add-product.html">Add product</Link>
+                            <Link to={`/product/addProduct`} className="btn btn-primary" href="#">Add product</Link>
 
                         </div>
                     </div>
