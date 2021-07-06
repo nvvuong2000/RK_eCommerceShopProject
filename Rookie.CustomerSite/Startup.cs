@@ -32,7 +32,7 @@ namespace Rookie.CustomerSite
                 .AddCookie("Cookies")
                 .AddOpenIdConnect("oidc", options =>
                 {
-                    options.Authority = "https://backend89c3e3aa12e0476482808fe47b1a625a.azurewebsites.net";
+                    options.Authority = "https://localhost:44341";
                     options.RequireHttpsMetadata = false;
                     options.GetClaimsFromUserInfoEndpoint = true;
 

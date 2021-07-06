@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,10 +25,12 @@ namespace RookieShop.Backend.Services.Implement
         private readonly IConfiguration _config;
 
         private readonly IUserDF _repoUser;
+        private readonly IMapper _mapper;
+
 
         private IHostingEnvironment _hostingEnv;
 
-        public ProductRepo(ApplicationDbContext context, IUserDF repoUser, IHostingEnvironment hostingEnv, IConfiguration config)
+        public ProductRepo(ApplicationDbContext context, IUserDF repoUser, IHostingEnvironment hostingEnv, IConfiguration config, IMapper mapper)
         {
             _context = context;
 
@@ -36,6 +39,7 @@ namespace RookieShop.Backend.Services.Implement
             _repoUser = repoUser;
 
             _config = config;
+            _mapper = mapper;
 
 
         }
@@ -44,36 +48,39 @@ namespace RookieShop.Backend.Services.Implement
 
         public async Task<bool> addProduct([FromForm] ProductRequest product)
         {
-            var newProduct = new Product()
-            {
-                CategoryId = product.CategoryId,
+            var entity = _mapper.Map<Product>(product);
 
-                ProductName = product.ProductName,
+            //var newProduct = new Product()
+            //{
+            //    CategoryId = product.CategoryId,
 
-                ProviderId = product.ProviderId,
+            //    ProductName = product.ProductName,
 
-                Description = product.Description,
+            //    ProviderId = product.ProviderId,
 
-                Stock = product.Stock,
+            //    Description = product.Description,
 
-                UnitPrice = product.UnitPrice,
+            //    Stock = product.Stock,
 
-                Status = product.Status,
+            //    UnitPrice = product.UnitPrice,
 
-                IsNew = product.IsNew,
+            //    Status = product.Status,
 
-                DateCreated = Convert.ToDateTime(DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss")),
+            //    IsNew = product.IsNew,
 
-                DateUpated = Convert.ToDateTime(DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss")),
-            };
+            //    DateCreated = Convert.ToDateTime(DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss")),
+
+            //    DateUpated = Convert.ToDateTime(DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss")),
+           
+            //};
             // add product 
 
-            _context.Products.Add(newProduct);
+            _context.Products.Add(entity);
             // save product
 
             await _context.SaveChangesAsync();
 
-            var productId = newProduct.Id;
+            var productId = entity.Id;
             try
             {
                 // Save Image list of product

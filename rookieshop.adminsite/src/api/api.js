@@ -1,6 +1,7 @@
 import axios from "axios";
 
-axios.defaults.baseURL = "https://backend89c3e3aa12e0476482808fe47b1a625a.azurewebsites.net";
+// axios.defaults.baseURL = "https://backend89c3e3aa12e0476482808fe47b1a625a.azurewebsites.net";
+axios.defaults.baseURL = "https://localhost:44341";
 
 const config = {
     headers: { Authorization: localStorage.getItem("__token") }
